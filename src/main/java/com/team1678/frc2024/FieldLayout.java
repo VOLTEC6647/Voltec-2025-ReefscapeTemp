@@ -1,5 +1,6 @@
 package com.team1678.frc2024;
 
+import com.team1678.frc2024.auto.actions.LambdaAction;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
@@ -64,36 +65,23 @@ public class FieldLayout {
 	public static double kCoralDistance = 46.75; //Please Fix
 	public static double kCoralDistanceOffset = 10.0f; // temproral
 
-	// hacer
-	public static final double topCoralAngle = 90.0;
-	public static final double topLeftCoralAngle = 100.0;
-	public static final double topRightCoralAngle = 100.0;
-	public static final double bottomCoralAngle = 100.0;
-	public static final double bottomLeftCoralAngle = 100.0;
-	public static final double bottomRightCoralAngle = 100.0;
-
 	public enum CoralTarget {
-		TOP(3.0),
-		TOP_LEFT(3.0),
-		TOP_RIGHT(3.0),
-		BOTTOM(3.0),
-		BOTTOM_LEFT(3.0),
-		BOTTOM_RIGHT(3.0);
+		TOP_LEFT(120.0),
+		TOP_RIGHT(60.0),
+		BOTTOM_LEFT(240.0),
+		BOTTOM_RIGHT(300.0),
+		LEFT(180.0),
+		RIGHT(0.0);
 
 		public double angle;
 
 		CoralTarget(double angle) {
 			this.angle = angle;
 		}
-
-		public double getAngle() {
-			return angle;
-		}
 	}
 
 	public static CoralTarget CoralTarget;
 
-	// remember to set the CoralTarget
 	public static Pose2d getCoralTargetPos(CoralTarget coralTarget) {
 		Rotation2d rot = Rotation2d.fromDegrees(coralTarget.angle);
 		Translation2d target = Translation2d.fromPolar(rot, kCoralDistance + kCoralDistanceOffset);
