@@ -1,5 +1,6 @@
 package com.team1678.frc2024;
 
+import com.team1678.frc2024.subsystems.Drive;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
@@ -7,6 +8,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.util.Units;
 import java.io.IOException;
+import java.util.Vector;
 
 /**
  * Contains various field dimensions and useful reference points. Dimensions are
@@ -60,12 +62,55 @@ public class FieldLayout {
 	public static Pose2d kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
 
 	public static double kCoralDistance = 46.75; //Please Fix
+	public static double kCoralDistanceOffset = 10.0f; // temproral
 
+	// hacer
+	public static final double topCoralAngle = 90.0;
+	public static final double topLeftCoralAngle = 100.0;
+	public static final double topRightCoralAngle = 100.0;
+	public static final double bottomCoralAngle = 100.0;
+	public static final double bottomLeftCoralAngle = 100.0;
+	public static final double bottomRightCoralAngle = 100.0;
+
+	public enum CoralTarget {
+		TOP(3.0),
+		TOP_LEFT(3.0),
+		TOP_RIGHT(3.0),
+		BOTTOM(3.0),
+		BOTTOM_LEFT(3.0),
+		BOTTOM_RIGHT(3.0);
+
+		public double angle;
+
+		CoralTarget(double angle) {
+			this.angle = angle;
+		}
+
+		public double getAngle() {
+			return angle;
+		}
+	}
+
+	public static CoralTarget CoralTarget;
+
+	// remember to set the CoralTarget
+	public static Pose2d getCoralTargetPos(CoralTarget coralTarget) {
+		Rotation2d rot = Rotation2d.fromDegrees(coralTarget.angle);
+		Translation2d target = Translation2d.fromPolar(rot, kCoralDistance + kCoralDistanceOffset);
+		Pose2d targetPos = Pose2d.fromTranslation(target);
+
+		return kCoralCenter.add(targetPos);
+	}
+
+    public static Rotation2d getCoralTargetRotation(CoralTarget coralTarget) {
+		return Rotation2d.fromDegrees(coralTarget.angle).flip();
+    }
 
 	public static Pose2d handleAllianceFlip(Pose2d blue_pose, boolean is_red_alliance) {
 		if (is_red_alliance) {
 			blue_pose = blue_pose.mirrorAboutX(kFieldLength / 2.0);
 		}
+
 		return blue_pose;
 	}
 
