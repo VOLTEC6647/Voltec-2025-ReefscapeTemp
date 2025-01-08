@@ -1,5 +1,7 @@
 package com.team1678.frc2024;
 
+import com.team1678.frc2024.auto.actions.LambdaAction;
+import com.team1678.frc2024.subsystems.Drive;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
@@ -7,7 +9,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.util.Units;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Contains various field dimensions and useful reference points. Dimensions are
@@ -61,17 +63,42 @@ public class FieldLayout {
 	public static Pose2d kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
 
 	public static double kCoralDistance = 46.75; //Please Fix
+	public static double kCoralDistanceOffset = 10.0f; // temproral
 
-	public static ArrayList<Pose2d> kCoralPoses;
-	static {
-		kCoralPoses.add(kCoralCenter);
+	public enum CoralTarget {
+		TOP_LEFT(120.0),
+		TOP_RIGHT(60.0),
+		BOTTOM_LEFT(240.0),
+		BOTTOM_RIGHT(300.0),
+		LEFT(180.0),
+		RIGHT(0.0);
+
+		public double angle;
+
+		CoralTarget(double angle) {
+			this.angle = angle;
+		}
 	}
 
+	public static CoralTarget CoralTarget;
+
+	public static Pose2d getCoralTargetPos(CoralTarget coralTarget) {
+		Rotation2d rot = Rotation2d.fromDegrees(coralTarget.angle);
+		Translation2d target = Translation2d.fromPolar(rot, kCoralDistance + kCoralDistanceOffset);
+		Pose2d targetPos = Pose2d.fromTranslation(target);
+
+		return kCoralCenter.add(targetPos);
+	}
+
+    public static Rotation2d getCoralTargetRotation(CoralTarget coralTarget) {
+		return Rotation2d.fromDegrees(coralTarget.angle).flip();
+    }
 
 	public static Pose2d handleAllianceFlip(Pose2d blue_pose, boolean is_red_alliance) {
 		if (is_red_alliance) {
 			blue_pose = blue_pose.mirrorAboutX(kFieldLength / 2.0);
 		}
+
 		return blue_pose;
 	}
 

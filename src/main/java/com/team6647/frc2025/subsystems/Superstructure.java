@@ -5,6 +5,7 @@ import com.team1678.frc2024.FieldLayout;
 import com.team1678.frc2024.Ports1678;
 import com.team1678.frc2024.Robot1678;
 import com.team1678.frc2024.RobotState;
+import com.team1678.frc2024.FieldLayout.CoralTarget;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.led.TimedLEDState;
 import com.team1678.frc2024.loops.ILooper;
