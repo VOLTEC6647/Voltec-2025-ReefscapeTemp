@@ -1,4 +1,4 @@
-package com.team1678.frc2024.paths;
+package com.team6647.frc2025.auto.paths;
 
 import com.team1678.frc2024.Constants1678;
 import com.team1678.frc2024.FieldLayout;
@@ -80,184 +80,15 @@ public class TrajectoryGenerator {
 	}
 
 	public class TrajectorySet {
-		public final Trajectory254<TimedState<Pose2dWithMotion>> testTrajectory;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> testTrajectory2;
 
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6RightStartToRightShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6RightPickupToMidShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6MidPickupToLeftShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6LeftPickupToCenterPickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6CenterPickupToLeftShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6LeftShotToFarLeftCenterPickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6FarLeftCenterPickupToLeftShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6LeftShotToN3;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> L6N3ToLeftShot;
-
-		public final Trajectory254<TimedState<Pose2dWithMotion>> AL6LeftShotToCenterPickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> AL6CenterPickupToLeftShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> AL6LeftShotToSecondCenterPickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> AL6SecondCenterPickupToLeftShot;
-
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6StartToS1Shot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6S1ShotToN1Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6N1PickupToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6FarShotToN2Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6N2PickupToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6NearShotToS2Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6S2PickupToS3Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6N1ToN2;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6N2PickupToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6FarShotToN3Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> SF6N3PickupToNearShot;
-
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6StartToS2;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6S2ToN1;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N1ToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6FarShotToN1;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N1ToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6S2ToN2;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N2ToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6FarShotToN2;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N2ToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6S2ToN3;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N3ToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6FarShotToN3;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N3ToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6NearShotToS1;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6S1ToS3;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6S3ToDriveout;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6NearShotToS3;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6S3ToS1;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6S1ToDriveout;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N1ToN2;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N2ToN1;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N2ToN3;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N3ToN2;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N3ToN1;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> A6N1ToN3;
-
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3StartToN3Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3StartToN4Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3StartToN5Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N3PickupToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N4PickupToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N5PickupToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N3PickupToStageShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N4PickupToStageShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N3PickupToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N4PickupToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3N5PickupToFarShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3FarShotToN3Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3StageShotToN3Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3FarShotToN4Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3StageShotToN4Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3FarShotToN5Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3ShotToPreLoadPickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3PreloadPickupToShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R3PreloadShotToTeleStart;
-
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5StartToN5Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5N5PickupToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5StartToN4Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5N4PickupToNearShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5NearShotToPreloadPickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5PreloadPickupToShot;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5PreloadShotToS3Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5S3PickupToS2Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5S2PickupToS1Pickup;
-		public final Trajectory254<TimedState<Pose2dWithMotion>> R5SS1PickupToTeleStart;
+		public final Trajectory254<TimedState<Pose2dWithMotion>> center6;
 
 		private boolean wants_mirrored;
 
 		private TrajectorySet(boolean mirror) {
 			wants_mirrored = mirror;
 			// spotless:off
-			testTrajectory = getTestTrajectory();
-			testTrajectory2 = getTestTrajectory2();
-
-			L6RightStartToRightShot = getL6RightStartToRightPickup();
-			L6RightPickupToMidShot = getL6RightPickupToMidShot();
-			L6MidPickupToLeftShot = getL6MidPickupToLeftShot();
-			L6LeftPickupToCenterPickup = getL6LeftShotToCenterPickup();
-			L6CenterPickupToLeftShot = getL6CenterPickupToLeftShot();
-			L6LeftShotToFarLeftCenterPickup = getL6LeftShotToFarLeftCenterPickup();
-			L6FarLeftCenterPickupToLeftShot = getL6FarLeftCenterPickupToLeftShot();
-			L6LeftShotToN3 = getL6LeftShotToN3();
-			L6N3ToLeftShot = getL6N3ToLeftShot();
-			AL6LeftShotToCenterPickup = getAL6LeftShotToCenterPickup();
-			AL6CenterPickupToLeftShot = getAL6CenterPickupToLeftShot();
-			AL6LeftShotToSecondCenterPickup = getAL6LeftShotToSecondCenterPickup();
-			AL6SecondCenterPickupToLeftShot = getAL6SecondCenterPickupToLeftShot();
-
-			SF6StartToS1Shot = getSF6StartToS1Shot();
-			SF6S1ShotToN1Pickup = getSF6S1ShotToN1Pickup();
-			SF6N1PickupToFarShot = getSF6N1PickupToFarShot();
-			SF6FarShotToN2Pickup = getSF6FarShotToN2Pickup();
-			SF6N2PickupToNearShot = getSF6N2PickupToNearShot();
-			SF6NearShotToS2Pickup = getSF6NearShotToS2Pickup();
-			SF6S2PickupToS3Pickup = getSF6S2PickupToS3Pickup();
-			SF6N1ToN2 = getSF6N1ToN2();
-			SF6N2PickupToFarShot = getSF6N2PickupToFarShot();
-			SF6FarShotToN3Pickup = getSF6FarShotToN3Pickup();
-			SF6N3PickupToNearShot = getSF6N3PickupToNearShot();
-
-			A6StartToS2 = getA6StartToS2();
-			A6S2ToN1 = getA6S2ToN1();
-			A6N1ToFarShot = getA6N1ToFarShot();
-			A6FarShotToN1 = getA6FarShotToN1();
-			A6N1ToNearShot = getA6N1ToNearShot();
-			A6S2ToN2 = getA6S2ToN2();
-			A6N2ToFarShot = getA6N2ToFarShot();
-			A6FarShotToN2 = getA6FarShotToN2();
-			A6N2ToNearShot = getA6N2ToNearShot();
-			A6S2ToN3 = getA6S2ToN3();
-			A6N3ToFarShot = getA6N3ToFarShot();
-			A6FarShotToN3 = getA6FarShotToN3();
-			A6N3ToNearShot = getA6N3ToNearShot();
-			A6NearShotToS1 = getA6NearShotToS1();
-			A6S1ToS3 = getA6S1ToS3();
-			A6S3ToDriveout = getA6S3ToDriveout();
-			A6NearShotToS3 = getA6NearShotToS3();
-			A6S3ToS1 = getA6S3ToS1();
-			A6S1ToDriveout = getA6S1ToDriveout();
-			
-			A6N1ToN2 = getA6N1ToN2();
-			A6N2ToN1 = getA6N2ToN1();
-			A6N2ToN3 = getA6N2ToN3();
-			A6N3ToN2 = getA6N3ToN2();
-			A6N3ToN1 = getA6N3ToN1();
-			A6N1ToN3 = getA6N1ToN3();
-
-			R3StartToN3Pickup = getR3StartToN3Pickup();
-			R3StartToN4Pickup = getR3StartToN4Pickup();
-			R3StartToN5Pickup = getR3StartToN5Pickup();
-			R3N3PickupToNearShot = getR3N3PickupToNearShot();
-			R3N4PickupToNearShot = getR3N4PickupToNearShot();
-			R3N5PickupToNearShot = getR3N5PickupToNearShot();
-			R3N3PickupToStageShot = getR3N3PickupToStageShot();
-			R3N4PickupToStageShot = getR3N4PickupToStageShot();
-			R3N3PickupToFarShot = getR3N3PickupToFarShot();
-			R3N4PickupToFarShot = getR3N4PickupToFarShot();
-			R3N5PickupToFarShot = getR3N5PickupToFarShot();
-			R3FarShotToN3Pickup = getR3FarShotToN3Pickup(); // for 53
-			R3StageShotToN3Pickup = getR3StageShotToN3Pickup(); // for 43
-			R3FarShotToN4Pickup = getR3FarShotToN4Pickup(); // for 54
-			R3StageShotToN4Pickup = getR3StageShotToN4Pickup(); // for 34
-			R3FarShotToN5Pickup = getR3FarShotToN5Pickup();
-			R3ShotToPreLoadPickup = getR3ShotToPreloadPickup();
-			R3PreloadPickupToShot = getR3PreloadPickupToShot();
-			R3PreloadShotToTeleStart = getR3PreloadShotToTeleStart();
-			
-			R5StartToN5Pickup = getR5StartToN5Pickup();
-			R5N5PickupToNearShot = getR5N5PickupToNearShot();
-			R5StartToN4Pickup = getR5StartToN4Pickup();
-			R5N4PickupToNearShot = getR5N4PickupToNearShot();
-			R5NearShotToPreloadPickup = getR5NearShotToPreloadPickup();
-			R5PreloadPickupToShot = getR5PreloadPickupToShot();
-			R5PreloadShotToS3Pickup = getR5PreloadShotToS3Pickup();
-			R5S3PickupToS2Pickup = getR5S3PickupToS2Pickup();
-			R5S2PickupToS1Pickup = getR5S2PickupToS1Pickup();
-			R5SS1PickupToTeleStart = getR5S1PickupToTeleStart();
+			center6 = center6();
 			// spotless:on
 		}
 
@@ -1219,6 +1050,14 @@ public class TrajectoryGenerator {
 			waypoints.add(new Pose2d(4.6, 0.7, Rotation2d.fromDegrees(0.0)));
 			headings.add(Rotation2d.fromDegrees(0.0));
 			waypoints.add(new Pose2d(7.6, 0.7, Rotation2d.fromDegrees(0.0)));
+			headings.add(Rotation2d.fromDegrees(0.0));
+			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
+		}
+
+		private Trajectory254<TimedState<Pose2dWithMotion>> center6() {
+			List<Pose2d> waypoints = new ArrayList<>();
+			List<Rotation2d> headings = new ArrayList<>();
+			waypoints.add(new Pose2d(FieldLayout.kCoralCenter.getTranslation().x()-FieldLayout.kCoralDistance,FieldLayout.kCoralCenter.getTranslation().x(),new Rotation2d()));
 			headings.add(Rotation2d.fromDegrees(0.0));
 			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
 		}

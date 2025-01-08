@@ -1,6 +1,6 @@
-package com.team1678.frc2024.auto.modes;
+package com.team6647.frc2025.auto.modes;
 
-import com.team1678.frc2024.auto.AutoModeBase;
+import com.team6647.frc2025.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeEndedException;
 import com.team1678.frc2024.auto.actions.SwerveTrajectoryAction;
 import com.team1678.frc2024.paths.TrajectoryGenerator1678;

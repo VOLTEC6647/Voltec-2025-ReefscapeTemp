@@ -3,7 +3,7 @@ package com.team6647.frc2025.subsystems;
 import com.team1678.frc2024.Constants1678;
 import com.team1678.frc2024.FieldLayout;
 import com.team1678.frc2024.Ports1678;
-import com.team1678.frc2024.Robot;
+import com.team1678.frc2024.Robot1678;
 import com.team1678.frc2024.RobotState;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.led.TimedLEDState;
@@ -25,6 +25,8 @@ import com.team1678.lib.requests.WaitRequest;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.util.TimeDelayedBoolean;
+import com.team6647.frc2025.auto.modes.configuredQuals.test1;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
@@ -174,6 +176,9 @@ public class Superstructure extends Subsystem {
 	}
 
 	/* Superstructure functions */
+	public void go6(boolean ferryShot) {
+		new test1();
+	}
 
 	// spotless:off 
 	

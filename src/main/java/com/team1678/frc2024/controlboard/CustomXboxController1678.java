@@ -5,7 +5,7 @@ import com.team254.lib.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 
-public class CustomXboxController extends XboxController {
+public class CustomXboxController1678 extends XboxController {
 	private static final double PRESS_THRESHOLD = 0.05;
 	private double DEAD_BAND = 0.15;
 	private boolean rumbling = false;
@@ -50,7 +50,7 @@ public class CustomXboxController extends XboxController {
 		DEAD_BAND = deadband;
 	}
 
-	public CustomXboxController(int usb) {
+	public CustomXboxController1678(int usb) {
 		super(usb);
 		aButton = new ButtonCheck(A_BUTTON);
 		bButton = new ButtonCheck(B_BUTTON);

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.Optional;
 
-public class AutoModeSelector {
+public class AutoModeSelector1678 {
 	public enum DesiredMode {
 		DO_NOTHING,
 		TEST_PATH_AUTO,
@@ -52,7 +52,7 @@ public class AutoModeSelector {
 	private static SendableChooser<TargetNote> mSecondNoteChooser = new SendableChooser<>();
 	private static SendableChooser<TargetSpike> mSpikeChooser = new SendableChooser<>();
 
-	public AutoModeSelector() {
+	public AutoModeSelector1678() {
 		mModeChooser.addOption("Do Nothing", DesiredMode.DO_NOTHING);
 		mModeChooser.setDefaultOption("Semi Fast Six Note", DesiredMode.SEMI_FAST_SIX_NOTE_MODE);
 		mModeChooser.setDefaultOption("13 Semi Fast Six Note", DesiredMode.ONE_THREE_SEMI_FAST_SIX_NOTE_MODE);

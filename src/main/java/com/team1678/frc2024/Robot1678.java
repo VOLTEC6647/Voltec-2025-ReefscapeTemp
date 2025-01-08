@@ -7,12 +7,12 @@ package com.team1678.frc2024;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
-import com.team1678.frc2024.auto.AutoModeSelector;
+import com.team1678.frc2024.auto.AutoModeSelector1678;
 import com.team1678.frc2024.controlboard.ControlBoard;
-import com.team1678.frc2024.controlboard.DriverControls;
+import com.team1678.frc2024.controlboard.DriverControls1678;
 import com.team1678.frc2024.loops.CrashTracker;
 import com.team1678.frc2024.loops.Looper;
-import com.team1678.frc2024.paths.TrajectoryGenerator;
+import com.team1678.frc2024.paths.TrajectoryGenerator1678;
 import com.team1678.frc2024.subsystems.Cancoders;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.limelight.Limelight;
@@ -39,12 +39,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.List;
 import java.util.Optional;
 
-public class Robot extends TimedRobot {
+public class Robot1678 extends TimedRobot {
 
 	// util instances
 	private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
 	private final ControlBoard mControlBoard = ControlBoard.getInstance();
-	private final DriverControls mDriverControls = new DriverControls();
+	private final DriverControls1678 mDriverControls = new DriverControls1678();
 
 	// the boss
 	private final Superstructure mSuperstructure = Superstructure.getInstance();
@@ -65,15 +65,15 @@ public class Robot extends TimedRobot {
 
 	// auto instances
 	private AutoModeExecutor mAutoModeExecutor;
-	public static final AutoModeSelector mAutoModeSelector = new AutoModeSelector();
-	public static final AutoModeSelector mThreeNoteNoteSelector = new AutoModeSelector();
+	public static final AutoModeSelector1678 mAutoModeSelector = new AutoModeSelector1678();
+	public static final AutoModeSelector1678 mThreeNoteNoteSelector = new AutoModeSelector1678();
 	public static boolean is_red_alliance = false;
 	public static String serial;
 
 	double disable_enter_time = 0.0;
 
 	static {
-		if (Robot.isReal()) {
+		if (Robot1678.isReal()) {
 			serial = System.getenv("serialnum");
 		} else {
 			serial = "";
@@ -82,7 +82,7 @@ public class Robot extends TimedRobot {
 		Constants1678.isEpsilon = serial.startsWith(Constants1678.kEpsilonSerial);
 	}
 
-	public Robot() {
+	public Robot1678() {
 		CrashTracker.logRobotConstruction();
 	}
 
@@ -104,7 +104,7 @@ public class Robot extends TimedRobot {
 				SmartDashboard.putString("Serial Number", serial);
 			}
 
-			if (Robot.isReal()) {
+			if (Robot1678.isReal()) {
 				mCancoders = Cancoders.getInstance();
 				double startInitTs = Timer.getFPGATimestamp();
 				System.out.println("* Starting to init Cancoders at ts " + startInitTs);
@@ -130,7 +130,7 @@ public class Robot extends TimedRobot {
 			mSubsystemManager.registerEnabledLoops(mEnabledLooper);
 			mSubsystemManager.registerDisabledLoops(mDisabledLooper);
 
-			TrajectoryGenerator.getInstance().generateTrajectories();
+			TrajectoryGenerator1678.getInstance().generateTrajectories();
 			RobotState.getInstance().resetKalman();
 			mDrive.setNeutralBrake(true);
 
@@ -259,7 +259,7 @@ public class Robot extends TimedRobot {
 
 			if (alliance_changed) {
 				System.out.println("Alliance changed! Requesting trajectory regeneration!");
-				TrajectoryGenerator.getInstance().forceRegenerateTrajectories(is_red_alliance);
+				TrajectoryGenerator1678.getInstance().forceRegenerateTrajectories(is_red_alliance);
 				mLimelight.setPipeline(is_red_alliance ? Pipeline.AUTO_RED : Pipeline.AUTO_BLUE);
 			}
 

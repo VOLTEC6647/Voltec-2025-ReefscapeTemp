@@ -10,8 +10,8 @@ import com.team1678.frc2024.auto.actions.TurnInPlaceAction;
 import com.team1678.frc2024.auto.actions.WaitAction;
 import com.team1678.frc2024.auto.actions.WaitForSuperstructureAction;
 import com.team1678.frc2024.auto.actions.WaitToPassXCoordinateAction;
-import com.team1678.frc2024.paths.TrajectoryGenerator;
-import com.team1678.frc2024.paths.TrajectoryGenerator.TrajectorySet;
+import com.team1678.frc2024.paths.TrajectoryGenerator1678;
+import com.team1678.frc2024.paths.TrajectoryGenerator1678.TrajectorySet;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
@@ -34,7 +34,7 @@ public class ThreeNoteMode34 extends AutoModeBase {
 	Trajectory254<TimedState<Pose2dWithMotion>> preloadShotToTeleStart;
 
 	public ThreeNoteMode34() {
-		TrajectorySet s = TrajectoryGenerator.getInstance().getTrajectorySet();
+		TrajectorySet s = TrajectoryGenerator1678.getInstance().getTrajectorySet();
 		startToN3Pickup = logTrajectory(s.R3StartToN3Pickup);
 		N3PickupToStageShot = logTrajectory(s.R3N3PickupToStageShot);
 		shotToN4Pickup = logTrajectory(s.R3StageShotToN4Pickup);

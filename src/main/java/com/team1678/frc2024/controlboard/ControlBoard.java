@@ -21,12 +21,12 @@ public class ControlBoard {
 		return mInstance;
 	}
 
-	public final CustomXboxController driver;
-	public final CustomXboxController operator;
+	public final CustomXboxController1678 driver;
+	public final CustomXboxController1678 operator;
 
 	private ControlBoard() {
-		driver = new CustomXboxController(0);
-		operator = new CustomXboxController(Constants1678.kButtonGamepadPort);
+		driver = new CustomXboxController1678(0);
+		operator = new CustomXboxController1678(Constants1678.kButtonGamepadPort);
 	}
 
 	public void update() {

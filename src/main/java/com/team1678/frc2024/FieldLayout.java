@@ -7,6 +7,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.util.Units;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Contains various field dimensions and useful reference points. Dimensions are
@@ -60,6 +61,11 @@ public class FieldLayout {
 	public static Pose2d kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
 
 	public static double kCoralDistance = 46.75; //Please Fix
+
+	public static ArrayList<Pose2d> kCoralPoses;
+	static {
+		kCoralPoses.add(kCoralCenter);
+	}
 
 
 	public static Pose2d handleAllianceFlip(Pose2d blue_pose, boolean is_red_alliance) {

@@ -3,7 +3,7 @@ package com.team1678.frc2024.subsystems.vision;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team1678.frc2024.FieldLayout;
-import com.team1678.frc2024.Robot;
+import com.team1678.frc2024.Robot1678;
 import com.team1678.frc2024.RobotState;
 import com.team1678.frc2024.RobotState.VisionUpdate;
 import com.team1678.frc2024.subsystems.Subsystem;
@@ -166,7 +166,7 @@ public class VisionDevice extends Subsystem {
 					+ 180.0;
 
 			// Avoid angle wrapping issues
-			if (!Robot.is_red_alliance) {
+			if (!Robot1678.is_red_alliance) {
 				rotation_degrees = Util.boundAngleNeg180to180Degrees(rotation_degrees);
 			} else {
 				rotation_degrees = Util.boundAngle0to360Degrees(rotation_degrees);

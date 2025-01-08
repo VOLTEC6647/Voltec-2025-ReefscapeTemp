@@ -11,12 +11,12 @@ import com.team1678.frc2024.RobotState;
 import com.team1678.frc2024.SubsystemManager;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
-import com.team1678.frc2024.auto.AutoModeSelector;
+import com.team6647.frc2025.auto.AutoModeSelector;
 import com.team1678.frc2024.controlboard.ControlBoard;
-import com.team1678.frc2024.controlboard.DriverControls;
+import com.team1678.frc2024.controlboard.DriverControls1678;
 import com.team1678.frc2024.loops.CrashTracker;
 import com.team1678.frc2024.loops.Looper;
-import com.team1678.frc2024.paths.TrajectoryGenerator;
+import com.team1678.frc2024.paths.TrajectoryGenerator1678;
 import com.team1678.frc2024.subsystems.Cancoders;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.limelight.Limelight;
@@ -56,7 +56,7 @@ public class Robot extends LoggedRobot {
 	// util instances
 	private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
 	private final ControlBoard mControlBoard = ControlBoard.getInstance();
-	private final DriverControls mDriverControls = new DriverControls();
+	private final DriverControls1678 mDriverControls = new DriverControls1678();
 
 	// the boss
 	//private final Superstructure mSuperstructure = Superstructure.getInstance();
@@ -99,8 +99,8 @@ public class Robot extends LoggedRobot {
 		mDrive = Drive.getInstance();
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
-		//autoChooser.addOption("Amp RACE: 2W -> 5, 4, 3, 2", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
-		//SmartDashboard.putData("Auto Mode", autoChooser);
+		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
+		SmartDashboard.putData("Auto Mode", autoChooser);
 		//autoChooser.addOption("testt", mDrive.followChoreoPath("testt", true));
 
 		SmartDashboard.putData("Auto Chosen", autoChooser);
@@ -176,18 +176,13 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void autonomousInit() {
-		mDrive = Drive.getInstance();
-		//if (mVisionDevices.getMovingAverageRead() != null) {
-		//	mDrive.zeroGyro(mVisionDevices.getMovingAverageRead());
-		//}
+		if (mVisionDevices.getMovingAverageRead() != null) {
+			mDrive.zeroGyro(mVisionDevices.getMovingAverageRead());
+		}
 		RobotState.getInstance().setIsInAuto(true);
 		mDisabledLooper.stop();
 		mEnabledLooper.start();
-		//mAutoModeExecutor.start();
-		Command m_autonomousCommand = autoChooser.getSelected();
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.schedule();
-		}
+		mAutoModeExecutor.start();
 
 		//autoFactory = Choreo.createAutoFactory(mDrive,
 		//mDrive::getLegacyPose,
@@ -221,7 +216,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		mDriverControls.oneControllerMode();
+		mDriverControls.twoControllerMode();
 		try {
 
 			mControlBoard.update();
@@ -293,7 +288,7 @@ public class Robot extends LoggedRobot {
 
 			if (alliance_changed) {
 				System.out.println("Alliance changed! Requesting trajectory regeneration!");
-				TrajectoryGenerator.getInstance().forceRegenerateTrajectories(is_red_alliance);
+				TrajectoryGenerator1678.getInstance().forceRegenerateTrajectories(is_red_alliance);
 				//mLimelight.setPipeline(is_red_alliance ? Pipeline.AUTO_RED : Pipeline.AUTO_BLUE);
 			}
 

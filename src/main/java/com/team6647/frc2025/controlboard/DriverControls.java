@@ -1,7 +1,9 @@
-package com.team1678.frc2024.controlboard;
+package com.team6647.frc2025.controlboard;
 
+import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
+import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 import com.team6647.frc2025.subsystems.Superstructure;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,10 +31,12 @@ public class DriverControls {
 
 	/* TWO CONTROLLERS */
 
-	/*
+	//driver/operator
 	public void twoControllerMode() {
-		
+		if(mControlBoard.driver.yButton.wasActivated()){
+			new test1();
+		}
 	}
-	*/
+	
 
 }

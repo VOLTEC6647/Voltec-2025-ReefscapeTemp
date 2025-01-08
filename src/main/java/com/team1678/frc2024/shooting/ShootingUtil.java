@@ -1,7 +1,7 @@
 package com.team1678.frc2024.shooting;
 
 import com.team1678.frc2024.FieldLayout;
-import com.team1678.frc2024.Robot;
+import com.team1678.frc2024.Robot1678;
 import com.team1678.lib.logger.LogUtil;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
@@ -114,6 +114,6 @@ public class ShootingUtil {
 			return Superstructure.getInstance().kSkewTuner.get();
 		}
 		double offset = RegressionMaps.kSkewOffsetMap.getInterpolated(new InterpolatingDouble(y_offset)).value;
-		return Robot.is_red_alliance ? offset : offset;
+		return Robot1678.is_red_alliance ? offset : offset;
 	}
 }
