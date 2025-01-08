@@ -41,6 +41,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -238,7 +240,10 @@ public class Robot extends LoggedRobot {
 					mControlBoard.getSwerveRotation(),
 					Util.robotToFieldRelative(mDrive.getHeading(), is_red_alliance)));
 
-			
+			ShuffleboardTab coralTab = Shuffleboard.getTab("Coral");
+			coralTab.addPersistent("Position", 3);
+			coralTab.addPersistent("Level", 3);
+			coralTab.addPersistent("Slot", 3);
 
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
