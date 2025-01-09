@@ -4,7 +4,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.team1678.frc2024.Constants1678;
 import com.team1678.lib.drivers.Pigeon;
 import com.team1678.lib.swerve.SwerveModule;
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -17,7 +17,7 @@ public class WheelTracker {
 	private final SwerveModule[] mModules;
 
 	private WheelProperties[] wheels = new WheelProperties[4];
-	private Pose2d robotPose = new Pose2d();
+	private Pose2d254 robotPose = new Pose2d254();
 	private Translation2d robotVelocity = Translation2d.identity();
 
 	private double robotHeading;
@@ -94,7 +94,7 @@ public class WheelTracker {
 		}
 	}
 
-	private Pose2d last_velocity_sample = new Pose2d();
+	private Pose2d254 last_velocity_sample = new Pose2d254();
 	private double last_sample_timestamp = 0.0;
 
 	private void updateRobotPose(double timestamp) {
@@ -144,7 +144,7 @@ public class WheelTracker {
 			x += w.estimatedRobotPose.getTranslation().x();
 			y += w.estimatedRobotPose.getTranslation().y();
 		}
-		final Pose2d new_pose = new Pose2d(new Translation2d(x / n, y / n), heading);
+		final Pose2d254 new_pose = new Pose2d254(new Translation2d(x / n, y / n), heading);
 
 		// Velocity calcs
 		double sample_window = timestamp - last_sample_timestamp;
@@ -189,18 +189,18 @@ public class WheelTracker {
 
 		deltaPosition = new Translation2d(deltaPosition.x() * xCorrectionFactor, deltaPosition.y() * yCorrectionFactor);
 		Translation2d updatedPosition = props.position.translateBy(deltaPosition);
-		Pose2d wheelPose = new Pose2d(updatedPosition, Rotation2d.fromRadians(robotHeading));
-		props.estimatedRobotPose = wheelPose.transformBy(Pose2d.fromTranslation(props.startingPosition.inverse()));
+		Pose2d254 wheelPose = new Pose2d254(updatedPosition, Rotation2d.fromRadians(robotHeading));
+		props.estimatedRobotPose = wheelPose.transformBy(Pose2d254.fromTranslation(props.startingPosition.inverse()));
 
 		props.position = updatedPosition;
 		props.previousEncDistance = currentEncDistance;
 	}
 
-	private void resetModulePoses(Pose2d robotPose) {
+	private void resetModulePoses(Pose2d254 robotPose) {
 		for (int i = 0; i < mModules.length; i++) {
 			WheelProperties props = wheels[i];
 			Translation2d modulePosition = robotPose
-					.transformBy(Pose2d.fromTranslation(props.startingPosition))
+					.transformBy(Pose2d254.fromTranslation(props.startingPosition))
 					.getTranslation();
 			props.position = modulePosition;
 		}
@@ -213,7 +213,7 @@ public class WheelTracker {
 		}
 	}
 
-	public void resetPose(Pose2d pose) {
+	public void resetPose(Pose2d254 pose) {
 		robotPose = pose;
 		resetModulePoses(robotPose);
 	}
@@ -222,10 +222,10 @@ public class WheelTracker {
 		private double previousEncDistance = 0;
 		private Translation2d position;
 		private Translation2d startingPosition;
-		private Pose2d estimatedRobotPose = new Pose2d();
+		private Pose2d254 estimatedRobotPose = new Pose2d254();
 	}
 
-	public synchronized Pose2d getRobotPose() {
+	public synchronized Pose2d254 getRobotPose() {
 		return robotPose;
 	}
 

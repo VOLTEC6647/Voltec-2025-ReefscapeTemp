@@ -1,20 +1,20 @@
 package com.team254.lib.vision;
 
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Rotation2d;
 
 public class AimingParameters {
     private final double range;
-    private final Pose2d turret_to_goal;
-    private final Pose2d field_to_goal;
+    private final Pose2d254 turret_to_goal;
+    private final Pose2d254 field_to_goal;
     private final Rotation2d turret_to_goal_rotation;
     private final double last_seen_timestamp;
     private final double stability;
     private final Rotation2d field_to_vision_target_normal;
     private final int track_id;
 
-    public AimingParameters(Pose2d turret_to_goal,
-                            Pose2d field_to_goal,
+    public AimingParameters(Pose2d254 turret_to_goal,
+                            Pose2d254 field_to_goal,
                             Rotation2d field_to_vision_target_normal, double last_seen_timestamp,
                             double stability, int track_id) {
         this.turret_to_goal = turret_to_goal;
@@ -27,11 +27,11 @@ public class AimingParameters {
         this.track_id = track_id;
     }
 
-    public Pose2d getTurretToGoal() {
+    public Pose2d254 getTurretToGoal() {
         return turret_to_goal;
     }
 
-    public Pose2d getFieldToGoal() {
+    public Pose2d254 getFieldToGoal() {
         return field_to_goal;
     }
 

@@ -22,7 +22,7 @@ import com.team1678.lib.Util;
 import com.team1678.lib.logger.LogUtil;
 import com.team1678.lib.swerve.ChassisSpeeds;
 import com.team1678.lib.wpi.TimedRobot;
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
@@ -196,7 +196,7 @@ public class Robot1678 extends TimedRobot {
 				mDrive.zeroGyro(FieldLayout.handleAllianceFlip(new Rotation2d(), is_red_alliance)
 						.getDegrees());
 				mDrive.resetModulesToAbsolute();
-				mDrive.resetOdometry(new Pose2d());
+				mDrive.resetOdometry(new Pose2d254());
 			}
 
 			mDrive.feedTeleopSetpoint(ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -277,7 +277,7 @@ public class Robot1678 extends TimedRobot {
 			}
 
 			if (mControlBoard.driver.getBButton()) {
-				RobotState.getInstance().reset(Timer.getFPGATimestamp(), Pose2d.identity());
+				RobotState.getInstance().reset(Timer.getFPGATimestamp(), Pose2d254.identity());
 			}
 
 			SmartDashboard.putNumber("Vision Heading/Average", mVisionDevices.getMovingAverageRead());

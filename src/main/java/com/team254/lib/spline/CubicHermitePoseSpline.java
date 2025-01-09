@@ -2,7 +2,7 @@ package com.team254.lib.spline;
 
 import java.util.Optional;
 
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import com.team254.lib.util.Util;
@@ -13,7 +13,7 @@ import com.team254.lib.util.Util;
 public class CubicHermitePoseSpline extends PoseSpline {
     final CubicHermiteSpline1d x, y;
 
-    public CubicHermitePoseSpline(Pose2d p0, Pose2d p1) {
+    public CubicHermitePoseSpline(Pose2d254 p0, Pose2d254 p1) {
         double x0, x1, dx0, dx1, y0, y1, dy0, dy1;
         double scale = 2 * p0.getTranslation().distance(p1.getTranslation());
         x0 = p0.getTranslation().x();

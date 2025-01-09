@@ -8,7 +8,7 @@ import com.team1678.frc2024.subsystems.Subsystem;
 import com.team1678.frc2024.subsystems.limelight.LimelightHelpers.LimelightResults;
 import com.team1678.lib.logger.LogUtil;
 import com.team1678.lib.util.Stopwatch;
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Limelight extends Subsystem {
 	private final String name;
-	private final Pose2d robotToCameraTransform;
+	private final Pose2d254 robotToCameraTransform;
 	private final double cameraHeightMeters;
 	private final Rotation2d cameraPitch, cameraYaw;
 
@@ -48,7 +48,7 @@ public class Limelight extends Subsystem {
 			Rotation2d cameraPitch,
 			Rotation2d cameraYaw) {
 		this.name = name;
-		this.robotToCameraTransform = new Pose2d(robotToCameraTranslation, Rotation2d.identity());
+		this.robotToCameraTransform = new Pose2d254(robotToCameraTranslation, Rotation2d.identity());
 		this.cameraHeightMeters = cameraHeightMeters;
 		this.cameraPitch = cameraPitch;
 		this.cameraYaw = cameraYaw;

@@ -1,5 +1,6 @@
 package com.team6647.frc2025.auto;
 
+import com.team1678.frc2024.auto.AutoModeBase;
 import com.team6647.frc2025.auto.modes.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

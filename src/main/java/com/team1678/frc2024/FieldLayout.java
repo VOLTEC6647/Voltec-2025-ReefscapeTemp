@@ -2,7 +2,7 @@ package com.team1678.frc2024;
 
 import com.team1678.frc2024.auto.actions.LambdaAction;
 import com.team1678.frc2024.subsystems.Drive;
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -59,9 +59,9 @@ public class FieldLayout {
 			new Translation2d(Units.inchesToMeters(72.455), Units.inchesToMeters(322.996));
 
 	/** Center of the speaker opening (blue alliance) */
-	public static Pose2d kSpeakerCenter = new Pose2d(0.2, kFieldWidth - Units.inchesToMeters(104.0), new Rotation2d());
+	public static Pose2d254 kSpeakerCenter = new Pose2d254(0.2, kFieldWidth - Units.inchesToMeters(104.0), new Rotation2d());
 
-	public static Pose2d kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
+	public static Pose2d254 kCoralCenter = new Pose2d254((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
 
 	public static double kCoralDistance = 46.75; //Please Fix
 	public static double kCoralDistanceOffset = 5.0f; // temproral
@@ -85,14 +85,14 @@ public class FieldLayout {
 	public static CoralTarget CoralTarget;
 
 	public static class CoralSet{
-		public Pose2d algae;
-		public Pose2d coral1;
-		public Pose2d coral2;
-		public Pose2d algaePre;
-		public Pose2d coral1Pre;
-		public Pose2d coral2Pre;
+		public Pose2d254 algae;
+		public Pose2d254 coral1;
+		public Pose2d254 coral2;
+		public Pose2d254 algaePre;
+		public Pose2d254 coral1Pre;
+		public Pose2d254 coral2Pre;
 
-		public CoralSet(Pose2d algae, Pose2d coral1, Pose2d coral2, Pose2d algaePre, Pose2d coral1Pre, Pose2d coral2Pre) {
+		public CoralSet(Pose2d254 algae, Pose2d254 coral1, Pose2d254 coral2, Pose2d254 algaePre, Pose2d254 coral1Pre, Pose2d254 coral2Pre) {
 			this.algae = algae;
 			this.coral1 = coral1;
 			this.coral2 = coral2;
@@ -105,13 +105,13 @@ public class FieldLayout {
 	public static CoralSet getCoralTargetPos(CoralTarget coralTarget) {
 		Rotation2d rot = Rotation2d.fromDegrees(coralTarget.angle);
 		
-		Pose2d algae = new Pose2d(kCoralCenter.getTranslation().x()+kCoralDistance, kCoralCenter.getTranslation().y(), new Rotation2d(180,true));
-		Pose2d coral1 = algae.transformBy(new Pose2d(new Translation2d(0, kCoralDistanceOffset), new Rotation2d()));
-		Pose2d coral2 = algae.transformBy(new Pose2d(new Translation2d(0, -kCoralDistanceOffset), new Rotation2d()));
+		Pose2d254 algae = new Pose2d254(kCoralCenter.getTranslation().x()+kCoralDistance, kCoralCenter.getTranslation().y(), new Rotation2d(180,true));
+		Pose2d254 coral1 = algae.transformBy(new Pose2d254(new Translation2d(0, kCoralDistanceOffset), new Rotation2d()));
+		Pose2d254 coral2 = algae.transformBy(new Pose2d254(new Translation2d(0, -kCoralDistanceOffset), new Rotation2d()));
 		
-		Pose2d algaePre = algae.transformBy(new Pose2d(new Translation2d(kPreDistance, 0), new Rotation2d()));
-		Pose2d coral1Pre = coral1.transformBy(new Pose2d(new Translation2d(kPreDistance, 0), new Rotation2d()));
-		Pose2d coral2Pre = coral2.transformBy(new Pose2d(new Translation2d(kPreDistance, 0), new Rotation2d()));
+		Pose2d254 algaePre = algae.transformBy(new Pose2d254(new Translation2d(kPreDistance, 0), new Rotation2d()));
+		Pose2d254 coral1Pre = coral1.transformBy(new Pose2d254(new Translation2d(kPreDistance, 0), new Rotation2d()));
+		Pose2d254 coral2Pre = coral2.transformBy(new Pose2d254(new Translation2d(kPreDistance, 0), new Rotation2d()));
 		
 		algae = rotatePoseFromPivot(algae, rot);
 		coral1 = rotatePoseFromPivot(coral1, rot);
@@ -124,23 +124,23 @@ public class FieldLayout {
 		return (new CoralSet(algae, coral1, coral2, algaePre, coral1Pre, coral2Pre));
 	}
 
-	public static Pose2d rotatePoseFromPivot(Pose2d coral, Rotation2d rot) {
+	public static Pose2d254 rotatePoseFromPivot(Pose2d254 coral, Rotation2d rot) {
 		return rotatePose2dFromPivot(coral, kCoralCenter.getTranslation(), rot);
 	}
 	
-	public static Pose2d rotatePose2dFromPivot(Pose2d pose, Translation2d pivot, Rotation2d angle) {
+	public static Pose2d254 rotatePose2dFromPivot(Pose2d254 pose, Translation2d pivot, Rotation2d angle) {
         Translation2d translated = pose.getTranslation().minus(pivot);
         Translation2d rotated = translated.rotateBy(angle);
         Translation2d finalTranslation = rotated.plus(pivot);
         Rotation2d finalRotation = pose.getRotation().add(angle);
-        return new Pose2d(finalTranslation, finalRotation);
+        return new Pose2d254(finalTranslation, finalRotation);
     }
 
     public static Rotation2d getCoralTargetRotation(CoralTarget coralTarget) {
 		return Rotation2d.fromDegrees(coralTarget.angle).flip();
     }
 
-	public static Pose2d handleAllianceFlip(Pose2d blue_pose, boolean is_red_alliance) {
+	public static Pose2d254 handleAllianceFlip(Pose2d254 blue_pose, boolean is_red_alliance) {
 		if (is_red_alliance) {
 			blue_pose = blue_pose.mirrorAboutX(kFieldLength / 2.0);
 		}

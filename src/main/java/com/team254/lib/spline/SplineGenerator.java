@@ -62,12 +62,12 @@ public class SplineGenerator {
     private static void getSegmentArc(PoseSpline s, List<Pose2dWithMotion> rv, double t0, double t1, double maxDx,
                                       double maxDy,
                                       double maxDTheta) {
-        Pose2d p0 = s.getPose2d(t0);
-        Pose2d phalf = s.getPose2d(t0 + (t1 - t0) * .5);
-        Pose2d p1 = s.getPose2d(t1);
-        Twist2d twist_full = Pose2d.log(p0.inverse().transformBy(p1));
-        Pose2d phalf_predicted = p0.transformBy(Pose2d.exp(twist_full.scaled(0.5)));
-        Pose2d error = phalf.inverse().transformBy(phalf_predicted);
+        Pose2d254 p0 = s.getPose2d(t0);
+        Pose2d254 phalf = s.getPose2d(t0 + (t1 - t0) * .5);
+        Pose2d254 p1 = s.getPose2d(t1);
+        Twist2d twist_full = Pose2d254.log(p0.inverse().transformBy(p1));
+        Pose2d254 phalf_predicted = p0.transformBy(Pose2d254.exp(twist_full.scaled(0.5)));
+        Pose2d254 error = phalf.inverse().transformBy(phalf_predicted);
         Rotation2d course_predicted = (new Rotation2d(twist_full.dx, twist_full.dy, true)).rotateBy(phalf_predicted.getRotation());
         Rotation2d course_half = s.getCourse(t0 + (t1 - t0) * .5).orElse(course_predicted);
         double course_error = course_predicted.inverse().rotateBy(course_half).getRadians();

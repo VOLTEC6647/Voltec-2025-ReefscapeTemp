@@ -1,6 +1,6 @@
 package com.team254.lib.spline;
 
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import com.team254.lib.util.Util;
@@ -21,7 +21,7 @@ public class QuinticHermitePoseSplineNonholonomic extends PoseSpline {
      * @param p0 The starting pose of the spline
      * @param p1 The ending pose of the spline
      */
-    public QuinticHermitePoseSplineNonholonomic(Pose2d p0, Pose2d p1) {
+    public QuinticHermitePoseSplineNonholonomic(Pose2d254 p0, Pose2d254 p1) {
         double scale = 1.2 * p0.getTranslation().distance(p1.getTranslation());
         double x0 = p0.getTranslation().x();
         double x1 = p1.getTranslation().x();
@@ -52,15 +52,15 @@ public class QuinticHermitePoseSplineNonholonomic extends PoseSpline {
             y.addCoefs(new QuinticHermiteSpline1d(0, 0, 0, 0, ddy0_adjustment, ddy1_adjustment)));
     }
 
-    public Pose2d getStartPose() {
-        return new Pose2d(
+    public Pose2d254 getStartPose() {
+        return new Pose2d254(
             getPoint(0),
             getHeading(0)
         );
     }
 
-    public Pose2d getEndPose() {
-        return new Pose2d(
+    public Pose2d254 getEndPose() {
+        return new Pose2d254(
             getPoint(1),
             getHeading(1)
         );

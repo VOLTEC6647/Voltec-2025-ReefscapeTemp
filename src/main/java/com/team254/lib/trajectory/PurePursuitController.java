@@ -18,7 +18,7 @@ public class PurePursuitController<S extends IPose2d<S>> implements IPathFollowe
         iterator_ = new TrajectoryIterator<S>(path);
     }
 
-    public Twist2d steer(final Pose2d current_pose) {
+    public Twist2d steer(final Pose2d254 current_pose) {
         done_ = done_ || (iterator_.isDone()
                 && current_pose.getTranslation().distance(iterator_.getState().getTranslation()) <= goal_tolerance_);
         if (isDone()) {
@@ -46,7 +46,7 @@ public class PurePursuitController<S extends IPose2d<S>> implements IPathFollowe
         }
         iterator_.advance(goal_progress);
 //        final Arc<S> arc = new Arc<S>(current_pose, iterator_.getState());
-        final Twist2d twist = Pose2d.log(current_pose.inverse().transformBy(iterator_.getState().getPose()));
+        final Twist2d twist = Pose2d254.log(current_pose.inverse().transformBy(iterator_.getState().getPose()));
         if (twist.norm() < Util.kEpsilon) {
             return new Twist2d(0.0, 0.0, 0.0);
         } else {
@@ -58,7 +58,7 @@ public class PurePursuitController<S extends IPose2d<S>> implements IPathFollowe
         return done_;
     }
 
-    protected static <S extends ITranslation2d<S>> double getDirection(Pose2d pose, S point) {
+    protected static <S extends ITranslation2d<S>> double getDirection(Pose2d254 pose, S point) {
         Translation2d poseToPoint = new Translation2d(pose.getTranslation(), point.getTranslation());
         Translation2d robot = pose.getRotation().toTranslation();
         double cross = robot.x() * poseToPoint.y() - robot.y() * poseToPoint.x();
@@ -70,19 +70,19 @@ public class PurePursuitController<S extends IPose2d<S>> implements IPathFollowe
         public double radius;
         public double length;
 
-        public Arc(final Pose2d pose, final S point) {
+        public Arc(final Pose2d254 pose, final S point) {
             center = findCenter(pose, point);
             radius = new Translation2d(center, point.getTranslation()).norm();
             length = findLength(pose, point, center, radius);
             radius *= getDirection(pose, point);
         }
 
-        protected Translation2d findCenter(Pose2d pose, S point) {
+        protected Translation2d findCenter(Pose2d254 pose, S point) {
             final Translation2d poseToPointHalfway = pose.getTranslation().interpolate(point.getTranslation(), 0.5);
             final Rotation2d normal = pose.getTranslation().inverse().translateBy(poseToPointHalfway).direction()
                     .normal();
-            final Pose2d perpendicularBisector = new Pose2d(poseToPointHalfway, normal);
-            final Pose2d normalFromPose = new Pose2d(pose.getTranslation(),
+            final Pose2d254 perpendicularBisector = new Pose2d254(poseToPointHalfway, normal);
+            final Pose2d254 normalFromPose = new Pose2d254(pose.getTranslation(),
                     pose.getRotation().normal());
             if (normalFromPose.isColinear(perpendicularBisector.normal())) {
                 // Special case: center is poseToPointHalfway.
@@ -91,7 +91,7 @@ public class PurePursuitController<S extends IPose2d<S>> implements IPathFollowe
             return normalFromPose.intersection(perpendicularBisector);
         }
 
-        protected double findLength(Pose2d pose, S point, Translation2d center, double radius) {
+        protected double findLength(Pose2d254 pose, S point, Translation2d center, double radius) {
             if (radius < Double.MAX_VALUE) {
                 final Translation2d centerToPoint = new Translation2d(center, point.getTranslation());
                 final Translation2d centerToPose = new Translation2d(center, pose.getTranslation());

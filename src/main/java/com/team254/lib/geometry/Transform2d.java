@@ -17,7 +17,7 @@ public class Transform2d {
    * @param initial The initial pose for the transformation.
    * @param last The final pose for the transformation.
    */
-  public Transform2d(Pose2d initial, Pose2d last) {
+  public Transform2d(Pose2d254 initial, Pose2d254 last) {
     // We are rotating the difference between the translations
     // using a clockwise rotation matrix. This transforms the global
     // delta into a local delta (relative to the initial pose).
@@ -63,7 +63,7 @@ public class Transform2d {
    * @return The composition of the two transformations.
    */
   public Transform2d plus(Transform2d other) {
-    return new Transform2d(new Pose2d(), new Pose2d().transformBy(this).transformBy(other));
+    return new Transform2d(new Pose2d254(), new Pose2d254().transformBy(this).transformBy(other));
   }
 
   /**

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Pose2d254;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -63,23 +63,23 @@ public class LimelightHelpers {
 			return toPose3D(targetPose_RobotSpace);
 		}
 
-		public Pose2d getCameraPose_TargetSpace2D() {
+		public Pose2d254 getCameraPose_TargetSpace2D() {
 			return toPose2D(cameraPose_TargetSpace);
 		}
 
-		public Pose2d getRobotPose_FieldSpace2D() {
+		public Pose2d254 getRobotPose_FieldSpace2D() {
 			return toPose2D(robotPose_FieldSpace);
 		}
 
-		public Pose2d getRobotPose_TargetSpace2D() {
+		public Pose2d254 getRobotPose_TargetSpace2D() {
 			return toPose2D(robotPose_TargetSpace);
 		}
 
-		public Pose2d getTargetPose_CameraSpace2D() {
+		public Pose2d254 getTargetPose_CameraSpace2D() {
 			return toPose2D(targetPose_CameraSpace);
 		}
 
-		public Pose2d getTargetPose_RobotSpace2D() {
+		public Pose2d254 getTargetPose_RobotSpace2D() {
 			return toPose2D(targetPose_RobotSpace);
 		}
 
@@ -153,23 +153,23 @@ public class LimelightHelpers {
 			return toPose3D(targetPose_RobotSpace);
 		}
 
-		public Pose2d getCameraPose_TargetSpace2D() {
+		public Pose2d254 getCameraPose_TargetSpace2D() {
 			return toPose2D(cameraPose_TargetSpace);
 		}
 
-		public Pose2d getRobotPose_FieldSpace2D() {
+		public Pose2d254 getRobotPose_FieldSpace2D() {
 			return toPose2D(robotPose_FieldSpace);
 		}
 
-		public Pose2d getRobotPose_TargetSpace2D() {
+		public Pose2d254 getRobotPose_TargetSpace2D() {
 			return toPose2D(robotPose_TargetSpace);
 		}
 
-		public Pose2d getTargetPose_CameraSpace2D() {
+		public Pose2d254 getTargetPose_CameraSpace2D() {
 			return toPose2D(targetPose_CameraSpace);
 		}
 
-		public Pose2d getTargetPose_RobotSpace2D() {
+		public Pose2d254 getTargetPose_RobotSpace2D() {
 			return toPose2D(targetPose_RobotSpace);
 		}
 
@@ -307,15 +307,15 @@ public class LimelightHelpers {
 			return toPose3D(botpose_wpiblue);
 		}
 
-		public Pose2d getBotPose2d() {
+		public Pose2d254 getBotPose2d() {
 			return toPose2D(botpose);
 		}
 
-		public Pose2d getBotPose2d_wpiRed() {
+		public Pose2d254 getBotPose2d_wpiRed() {
 			return toPose2D(botpose_wpired);
 		}
 
-		public Pose2d getBotPose2d_wpiBlue() {
+		public Pose2d254 getBotPose2d_wpiBlue() {
 			return toPose2D(botpose_wpiblue);
 		}
 
@@ -383,14 +383,14 @@ public class LimelightHelpers {
 						Units.degreesToRadians(inData[5])));
 	}
 
-	private static Pose2d toPose2D(double[] inData) {
+	private static Pose2d254 toPose2D(double[] inData) {
 		if (inData.length < 6) {
 			System.err.println("Bad LL 2D Pose Data!");
-			return new Pose2d();
+			return new Pose2d254();
 		}
 		Translation2d tran2d = new Translation2d(inData[0], inData[1]);
 		Rotation2d r2d = Rotation2d.fromDegrees(inData[5]);
-		return new Pose2d(tran2d, r2d);
+		return new Pose2d254(tran2d, r2d);
 	}
 
 	public static NetworkTable getLimelightNTTable(String tableName) {
@@ -586,7 +586,7 @@ public class LimelightHelpers {
 	 * @param limelightName
 	 * @return
 	 */
-	public static Pose2d getBotPose2d_wpiBlue(String limelightName) {
+	public static Pose2d254 getBotPose2d_wpiBlue(String limelightName) {
 
 		double[] result = getBotPose_wpiBlue(limelightName);
 		return toPose2D(result);
@@ -599,7 +599,7 @@ public class LimelightHelpers {
 	 * @param limelightName
 	 * @return
 	 */
-	public static Pose2d getBotPose2d_wpiRed(String limelightName) {
+	public static Pose2d254 getBotPose2d_wpiRed(String limelightName) {
 
 		double[] result = getBotPose_wpiRed(limelightName);
 		return toPose2D(result);
@@ -612,7 +612,7 @@ public class LimelightHelpers {
 	 * @param limelightName
 	 * @return
 	 */
-	public static Pose2d getBotPose2d(String limelightName) {
+	public static Pose2d254 getBotPose2d(String limelightName) {
 
 		double[] result = getBotPose(limelightName);
 		return toPose2D(result);
