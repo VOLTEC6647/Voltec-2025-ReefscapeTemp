@@ -1,7 +1,7 @@
 package com.team1678.frc2024.shooting;
 
 import com.team1678.frc2024.FieldLayout;
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import com.team254.lib.util.InterpolatingDouble;
@@ -21,7 +21,7 @@ public class FerryUtil {
 	 * @param is_red_alliance
 	 * @return Array of length 4 containing distance to target, hood angle, shooter rpm, and drivetrain angle
 	 */
-	public static double[] getFerryShotParameters(Pose2d254 robot_pose, boolean is_red_alliance) {
+	public static double[] getFerryShotParameters(Pose2d robot_pose, boolean is_red_alliance) {
 		boolean midfield_target = useMidfieldTarget(robot_pose.getTranslation().x(), is_red_alliance);
 		Translation2d target;
 		if (midfield_target) {
@@ -52,7 +52,7 @@ public class FerryUtil {
 		return new double[] {dist_to_target, hood_setpoint, shooter_setpoint, target_drive_heading.getDegrees()};
 	}
 
-	private static boolean inHighFerryZone(Pose2d254 robot_pose, boolean is_red_alliance) {
+	private static boolean inHighFerryZone(Pose2d robot_pose, boolean is_red_alliance) {
 		double x = robot_pose.getTranslation().x();
 		double y = robot_pose.getTranslation().y();
 		Translation2d cor_0 =

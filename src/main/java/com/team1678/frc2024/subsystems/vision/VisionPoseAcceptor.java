@@ -1,7 +1,7 @@
 package com.team1678.frc2024.subsystems.vision;
 
 import com.team1678.frc2024.FieldLayout;
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Twist2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -9,12 +9,12 @@ public class VisionPoseAcceptor {
 	private static final double kFieldBorderMargin = 0.5;
 	private static final double kMaxVisionCorrection = 2.0; // Jump from fused pose
 
-	Pose2d254 mLastVisionFieldToVehicle = null;
+	Pose2d mLastVisionFieldToVehicle = null;
 
 	public boolean shouldAcceptVision(
 			double timestamp,
-			Pose2d254 visionFieldToVehicle,
-			Pose2d254 lastFieldToVehicle,
+			Pose2d visionFieldToVehicle,
+			Pose2d lastFieldToVehicle,
 			Twist2d robotVelocity,
 			boolean isInAuto) {
 

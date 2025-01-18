@@ -23,7 +23,7 @@ import com.team1678.lib.requests.ParallelRequest;
 import com.team1678.lib.requests.Request;
 import com.team1678.lib.requests.SequentialRequest;
 import com.team1678.lib.requests.WaitRequest;
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.util.TimeDelayedBoolean;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;

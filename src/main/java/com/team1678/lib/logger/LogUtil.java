@@ -1,6 +1,6 @@
 package com.team1678.lib.logger;
 
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
@@ -28,7 +28,7 @@ public class LogUtil {
 		SmartDashboard.putNumber(key, rotation.getDegrees());
 	}
 
-	public static void recordPose2d(String key, Pose2d254... poses) {
+	public static void recordPose2d(String key, Pose2d... poses) {
 		final double[] doubleArray = Arrays.stream(poses)
 				.flatMapToDouble(pose -> DoubleStream.of(
 						pose.getTranslation().x(),
@@ -53,12 +53,12 @@ public class LogUtil {
 	}
 
 	public static void recordTrajectory(String key, Trajectory254<TimedState<Pose2dWithMotion>> trajectory) {
-		ArrayList<Pose2d254> poses = new ArrayList<>();
+		ArrayList<Pose2d> poses = new ArrayList<>();
 		for (int i = 1; i < trajectory.length(); i += 25) { // Don't send all poses to save performance
 			poses.add(trajectory.getPoint(i).state().state().getPose());
 		}
 		poses.add(trajectory.getPoint(trajectory.length() - 1).state().state().getPose());
-		recordPose2d(key, poses.toArray(new Pose2d254[0]));
+		recordPose2d(key, poses.toArray(new Pose2d[0]));
 	}
 
 	/**
@@ -97,10 +97,10 @@ public class LogUtil {
 			}
 			// double theta = Math.atan(eigVec.get(1)/eigVec.get(0)) % (2*Math.PI);
 			// (theta = PI/2)
-			Pose2d254 a1 = new Pose2d254(new Translation2d(x, y + a), Rotation2d.fromDegrees(90));
-			Pose2d254 a2 = new Pose2d254(new Translation2d(x, y - a), Rotation2d.fromDegrees(270));
-			Pose2d254 b1 = new Pose2d254(new Translation2d(x - b, y), Rotation2d.fromDegrees(180));
-			Pose2d254 b2 = new Pose2d254(new Translation2d(x + b, y), Rotation2d.fromDegrees(0));
+			Pose2d a1 = new Pose2d(new Translation2d(x, y + a), Rotation2d.fromDegrees(90));
+			Pose2d a2 = new Pose2d(new Translation2d(x, y - a), Rotation2d.fromDegrees(270));
+			Pose2d b1 = new Pose2d(new Translation2d(x - b, y), Rotation2d.fromDegrees(180));
+			Pose2d b2 = new Pose2d(new Translation2d(x + b, y), Rotation2d.fromDegrees(0));
 
 			recordPose2d(key + " confidence interval a1", a1);
 			recordPose2d(key + " confidence interval a2", a2);

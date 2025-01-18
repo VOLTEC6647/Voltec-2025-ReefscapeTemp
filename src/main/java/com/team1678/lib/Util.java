@@ -167,7 +167,7 @@ public class Util {
 		return argument;
 	}
 
-	public static Pose2d toWPILibPose(com.team254.lib.geometry.Pose2d254 pose) {
+	public static Pose2d toWPILibPose(com.team254.lib.geometry.Pose2d pose) {
 		return new Pose2d(
 				pose.getTranslation().x(),
 				pose.getTranslation().y(),
@@ -175,8 +175,8 @@ public class Util {
 						pose.getRotation().getDegrees()));
 	}
 
-	public static com.team254.lib.geometry.Pose2d254 to254Pose(Pose2d pose) {
-		return new com.team254.lib.geometry.Pose2d254(
+	public static com.team254.lib.geometry.Pose2d to254Pose(Pose2d pose) {
+		return new com.team254.lib.geometry.Pose2d(
 				pose.getTranslation().getX(),
 				pose.getTranslation().getY(),
 				Rotation2d.fromDegrees(pose.getRotation().getDegrees()));

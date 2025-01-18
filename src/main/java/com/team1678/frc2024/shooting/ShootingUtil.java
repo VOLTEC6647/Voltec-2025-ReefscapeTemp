@@ -3,7 +3,7 @@ package com.team1678.frc2024.shooting;
 import com.team1678.frc2024.FieldLayout;
 import com.team1678.frc2024.Robot1678;
 import com.team1678.lib.logger.LogUtil;
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 import com.team254.lib.geometry.Twist2d;
@@ -17,7 +17,7 @@ public class ShootingUtil {
 	public static final boolean kEnableShootOnMove = true;
 	public static final double kToFFactor = 0.2;
 
-	private static final Pose2d254 kSpeakerTarget = FieldLayout.kSpeakerCenter;
+	private static final Pose2d kSpeakerTarget = FieldLayout.kSpeakerCenter;
 
 	/**
 	 * Get speaker shot parameters
@@ -26,7 +26,7 @@ public class ShootingUtil {
 	 * @return Array of length 4 containing distance to target, hood angle, shooter rpm, and drivetrain angle
 	 */
 	public static double[] getSpeakerShotParameters(
-			Pose2d254 robot_pose, Twist2d robot_velocity, boolean is_red_alliance) {
+			Pose2d robot_pose, Twist2d robot_velocity, boolean is_red_alliance) {
 		Translation2d target = FieldLayout.handleAllianceFlip(kSpeakerTarget.getTranslation(), is_red_alliance);
 		Translation2d robot_to_target =
 				target.translateBy(robot_pose.getTranslation().inverse());

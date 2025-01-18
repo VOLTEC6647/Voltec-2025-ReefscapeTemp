@@ -52,7 +52,7 @@ public class TrajectoryUtil {
     }
 
 
-    public static <S extends IPose2d<S>> Trajectory254<S> transform(final Trajectory254<S> trajectory, Pose2d254 transform) {
+    public static <S extends IPose2d<S>> Trajectory254<S> transform(final Trajectory254<S> trajectory, Pose2d transform) {
         List<S> waypoints = new ArrayList<>(trajectory.length());
         for (int i = 0; i < trajectory.length(); ++i) {
             waypoints.add(trajectory.getPoint(i).state().transformBy(transform));
@@ -82,7 +82,7 @@ public class TrajectoryUtil {
         return new Trajectory254<>(states);
     }
 
-    public static Trajectory254<Pose2dWithMotion> trajectoryFromWaypointsAndHeadings(final List<Pose2d254> waypoints, final List<Rotation2d> headings, double
+    public static Trajectory254<Pose2dWithMotion> trajectoryFromWaypointsAndHeadings(final List<Pose2d> waypoints, final List<Rotation2d> headings, double
             maxDx, double maxDy, double maxDTheta) {
         List<QuinticHermitePoseSplineNonholonomic> splines = new ArrayList<>(waypoints.size() - 1);
         for (int i = 1; i < waypoints.size(); ++i) {

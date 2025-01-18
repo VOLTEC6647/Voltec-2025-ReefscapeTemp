@@ -2,7 +2,7 @@ package com.team254.lib.spline;
 
 import java.util.Optional;
 
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.util.Util;
 
@@ -15,7 +15,7 @@ public class QuinticHermitePoseSplineHolonomic extends QuinticHermitePoseSplineN
      * @param p0 The starting pose of the spline
      * @param p1 The ending pose of the spline
      */
-    public QuinticHermitePoseSplineHolonomic(Pose2d254 p0, Pose2d254 p1, Rotation2d r0, Rotation2d r1) {
+    public QuinticHermitePoseSplineHolonomic(Pose2d p0, Pose2d p1, Rotation2d r0, Rotation2d r1) {
         super(p0, p1);
         this.r0 = r0;
 

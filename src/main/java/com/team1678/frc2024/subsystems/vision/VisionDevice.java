@@ -9,7 +9,7 @@ import com.team1678.frc2024.RobotState.VisionUpdate;
 import com.team1678.frc2024.subsystems.Subsystem;
 import com.team1678.lib.Util;
 import com.team1678.lib.logger.LogUtil;
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.DoubleArraySubscriber;
@@ -75,12 +75,12 @@ public class VisionDevice extends Subsystem {
 			double[] data = frame.frame_data;
 			if (data.length == 0 || data[0] == 0) continue;
 			double timestamp = frame.timestamp - VisionDeviceManager.getTimestampOffset();
-			Pose2d254 camera_pose = null;
+			Pose2d camera_pose = null;
 
 			switch ((int) data[0]) {
 					// Multiple tags are seen and a merged pose is recieved
 				case 1:
-					camera_pose = new Pose2d254(
+					camera_pose = new Pose2d(
 							data[2],
 							data[3],
 							Rotation2d.fromRadians(Util.quaternionTo2dRadians(data[5], data[6], data[7], data[8])));
@@ -92,12 +92,12 @@ public class VisionDevice extends Subsystem {
 					double e_1 = data[9];
 					// If the reprojection error for one pose is much lower, use it
 					if (e_0 < e_1 * 0.15) {
-						camera_pose = new Pose2d254(
+						camera_pose = new Pose2d(
 								data[2],
 								data[3],
 								Rotation2d.fromRadians(Util.quaternionTo2dRadians(data[5], data[6], data[7], data[8])));
 					} else if (e_1 < e_0 * 0.15) {
-						camera_pose = new Pose2d254(
+						camera_pose = new Pose2d(
 								data[10],
 								data[11],
 								Rotation2d.fromRadians(

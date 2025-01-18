@@ -2,7 +2,7 @@ package com.team254.lib.spline;
 
 import java.util.Optional;
 
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
@@ -30,8 +30,8 @@ public abstract class PoseSpline {
     // ds/dt (meters per t)
     public abstract double getVelocity(double t);
 
-    public Pose2d254 getPose2d(double t) {
-        return new Pose2d254(getPoint(t), getHeading(t));
+    public Pose2d getPose2d(double t) {
+        return new Pose2d(getPoint(t), getHeading(t));
     }
 
     public Pose2dWithMotion getPose2dWithMotion(double t) {

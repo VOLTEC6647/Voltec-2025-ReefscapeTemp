@@ -3,20 +3,20 @@ package com.team254.lib.control;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
 
 public class ErrorTracker {
-    List<Pose2d254> tracking_error_over_time_;
+    List<Pose2d> tracking_error_over_time_;
     int max_num_samples_;
 
     public ErrorTracker(int max_num_samples) {
         max_num_samples_ = max_num_samples;
-        tracking_error_over_time_ = new ArrayList<Pose2d254>(max_num_samples);
+        tracking_error_over_time_ = new ArrayList<Pose2d>(max_num_samples);
     }
 
-    public void addObservation(Pose2d254 error) {
+    public void addObservation(Pose2d error) {
         if (tracking_error_over_time_.size() > max_num_samples_) {
             tracking_error_over_time_.remove(0);
         }

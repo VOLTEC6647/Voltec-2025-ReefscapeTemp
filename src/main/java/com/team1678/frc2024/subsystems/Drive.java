@@ -26,7 +26,7 @@ import com.team1678.lib.swerve.SwerveModule;
 import com.team1678.lib.swerve.SwerveModulePosition;
 import com.team1678.lib.swerve.SwerveModuleState;
 
-import com.team254.lib.geometry.Pose2d254;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
@@ -201,7 +201,7 @@ public class Drive extends Subsystem {
 
 public void choreoController(edu.wpi.first.math.geometry.Pose2d currentPoseL, SwerveSample sample) {
 
-	Pose2d254 currentPose = Util.to254Pose(currentPoseL);
+	Pose2d currentPose = Util.to254Pose(currentPoseL);
 	var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
 	  sample.vx + choreoX.calculate(currentPose.getTranslation().x(), sample.x),
 	  sample.vy + choreoY.calculate(currentPose.getTranslation().y(), sample.y),
@@ -482,13 +482,13 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 		Translation2d end_position = getPose().getTranslation().translateBy(relativeEndPos);
 		Rotation2d velocity_dir =
 				(mWheelTracker.getMeasuredVelocity()).getTranslation().direction();
-		List<Pose2d254> waypoints = new ArrayList<>();
+		List<Pose2d> waypoints = new ArrayList<>();
 		List<Rotation2d> headings = new ArrayList<>();
 		// Current state
-		waypoints.add(new Pose2d254(getPose().getTranslation(), velocity_dir));
+		waypoints.add(new Pose2d(getPose().getTranslation(), velocity_dir));
 		headings.add(getHeading());
 		// Target state
-		waypoints.add(new Pose2d254(end_position, relativeEndPos.direction()));
+		waypoints.add(new Pose2d(end_position, relativeEndPos.direction()));
 		headings.add(targetHeading);
 		Trajectory254<TimedState<Pose2dWithMotion>> traj = mMotionPlanner.generateTrajectory(
 				false, waypoints, headings, List.of(), Constants1678.SwerveConstants.maxAutoSpeed * 0.5, 2.54, 9.0);
@@ -511,13 +511,13 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 			velocity_dir = velocity.direction();
 		}
 
-		List<Pose2d254> waypoints = new ArrayList<>();
+		List<Pose2d> waypoints = new ArrayList<>();
 		List<Rotation2d> headings = new ArrayList<>();
 		// Current state
-		waypoints.add(new Pose2d254(getPose().getTranslation(), velocity_dir));
+		waypoints.add(new Pose2d(getPose().getTranslation(), velocity_dir));
 		headings.add(getHeading());
 		// Target state
-		waypoints.add(new Pose2d254(fieldRelativeEndPos, robot_relative_end_pos.direction()));
+		waypoints.add(new Pose2d(fieldRelativeEndPos, robot_relative_end_pos.direction()));
 		headings.add(targetHeading);
 		Trajectory254<TimedState<Pose2dWithMotion>> traj = mMotionPlanner.generateTrajectory(
 				false,
@@ -576,12 +576,12 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 	private void updateSetpoint() {
 		if (mControlState == DriveControlState.FORCE_ORIENT) return;
 
-		Pose2d254 robot_pose_vel = new Pose2d254(
+		Pose2d robot_pose_vel = new Pose2d(
 				mPeriodicIO.des_chassis_speeds.vxMetersPerSecond * Constants1678.kLooperDt * 4.0,
 				mPeriodicIO.des_chassis_speeds.vyMetersPerSecond * Constants1678.kLooperDt * 4.0,
 				Rotation2d.fromRadians(
 						mPeriodicIO.des_chassis_speeds.omegaRadiansPerSecond * Constants1678.kLooperDt * 4.0));
-		Twist2d twist_vel = Pose2d254.log(robot_pose_vel).scaled(1.0 / (4.0 * Constants1678.kLooperDt));
+		Twist2d twist_vel = Pose2d.log(robot_pose_vel).scaled(1.0 / (4.0 * Constants1678.kLooperDt));
 
 		ChassisSpeeds wanted_speeds;
 		if (mOverrideHeading) {
@@ -661,7 +661,7 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 		SwerveDriveKinematics.desaturateWheelSpeeds(real_module_setpoints, Constants1678.SwerveConstants.maxSpeed);
 
 		mPeriodicIO.predicted_velocity =
-				Pose2d254.log(Pose2d254.exp(wanted_speeds.toTwist2d()).rotateBy(getHeading()));
+				Pose2d.log(Pose2d.exp(wanted_speeds.toTwist2d()).rotateBy(getHeading()));
 		mPeriodicIO.des_module_states = real_module_setpoints;
 	}
 
@@ -732,18 +732,18 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 		return states;
 	}
 
-	public Pose2d254 getPose() {
+	public Pose2d getPose() {
 		return RobotState.getInstance().getLatestFieldToVehicle();
 	}
 
 	public edu.wpi.first.math.geometry.Pose2d getLegacyPose() {
-		Pose2d254 legacyPose = getPose();
+		Pose2d legacyPose = getPose();
 		return legacyPose.toLegacy();
 	}
 
-	public void resetOdometry(Pose2d254 pose) {
+	public void resetOdometry(Pose2d pose) {
 		odometryReset = true;
-		Pose2d254 wanted_pose = pose;
+		Pose2d wanted_pose = pose;
 		mWheelTracker.resetPose(wanted_pose);
 	}
 
@@ -797,9 +797,9 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 		}
 
 		if (enableFieldToOdom != null) {
-			Pose2d254 latestOdomToVehicle =
+			Pose2d latestOdomToVehicle =
 					RobotState.getInstance().getLatestOdomToVehicle().getValue();
-			latestOdomToVehicle = Pose2d254.fromTranslation(enableFieldToOdom).transformBy(latestOdomToVehicle);
+			latestOdomToVehicle = Pose2d.fromTranslation(enableFieldToOdom).transformBy(latestOdomToVehicle);
 			LogUtil.recordPose2d("Odometry Pose", latestOdomToVehicle);
 		}
 

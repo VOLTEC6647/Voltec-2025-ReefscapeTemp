@@ -12,7 +12,7 @@ public class Pose2dWithMotion implements IPose2d<Pose2dWithMotion>, ICourse2d<Po
         return kIdentity;
     }
 
-    protected final Pose2d254 pose_;
+    protected final Pose2d pose_;
 
     // Even though this Twist provides scalar values for dx, dy, and dtheta, Pose2dWithMotion is purely a spatial construct -
     // it has no sense of time. So rather than being in units of distance-per-time (or radians-per-time), the denominator here is
@@ -26,20 +26,20 @@ public class Pose2dWithMotion implements IPose2d<Pose2dWithMotion>, ICourse2d<Po
     protected final double dcurvature_ds_;
 
     public Pose2dWithMotion() {
-        pose_ = new Pose2d254();
+        pose_ = new Pose2d();
         motion_direction_ = new Twist2d(0.0, 0.0, 0.0);
         curvature_ = 0.0;
         dcurvature_ds_ = 0.0;
     }
 
-    public Pose2dWithMotion(final Pose2d254 pose, double curvature) {
+    public Pose2dWithMotion(final Pose2d pose, double curvature) {
         pose_ = pose;
         motion_direction_ = new Twist2d(0.0, 0.0, 0.0);
         curvature_  = curvature;
         dcurvature_ds_ = 0.0;
     }
 
-    public Pose2dWithMotion(final Pose2d254 pose, double curvature, double dcurvature_ds) {
+    public Pose2dWithMotion(final Pose2d pose, double curvature, double dcurvature_ds) {
         pose_ = pose;
         motion_direction_ = new Twist2d(0.0, 0.0, 0.0);
         curvature_ = curvature;
@@ -47,7 +47,7 @@ public class Pose2dWithMotion implements IPose2d<Pose2dWithMotion>, ICourse2d<Po
     }
 
 
-    public Pose2dWithMotion(final Pose2d254 pose, final Twist2d motion_direction, double curvature, double dcurvature_ds) {
+    public Pose2dWithMotion(final Pose2d pose, final Twist2d motion_direction, double curvature, double dcurvature_ds) {
         pose_ = pose;
         motion_direction_ = motion_direction;
         curvature_ = curvature;
@@ -55,33 +55,33 @@ public class Pose2dWithMotion implements IPose2d<Pose2dWithMotion>, ICourse2d<Po
     }
 
     public Pose2dWithMotion(final Translation2d translation, final Rotation2d rotation, double curvature) {
-        pose_ = new Pose2d254(translation, rotation);
+        pose_ = new Pose2d(translation, rotation);
         motion_direction_ = new Twist2d(0.0, 0.0, 0.0);
         curvature_  = curvature;
         dcurvature_ds_ = 0.0;
     }
 
     public Pose2dWithMotion(final Translation2d translation, final Rotation2d rotation, double curvature, double dcurvature_ds) {
-        pose_ = new Pose2d254(translation, rotation);
+        pose_ = new Pose2d(translation, rotation);
         motion_direction_ = new Twist2d(0.0, 0.0, 0.0);
         curvature_ = curvature;
         dcurvature_ds_ = dcurvature_ds;
     }
 
     public Pose2dWithMotion(final Translation2d translation, final Rotation2d rotation, final Twist2d motion_direction, double curvature, double dcurvature_ds) {
-        pose_ = new Pose2d254(translation, rotation);
+        pose_ = new Pose2d(translation, rotation);
         motion_direction_ = motion_direction;
         curvature_ = curvature;
         dcurvature_ds_ = dcurvature_ds;
     }
 
     @Override
-    public final Pose2d254 getPose() {
+    public final Pose2d getPose() {
         return pose_;
     }
 
     @Override
-    public Pose2dWithMotion transformBy(Pose2d254 transform) {
+    public Pose2dWithMotion transformBy(Pose2d transform) {
         return new Pose2dWithMotion(getPose().transformBy(transform), motion_direction_, getCurvature(), getDCurvatureDs());
     }
 
