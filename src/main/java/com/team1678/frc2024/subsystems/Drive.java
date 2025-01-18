@@ -426,10 +426,13 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 					Logger.recordOutput("/Drive/measured_velocity",mPeriodicIO.measured_velocity.toLegacy());
 
 					Logger.recordOutput("/Drive/measured_velocity", mPeriodicIO.measured_velocity.toLegacy());
+					Logger.recordOutput("/Drive/Control State", mControlState);
 					Logger.recordOutput("/Auto/RobotPose", getPose().toLegacy());
 					Logger.recordOutput("/Auto/PathSetpoint", mMotionPlanner.mSetpoint.state().getPose().toLegacy());
 					//Logger.recordOutput("/Auto/PathSetpoint", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
 					Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
+					Logger.recordOutput("/Drive/Override Heading", mOverrideHeading);
+
 				}
 			}
 

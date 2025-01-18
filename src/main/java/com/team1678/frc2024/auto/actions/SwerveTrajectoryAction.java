@@ -24,12 +24,10 @@ public class SwerveTrajectoryAction implements Action {
 		mTrajectory = new TrajectoryIterator<>(new TimedView<>(trajectory));
 		mDrive = Drive.getInstance();
 		mResetGyro = resetPose;
-		Logger.recordOutput("/Auto/SwerveTrajectoryInit", true);
 	}
 
 	@Override
 	public void start() {
-		Logger.recordOutput("/Auto/SwerveTrajectoryStart", true);
 		if (mResetGyro) {
 			double newRotation = mTrajectory.getState().state().getRotation().getDegrees();
 			System.out.println("Reset gyro to " + newRotation);

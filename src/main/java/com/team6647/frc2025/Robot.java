@@ -255,8 +255,6 @@ public class Robot extends LoggedRobot {
 
 			mControlBoard.update();
 
-			
-
 			/* Drive */
 			if (mControlBoard.zeroGyro()) {
 				System.out.println("Zeroing gyro!");

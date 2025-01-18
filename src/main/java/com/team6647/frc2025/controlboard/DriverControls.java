@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import com.team1678.frc2024.FieldLayout.CoralTarget;
 import com.team1678.frc2024.auto.AutoModeBase;
+import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
@@ -34,56 +35,66 @@ public class DriverControls {
 	}
 
 	private boolean mClimberJog = false;
+	private AutoModeExecutor mAssistedActionsExecutor;
 	private AutoModeBase coralPlacer;
 
 	public static CoralTarget angles[] = {CoralTarget.LEFT, CoralTarget.RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.BOTTOM_RIGHT, CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
 	public static int coralId = 0;
 	public static double level = 3;
 	public static int subCoralId = 1;
+	
 	/* TWO CONTROLLERS */
 
 	//driver/operator
+	@SuppressWarnings("unused")
 	public void twoControllerMode() {
+		
 		if(mControlBoard.driver.yButton.wasActivated()){
+			if(mAssistedActionsExecutor == null){
+				mAssistedActionsExecutor = new AutoModeExecutor();
+			}
 			coralPlacer = new test1();
-			coralPlacer.run();
-			Logger.recordOutput("/Auto/Controls", true);
+			mAssistedActionsExecutor.setAutoMode(coralPlacer);
+			mAssistedActionsExecutor.start();
 		}
 		if (mControlBoard.driver.yButton.wasReleased()) {
-			Logger.recordOutput("/Auto/Controls", false);
-			coralPlacer.stop();
-			mDrive.overrideTrajectory(true);
+			mAssistedActionsExecutor.stop();
+			//mDrive.overrideTrajectory(true);
+			//coralPlacer = null;
 		}
 		double angle = Math.toDegrees(Math.atan2(mControlBoard.driver.getRightX(), mControlBoard.driver.getRightY()));
 		if (angle < 0) {
 			angle += 360;
 		}
-		for (int i = 0; i < angles.length; i++) {
-			if (Math.abs(angle - angles[i].angle) < 30) {
-				Shuffleboard.getTab("Coral").addPersistent("Position", CoralTarget.values()[i].name());
-				coralId = i;
-				coralPlacer.stop();
-				if(angle-angles[i].angle>0){
-					subCoralId = 2;
-				}else{
-					subCoralId = 1;
+		if(false){
+			for (int i = 0; i < angles.length; i++) {
+				if (Math.abs(angle - angles[i].angle) < 30) {
+					Logger.recordOutput("/Coral/Position", CoralTarget.values()[i].name());
+					coralId = i;
+					coralPlacer.stop();
+					if(angle-angles[i].angle>0){
+						subCoralId = 2;
+					}else{
+						subCoralId = 1;
+					}
+					break;
 				}
-				break;
 			}
 		}
+		
 		if(mControlBoard.driver.POV0.wasActivated()){
 			level++;
 			if (level>4){
 				level = 1;
 			}
-			coralPlacer.stop();
+			//coralPlacer.stop();
 		}
 		if(mControlBoard.driver.POV180.wasActivated()){
 			level--;
 			if (level<1){
 				level = 4;
 			}
-			coralPlacer.stop();
+			//coralPlacer.stop();
 		}
 
 	}
