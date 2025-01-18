@@ -36,8 +36,10 @@ public class DriverControls {
 	private boolean mClimberJog = false;
 	private AutoModeBase coralPlacer;
 
-	double angles[] = {CoralTarget.LEFT.angle, CoralTarget.RIGHT.angle, CoralTarget.BOTTOM_LEFT.angle, CoralTarget.BOTTOM_RIGHT.angle, CoralTarget.TOP_LEFT.angle, CoralTarget.TOP_RIGHT.angle};
-
+	public static CoralTarget angles[] = {CoralTarget.LEFT, CoralTarget.RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.BOTTOM_RIGHT, CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
+	public static int coralId = 0;
+	public static double level = 3;
+	public static int subCoralId = 1;
 	/* TWO CONTROLLERS */
 
 	//driver/operator
@@ -52,15 +54,36 @@ public class DriverControls {
 			coralPlacer.stop();
 			mDrive.overrideTrajectory(true);
 		}
-		double angle = Math.toDegrees(Math.atan2(mControlBoard.operator.getRightX(), mControlBoard.operator.getRightY()));
+		double angle = Math.toDegrees(Math.atan2(mControlBoard.driver.getRightX(), mControlBoard.driver.getRightY()));
 		if (angle < 0) {
 			angle += 360;
 		}
 		for (int i = 0; i < angles.length; i++) {
-			if (Math.abs(angle - angles[i]) < 30) {
-				//Shuffleboard.getTab("Coral").addPersistent("Position", CoralTarget.values()[i].name());
+			if (Math.abs(angle - angles[i].angle) < 30) {
+				Shuffleboard.getTab("Coral").addPersistent("Position", CoralTarget.values()[i].name());
+				coralId = i;
+				coralPlacer.stop();
+				if(angle-angles[i].angle>0){
+					subCoralId = 2;
+				}else{
+					subCoralId = 1;
+				}
 				break;
 			}
+		}
+		if(mControlBoard.driver.POV0.wasActivated()){
+			level++;
+			if (level>4){
+				level = 1;
+			}
+			coralPlacer.stop();
+		}
+		if(mControlBoard.driver.POV180.wasActivated()){
+			level--;
+			if (level<1){
+				level = 4;
+			}
+			coralPlacer.stop();
 		}
 
 	}

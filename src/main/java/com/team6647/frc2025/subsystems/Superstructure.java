@@ -265,6 +265,10 @@ public class Superstructure extends Subsystem {
 	}
 
 	ControlBoard mControlBoard = ControlBoard.getInstance();
+
+	public void preGen(){
+		
+	}
 	
 	
 	// spotless:on
