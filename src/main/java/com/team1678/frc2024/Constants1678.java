@@ -41,7 +41,7 @@ public class Constants1678 {
 	}
 
 	public static final String kCompSerial = "032B4B47";
-	public static final String kEpsilonSerial = "03260A21";
+	public static final String kEpsilonSerial = "033E1C8F";
 
 	// Disables extra smart dashboard outputs that slow down the robot
 	public static final boolean disableExtraTelemetry = false;
@@ -137,13 +137,13 @@ public class Constants1678 {
 		/* Front Left Module - Module 0 */
 		public static final class Mod0 {
 			public static final double compAngleOffset = 0;
-			public static final double epsilonAngleOffset = edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.087402).getDegrees();
+			public static final double epsilonAngleOffset = 0.720947;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.087402).getDegrees();
 
 			public static SwerveModuleConstants SwerveModuleConstants() {
 				return new SwerveModuleConstants(
 						Ports1678.FL_DRIVE.getDeviceNumber(),
 						Ports1678.FL_ROTATION.getDeviceNumber(),
-						0
+						isEpsilon ? epsilonAngleOffset : compAngleOffset
 						//isEpsilon ? epsilonAngleOffset : compAngleOffset
 						);
 			}
@@ -152,13 +152,14 @@ public class Constants1678 {
 		/* Front Right Module - Module 1 */
 		public static final class Mod1 {
 			public static final double compAngleOffset = 254.880;
-			public static final double epsilonAngleOffset = edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.087402).getDegrees();
+			public static final double epsilonAngleOffset = 0.931641;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.885010).getDegrees();
 
+			
 			public static SwerveModuleConstants SwerveModuleConstants() {
 				return new SwerveModuleConstants(
 						Ports1678.FR_DRIVE.getDeviceNumber(),
 						Ports1678.FR_ROTATION.getDeviceNumber(),
-						0
+						isEpsilon ? epsilonAngleOffset : compAngleOffset
 						//isEpsilon ? epsilonAngleOffset : compAngleOffset
 						);
 			}
@@ -167,13 +168,13 @@ public class Constants1678 {
 		/* Back Left Module - Module 2 */
 		public static final class Mod2 {
 			public static final double compAngleOffset = 180.0;
-			public static final double epsilonAngleOffset = edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.476807).getDegrees();;
+			public static final double epsilonAngleOffset = 0.596924;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.476807).getDegrees();;
 
 			public static SwerveModuleConstants SwerveModuleConstants() {
 				return new SwerveModuleConstants(
 						Ports1678.BL_DRIVE.getDeviceNumber(),
 						Ports1678.BL_ROTATION.getDeviceNumber(),
-						0
+						isEpsilon ? epsilonAngleOffset : compAngleOffset
 						//isEpsilon ? epsilonAngleOffset : compAngleOffset
 						);
 			}
@@ -182,13 +183,13 @@ public class Constants1678 {
 		/* Back Right Module - Module 3 */
 		public static final class Mod3 {
 			public static final double compAngleOffset = 181.5822;
-			public static final double epsilonAngleOffset = edu.wpi.first.math.geometry.Rotation2d.fromRotations(-0.474854).getDegrees();
+			public static final double epsilonAngleOffset = 0.021973;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.532471).getDegrees();
 
 			public static SwerveModuleConstants SwerveModuleConstants() {
 				return new SwerveModuleConstants(
 						Ports1678.BR_DRIVE.getDeviceNumber(),
 						Ports1678.BR_ROTATION.getDeviceNumber(),
-						0
+						isEpsilon ? epsilonAngleOffset : compAngleOffset
 						//isEpsilon ? epsilonAngleOffset : compAngleOffset
 						);
 			}

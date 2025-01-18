@@ -199,4 +199,8 @@ public class Translation2d implements ITranslation2d<Translation2d> {
     public Translation2d getTranslation() {
         return this;
     }
+
+    public edu.wpi.first.math.geometry.Translation2d toLegacy(){
+        return new edu.wpi.first.math.geometry.Translation2d(this.x(),this.y());
+    }
 }

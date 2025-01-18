@@ -38,11 +38,13 @@ public class FieldLayout {
 	public static final AprilTagFieldLayout kTagMap;
 
 	static {
-		try {
-			kTagMap = new AprilTagFieldLayout("/edu/wpi/first/apriltag/2025-reefscape.json");
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		//try {
+			kTagMap = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+			//kTagMap = new AprilTagFieldLayout("/edu/wpi/first/apriltag/2024-crescendo.json");
+			//kTagMap = new AprilTagFieldLayout("/edu/wpi/first/apriltag/2025-reefscape.json");
+		//} catch (IOException e) {
+		//	throw new RuntimeException(e);
+		//}
 	}
 
 	// center notes labeled 1-5, with 1 being closest to the fms table
@@ -105,9 +107,11 @@ public class FieldLayout {
 	public static CoralSet getCoralTargetPos(CoralTarget coralTarget) {
 		Rotation2d rot = Rotation2d.fromDegrees(coralTarget.angle);
 		
-		Pose2d algae = new Pose2d(kCoralCenter.getTranslation().x()+kCoralDistance, kCoralCenter.getTranslation().y(), new Rotation2d(180,true));
-		Pose2d coral1 = algae.transformBy(new Pose2d(new Translation2d(0, kCoralDistanceOffset), new Rotation2d()));
-		Pose2d coral2 = algae.transformBy(new Pose2d(new Translation2d(0, -kCoralDistanceOffset), new Rotation2d()));
+		Pose2d center = new Pose2d(kCoralCenter.getTranslation().x()+kCoralDistance, kCoralCenter.getTranslation().y(), new Rotation2d(180,true));
+
+		Pose2d algae = center.transformBy(new Pose2d(new Translation2d(0, 0), new Rotation2d()));
+		Pose2d coral1 = center.transformBy(new Pose2d(new Translation2d(0, kCoralDistanceOffset), new Rotation2d()));
+		Pose2d coral2 = center.transformBy(new Pose2d(new Translation2d(0, -kCoralDistanceOffset), new Rotation2d()));
 		
 		Pose2d algaePre = algae.transformBy(new Pose2d(new Translation2d(kPreDistance, 0), new Rotation2d()));
 		Pose2d coral1Pre = coral1.transformBy(new Pose2d(new Translation2d(kPreDistance, 0), new Rotation2d()));

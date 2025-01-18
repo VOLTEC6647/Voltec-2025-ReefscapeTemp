@@ -114,18 +114,18 @@ public class Elevator extends ServoMotorSubsystem {
 	/**
 	 * @return New reqeust commanding the elevator to extend for Trap scoring.
 	 */
-	public Request fullExtendRequest() {
+	public Request L2Request() {
 		return new Request() {
 
 			@Override
 			public void act() {
-				setSetpointMotionMagic(kExtensionHeight);
+				setSetpointMotionMagic(kL2Height);
 				mNeedsToHome = true;
 			}
 
 			@Override
 			public boolean isFinished() {
-				return Util.epsilonEquals(getPosition(), kExtensionHeight, 0.1);
+				return Util.epsilonEquals(getPosition(), kL2Height, 0.1);
 			}
 		};
 	}
@@ -134,18 +134,18 @@ public class Elevator extends ServoMotorSubsystem {
 	/**
 	 * @return New reqeust commanding the elevator to extend for Amp scoring.
 	 */
-	public Request scoreHeightRequest() {
+	public Request L3Request() {
 		return new Request() {
 
 			@Override
 			public void act() {
-				setSetpointMotionMagic(kTrapAmpHeight);
+				setSetpointMotionMagic(kL3Height);
 				mNeedsToHome = true;
 			}
 
 			@Override
 			public boolean isFinished() {
-				return Util.epsilonEquals(getPosition(), kExtensionHeight, 0.1);
+				return Util.epsilonEquals(getPosition(), kL3Height, 0.1);
 			}
 		};
 	}

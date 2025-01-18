@@ -12,8 +12,8 @@ public class Constants {
 
     }
     public static class DriveConstants {
-        //public static String swerveCANBus = "6647_CANivore";
-        public static String swerveCANBus = "rio";
+        public static String swerveCANBus = "6647_CANivore";
+        //public static String swerveCANBus = "rio";
 
 
     }

@@ -156,8 +156,10 @@ public class SwerveModule extends Subsystem {
 
 	public void resetToAbsolute() {
 		angleEncoder.getAbsolutePosition().waitForUpdate(Constants1678.kLongCANTimeoutMs);
-		double angle = Util.placeInAppropriate0To360Scope(
-				getCurrentUnboundedDegrees(), getCanCoder().getDegrees() - kAngleOffset);
+		//double angle = Util.placeInAppropriate0To360Scope(
+		//		getCurrentUnboundedDegrees(), getCanCoder().getDegrees() - kAngleOffset);
+		//SmartDashboard.putNumber("Module" + kModuleNumber + "/Start Angle", getCanCoder().getDegrees());
+		double angle = (angleEncoder.getAbsolutePosition().getValueAsDouble()-kAngleOffset) * 360;
 		double absolutePosition = Conversions.degreesToRotation(angle, SwerveConstants.angleGearRatio);
 		Phoenix6Util.checkErrorAndRetry(() -> mAngleMotor.setPosition(absolutePosition, Constants1678.kLongCANTimeoutMs));
 	}
@@ -177,6 +179,9 @@ public class SwerveModule extends Subsystem {
 		// spotless:off
 		SmartDashboard.putNumber("Module" + kModuleNumber + "/Azi Target", target_angle);
 		SmartDashboard.putNumber("Module" + kModuleNumber + "/Azi Angle", getCurrentUnboundedDegrees());
+		SmartDashboard.putNumber("Module" + kModuleNumber + "/Cancoder Angle", getCanCoder().getDegrees());
+		SmartDashboard.putNumber("Module" + kModuleNumber + "/Rotation Position", mPeriodicIO.rotationPosition);
+		SmartDashboard.putNumber("Module" + kModuleNumber + "/Rotor Position", mAngleMotor.getRotorPosition().getValueAsDouble());
 		SmartDashboard.putNumber("Module" + kModuleNumber + "/Azi Error", getCurrentUnboundedDegrees() - target_angle);
 		SmartDashboard.putNumber("Module" + kModuleNumber + "/Wheel Velocity", Math.abs(getCurrentVelocity()));
 		SmartDashboard.putNumber("Module" + kModuleNumber + "/Wheel Target Velocity", Math.abs(mPeriodicIO.targetVelocity));
@@ -241,7 +246,8 @@ public class SwerveModule extends Subsystem {
 				Constants1678.SwerveConstants.driveGearRatio);
 	}
 
-	public double getCurrentUnboundedDegrees() {
+	public double 
+	getCurrentUnboundedDegrees() {
 		return Conversions.rotationsToDegrees(mPeriodicIO.rotationPosition, SwerveConstants.angleGearRatio);
 	}
 

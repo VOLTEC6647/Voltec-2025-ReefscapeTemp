@@ -1,5 +1,7 @@
 package com.team6647.frc2025.controlboard;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.team1678.frc2024.FieldLayout.CoralTarget;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.controlboard.ControlBoard;
@@ -43,8 +45,12 @@ public class DriverControls {
 		if(mControlBoard.driver.yButton.wasActivated()){
 			coralPlacer = new test1();
 			coralPlacer.run();
-		}else if (mControlBoard.driver.yButton.wasReleased()) {
+			Logger.recordOutput("/Auto/Controls", true);
+		}
+		if (mControlBoard.driver.yButton.wasReleased()) {
+			Logger.recordOutput("/Auto/Controls", false);
 			coralPlacer.stop();
+			mDrive.overrideTrajectory(true);
 		}
 		double angle = Math.toDegrees(Math.atan2(mControlBoard.operator.getRightX(), mControlBoard.operator.getRightY()));
 		if (angle < 0) {
@@ -52,7 +58,7 @@ public class DriverControls {
 		}
 		for (int i = 0; i < angles.length; i++) {
 			if (Math.abs(angle - angles[i]) < 30) {
-				Shuffleboard.getTab("Coral").addPersistent("Position", CoralTarget.values()[i].name());
+				//Shuffleboard.getTab("Coral").addPersistent("Position", CoralTarget.values()[i].name());
 				break;
 			}
 		}

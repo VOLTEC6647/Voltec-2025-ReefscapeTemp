@@ -12,8 +12,9 @@ import com.team1678.frc2024.SubsystemManager;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team6647.frc2025.auto.AutoModeSelector;
+import com.team6647.frc2025.auto.paths.TrajectoryGenerator;
 import com.team1678.frc2024.controlboard.ControlBoard;
-import com.team1678.frc2024.controlboard.DriverControls1678;
+import com.team6647.frc2025.controlboard.DriverControls;
 import com.team1678.frc2024.loops.CrashTracker;
 import com.team1678.frc2024.loops.Looper;
 import com.team1678.frc2024.paths.TrajectoryGenerator1678;
@@ -38,6 +39,8 @@ import choreo.auto.AutoFactory;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -47,18 +50,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import org.littletonrobotics.junction.LoggedRobot;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import java.util.List;
 import java.util.Optional;
 
 public class Robot extends LoggedRobot {
 
+	
+
 	// util instances
 	private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
 	private final ControlBoard mControlBoard = ControlBoard.getInstance();
-	private final DriverControls1678 mDriverControls = new DriverControls1678();
+	private final DriverControls mDriverControls = new DriverControls();
 
 	// the boss
 	//private final Superstructure mSuperstructure = Superstructure.getInstance();
@@ -86,13 +99,24 @@ public class Robot extends LoggedRobot {
 
 	double disable_enter_time = 0.0;
 
+	
 	static {
+		Logger.recordMetadata("Voltec", "Betabot");
 		if (Robot.isReal()) {
 			serial = System.getenv("serialnum");
+			Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+			Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+			new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
 		} else {
 			serial = "";
+			//setUseTiming(false); // Run as fast as possible
+			String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+			Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+			Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
 		}
-		Constants1678.isEpsilon = true;
+		Logger.start();
+		Constants1678.isComp = serial.startsWith(Constants1678.kCompSerial);
+		Constants1678.isEpsilon = serial.startsWith(Constants1678.kEpsilonSerial);
 	}
 
 	public Robot() {
@@ -119,6 +143,7 @@ public class Robot extends LoggedRobot {
 
 			SmartDashboard.putBoolean("Is Comp", Constants1678.isComp);
 			SmartDashboard.putBoolean("Is Epsilon", Constants1678.isEpsilon);
+			SmartDashboard.putString("Serial Number", serial);
 
 			if (!Constants1678.isComp && !Constants1678.isEpsilon) {
 				SmartDashboard.putString("Comp Serial", Constants1678.kCompSerial);
@@ -152,7 +177,7 @@ public class Robot extends LoggedRobot {
 			mSubsystemManager.registerEnabledLoops(mEnabledLooper);
 			mSubsystemManager.registerDisabledLoops(mDisabledLooper);
 
-			//TrajectoryGenerator.getInstance().generateTrajectories();
+			TrajectoryGenerator.getInstance().generateTrajectories();
 			RobotState.getInstance().resetKalman();
 			mDrive.setNeutralBrake(true);
 
@@ -192,6 +217,13 @@ public class Robot extends LoggedRobot {
 		//is_red_alliance,
 		//new AutoBindings()//,mDrive::choreoLogger	
 		//);
+		/*
+		new SequentialCommandGroup(
+			new InstantCommand(() -> mDrive.feedTeleopSetpointFromLegacy(new edu.wpi.first.math.kinematics.ChassisSpeeds(1.0, 1.0, 0.0))),
+			new WaitCommand(1.5),
+			new InstantCommand(() -> mDrive.feedTeleopSetpointFromLegacy(new edu.wpi.first.math.kinematics.ChassisSpeeds(0.0, 0.0, 0.0)))
+		).schedule();
+		 */
 	}
 
 	@Override
@@ -241,9 +273,9 @@ public class Robot extends LoggedRobot {
 					Util.robotToFieldRelative(mDrive.getHeading(), is_red_alliance)));
 
 			ShuffleboardTab coralTab = Shuffleboard.getTab("Coral");
-			coralTab.addPersistent("Position", 3);
-			coralTab.addPersistent("Level", 3);
-			coralTab.addPersistent("Slot", 3);
+			//coralTab.add("Position", 3);
+			//coralTab.add("Level", 3);
+			//coralTab.add("Slot", 3);
 
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);

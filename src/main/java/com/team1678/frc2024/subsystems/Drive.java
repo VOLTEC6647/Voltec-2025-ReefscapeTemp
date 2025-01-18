@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.littletonrobotics.junction.Logger;
+
 public class Drive extends Subsystem {
 
 	public enum DriveControlState {
@@ -192,6 +194,7 @@ public class Drive extends Subsystem {
 	choreoX = new PIDController(kPathFollowDriveP, 0, 0);
     choreoY = new PIDController(kPathFollowDriveP, 0, 0);
     choreoRotation = new PIDController(kPathFollowTurnP, 0, 0);
+
 }
 
   private final double kPathFollowDriveP;
@@ -418,6 +421,15 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 									mWheelTracker.getRobotPose(),
 									mPeriodicIO.measured_velocity,
 									mPeriodicIO.predicted_velocity);
+
+					Logger.recordOutput("/Drive/predicted_velocity", mPeriodicIO.predicted_velocity.toLegacy());
+					Logger.recordOutput("/Drive/measured_velocity",mPeriodicIO.measured_velocity.toLegacy());
+
+					Logger.recordOutput("/Drive/measured_velocity", mPeriodicIO.measured_velocity.toLegacy());
+					Logger.recordOutput("/Auto/RobotPose", getPose().toLegacy());
+					Logger.recordOutput("/Auto/PathSetpoint", mMotionPlanner.mSetpoint.state().getPose().toLegacy());
+					//Logger.recordOutput("/Auto/PathSetpoint", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
+					Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
 				}
 			}
 
@@ -444,16 +456,19 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 		Twist2d twist_vel = Constants1678.SwerveConstants.kKinematics
 				.toChassisSpeeds(getModuleStates())
 				.toTwist2d();
-		Translation2d translation_vel = new Translation2d(twist_vel.dx, twist_vel.dy);
-		translation_vel = translation_vel.rotateBy(getHeading());
+		mPeriodicIO.translation_vel = new Translation2d(twist_vel.dx, twist_vel.dy);
+		mPeriodicIO.translation_vel = mPeriodicIO.translation_vel.rotateBy(getHeading());
 		mPeriodicIO.measured_velocity = new Twist2d(
-				translation_vel.getTranslation().x(),
-				translation_vel.getTranslation().y(),
+			mPeriodicIO.translation_vel.getTranslation().x(),
+			mPeriodicIO.translation_vel.getTranslation().y(),
 				twist_vel.dtheta);
+			
 	}
 
 	public synchronized void setTrajectory(TrajectoryIterator<TimedState<Pose2dWithMotion>> trajectory) {
+		Logger.recordOutput("/Auto/Trajectory", true);
 		if (mMotionPlanner != null) {
+			System.out.println("Motionplanner not Null");
 			mOverrideTrajectory = false;
 			mMotionPlanner.reset();
 			mMotionPlanner.setTrajectory(trajectory);
@@ -563,6 +578,10 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 			mPeriodicIO.translational_error = mMotionPlanner.getTranslationalError();
 			mPeriodicIO.heading_error = mMotionPlanner.getHeadingError();
 			mPeriodicIO.path_setpoint = mMotionPlanner.getSetpoint();
+			Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
+			Logger.recordOutput("/Auto/HeadingError", mMotionPlanner.getHeadingError().toLegacy());
+			Logger.recordOutput("/Auto/PathSetpoint", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
+
 		} else {
 			DriverStation.reportError("Drive is not in path following state", false);
 		}
@@ -772,6 +791,7 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 		double timestamp;
 		ChassisSpeeds des_chassis_speeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 		Twist2d measured_velocity = Twist2d.identity();
+		Translation2d translation_vel = new Translation2d();
 		Rotation2d heading = new Rotation2d();
 		Rotation2d pitch = new Rotation2d();
 

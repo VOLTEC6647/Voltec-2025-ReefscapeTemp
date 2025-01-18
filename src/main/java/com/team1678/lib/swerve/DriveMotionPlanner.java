@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 public class DriveMotionPlanner implements CSVWritable {
 	private static final double kMaxDx = 0.0127; // m
 	private static final double kMaxDy = 0.0127; // m
@@ -48,7 +50,9 @@ public class DriveMotionPlanner implements CSVWritable {
 	FollowerType mFollowerType = FollowerType.PURE_PURSUIT;
 
 	public void setFollowerType(FollowerType type) {
+		System.out.println("Follower type "+type.name());
 		mFollowerType = type;
+		Logger.recordOutput("/Auto/FollowerType", mFollowerType.name());
 	}
 
 	private double defaultCook = 0.5;
@@ -99,6 +103,7 @@ public class DriveMotionPlanner implements CSVWritable {
 		mCurrentTrajectoryLength =
 				mCurrentTrajectory.trajectory().getLastPoint().state().t();
 		for (int i = 0; i < trajectory.trajectory().length(); ++i) {
+			//Logger.recordOutput("/RealOutputs/TrajectoryObjective", trajectory.trajectory().getPoint(i).state().state().getPose().toLegacy());
 			if (trajectory.trajectory().getPoint(i).state().velocity() > Util.kEpsilon) {
 				mIsReversed = false;
 				break;
@@ -387,7 +392,7 @@ public class DriveMotionPlanner implements CSVWritable {
 				+ kThetakD * ((mError.getRotation().getRadians() - mPrevHeadingError.getRadians()) / mDt);
 		return chassisSpeeds;
 	}
-
+	
 	public ChassisSpeeds update(double timestamp, Pose2d current_state, Translation2d current_velocity) {
 		if (mCurrentTrajectory == null) return null;
 
@@ -467,7 +472,10 @@ public class DriveMotionPlanner implements CSVWritable {
 				SmartDashboard.putNumber("PurePursuit/PreviewQtd", previewQuantity);
 				sample_point = mCurrentTrajectory.advance(previewQuantity);
 				// RobotState.getInstance().setDisplaySetpointPose(Pose2d.fromTranslation(RobotState.getInstance().getFieldToOdom(timestamp)).transformBy(sample_point.state().state().getPose()));
+				
 				mSetpoint = sample_point.state();
+				Logger.recordOutput("/Auto/RobotPose", current_state.toLegacy());
+				Logger.recordOutput("/Auto/PathSetpoint", mSetpoint.state().getPose().toLegacy());
 				mOutput = updatePurePursuit(current_state, 0.0);
 			}
 		} else {

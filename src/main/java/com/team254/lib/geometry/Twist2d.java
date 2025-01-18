@@ -95,4 +95,8 @@ public class Twist2d implements Interpolable<Twist2d>, ICourse2d<Twist2d> {
                            Util.interpolate(dy, other.dy, x),
                            Util.interpolate(dtheta, other.dtheta, x));
     }
+
+    public edu.wpi.first.math.geometry.Twist2d toLegacy(){
+        return new edu.wpi.first.math.geometry.Twist2d(dx,dy,dtheta);
+    }
 }
