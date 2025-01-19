@@ -475,7 +475,7 @@ public class DriveMotionPlanner implements CSVWritable {
 				
 				mSetpoint = sample_point.state();
 				Logger.recordOutput("/Auto/RobotPose", current_state.toLegacy());
-				Logger.recordOutput("/Auto/PathSetpoint", mSetpoint.state().getPose().toLegacy());
+				//Logger.recordOutput("/Auto/PathSetpoint", mSetpoint.state().getPose().toLegacy());
 				mOutput = updatePurePursuit(current_state, 0.0);
 			}
 		} else {

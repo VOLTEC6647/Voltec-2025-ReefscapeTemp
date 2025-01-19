@@ -28,6 +28,10 @@ public class Pose2d implements IPose2d<Pose2d> {
         return new edu.wpi.first.math.geometry.Pose2d(translation_.x_, translation_.y_, edu.wpi.first.math.geometry.Rotation2d.fromRadians(rotation_.getRadians()));
     }
 
+    public static Pose2d fromLegacy(edu.wpi.first.math.geometry.Pose2d pose2d){
+        return new Pose2d(pose2d);
+    }
+
     public Pose2d(double x, double y, final Rotation2d rotation) {
         translation_ = new Translation2d(x, y);
         rotation_ = rotation;

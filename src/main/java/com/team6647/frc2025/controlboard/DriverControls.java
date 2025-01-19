@@ -7,7 +7,10 @@ import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.subsystems.Drive;
+import com.team1678.frc2024.subsystems.Drive.DriveControlState;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
+import com.team6647.frc2025.auto.actions.AssistModeExecutor;
+import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 import com.team6647.frc2025.subsystems.Superstructure;
 
@@ -35,7 +38,7 @@ public class DriverControls {
 	}
 
 	private boolean mClimberJog = false;
-	private AutoModeExecutor mAssistedActionsExecutor;
+	private AssistModeExecutor mAssistedActionsExecutor;
 	private AutoModeBase coralPlacer;
 
 	public static CoralTarget angles[] = {CoralTarget.LEFT, CoralTarget.RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.BOTTOM_RIGHT, CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
@@ -51,22 +54,24 @@ public class DriverControls {
 		
 		if(mControlBoard.driver.yButton.wasActivated()){
 			if(mAssistedActionsExecutor == null){
-				mAssistedActionsExecutor = new AutoModeExecutor();
+				mAssistedActionsExecutor = new AssistModeExecutor();
 			}
-			coralPlacer = new test1();
+			coralPlacer = new goCenter();
 			mAssistedActionsExecutor.setAutoMode(coralPlacer);
 			mAssistedActionsExecutor.start();
 		}
-		if (mControlBoard.driver.yButton.wasReleased()) {
+		if (mControlBoard.driver.yButton.wasReleased()&&mAssistedActionsExecutor != null) {
 			mAssistedActionsExecutor.stop();
-			//mDrive.overrideTrajectory(true);
+			mAssistedActionsExecutor = null;
+			mDrive.setControlState(DriveControlState.OPEN_LOOP);
+			coralPlacer = null;
 			//coralPlacer = null;
 		}
-		double angle = Math.toDegrees(Math.atan2(mControlBoard.driver.getRightX(), mControlBoard.driver.getRightY()));
+		double angle = Math.toDegrees(Math.atan2(mControlBoard.operator.getRightX(), mControlBoard.driver.getRightY()));
 		if (angle < 0) {
 			angle += 360;
 		}
-		if(false){
+		if(true){
 			for (int i = 0; i < angles.length; i++) {
 				if (Math.abs(angle - angles[i].angle) < 30) {
 					Logger.recordOutput("/Coral/Position", CoralTarget.values()[i].name());

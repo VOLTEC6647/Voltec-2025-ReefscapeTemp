@@ -87,6 +87,8 @@ public class TrajectoryGenerator {
 		public final Trajectory254<TimedState<Pose2dWithMotion>> testT;
 		public Trajectory254<TimedState<Pose2dWithMotion>> putCoral;
 		public Trajectory254<TimedState<Pose2dWithMotion>> enterCoral;
+		public Trajectory254<TimedState<Pose2dWithMotion>> centerLive;
+
 
 		private boolean wants_mirrored;
 
@@ -183,7 +185,7 @@ public class TrajectoryGenerator {
 			headings.add(Rotation2d.fromDegrees(180.0));
 			waypoints.add(new Pose2d(7.0, 1.5, Rotation2d.fromDegrees(0)));
 			headings.add(Rotation2d.fromDegrees(180.0));
-			return generate(waypoints, headings, List.of(), false, 0.5, 1.0);
+			return generate(waypoints, headings, List.of(), false, 1, 1.0);
 		}
 
 		private Trajectory254<TimedState<Pose2dWithMotion>> getR5S1PickupToTeleStart() {
@@ -201,11 +203,21 @@ public class TrajectoryGenerator {
 		private Trajectory254<TimedState<Pose2dWithMotion>> center6() {
 			List<Pose2d> waypoints = new ArrayList<>();
 			List<Rotation2d> headings = new ArrayList<>();
-			waypoints.add(new Pose2d(10,20,new Rotation2d()));
+			waypoints.add(new Pose2d(0,0,new Rotation2d()));
 			headings.add(Rotation2d.fromDegrees(0.0));
-			waypoints.add(new Pose2d(FieldLayout.kCoralCenter.getTranslation().x()-FieldLayout.kCoralDistance,FieldLayout.kCoralCenter.getTranslation().x(),new Rotation2d()));
+			waypoints.add(FieldLayout.kCoralCenter);
 			headings.add(Rotation2d.fromDegrees(0.0));
 			return generate(waypoints, headings, List.of(), false, 0.4, 1.0);
+		}
+
+		public Trajectory254<TimedState<Pose2dWithMotion>> getCenterLive() {
+			List<Pose2d> waypoints = new ArrayList<>();
+			List<Rotation2d> headings = new ArrayList<>();
+			waypoints.add(Drive.getInstance().getPose());
+			headings.add(Rotation2d.fromDegrees(0.0));
+			waypoints.add(FieldLayout.kCoralCenter);
+			headings.add(Rotation2d.fromDegrees(0.0));
+			return generate(waypoints, headings, List.of(), true, 0.4, 1.0);
 		}
 
 		public Trajectory254<TimedState<Pose2dWithMotion>> getPutCoral() {

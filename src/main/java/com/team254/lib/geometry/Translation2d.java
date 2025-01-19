@@ -47,6 +47,10 @@ public class Translation2d implements ITranslation2d<Translation2d> {
     	return new Translation2d(direction.cos() * magnitude, direction.sin() * magnitude);
     }
 
+    public static Translation2d fromLegacy(Translation2d translation2d){
+    	return new Translation2d(translation2d.x(),translation2d.y());
+    }
+
     /**
      * The "norm" of a transform is the Euclidean distance in x and y.
      *

@@ -429,10 +429,11 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 					Logger.recordOutput("/Drive/Control State", mControlState);
 					Logger.recordOutput("/Auto/RobotPose", getPose().toLegacy());
 					Logger.recordOutput("/Auto/PathSetpoint", mMotionPlanner.mSetpoint.state().getPose().toLegacy());
+
 					//Logger.recordOutput("/Auto/PathSetpoint", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
 					Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
 					Logger.recordOutput("/Drive/Override Heading", mOverrideHeading);
-
+					Logger.recordOutput("/Drive/Override Trajectory", mOverrideTrajectory);
 				}
 			}
 
@@ -475,6 +476,7 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 			mOverrideTrajectory = false;
 			mMotionPlanner.reset();
 			mMotionPlanner.setTrajectory(trajectory);
+			Logger.recordOutput("/Auto/PathDestination", trajectory.trajectory().getLastPoint().state().state().getPose().toLegacy());
 			mControlState = DriveControlState.PATH_FOLLOWING;
 		}
 	}
@@ -583,7 +585,7 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 			mPeriodicIO.path_setpoint = mMotionPlanner.getSetpoint();
 			Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
 			Logger.recordOutput("/Auto/HeadingError", mMotionPlanner.getHeadingError().toLegacy());
-			Logger.recordOutput("/Auto/PathSetpoint", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
+			//Logger.recordOutput("/Auto/PathSetpoint2", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
 
 		} else {
 			DriverStation.reportError("Drive is not in path following state", false);
@@ -868,5 +870,9 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 		public double kMaxAccel = Double.MAX_VALUE; // m/s^2
 		public double kMaxAngularVelocity = Constants1678.SwerveConstants.maxAngularVelocity; // rad/s
 		public double kMaxAngularAccel = Double.MAX_VALUE; // rad/s^2
+	}
+
+	public void setControlState(DriveControlState controlState){
+		mControlState = controlState;
 	}
 }

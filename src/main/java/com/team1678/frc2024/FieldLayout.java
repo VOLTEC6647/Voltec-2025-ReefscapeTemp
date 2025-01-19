@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
+import org.littletonrobotics.junction.Logger;
+
 /**
  * Contains various field dimensions and useful reference points. Dimensions are
  * in meters, and sets
@@ -65,9 +67,9 @@ public class FieldLayout {
 
 	public static Pose2d kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
 
-	public static double kCoralDistance = 46.75; //Please Fix
-	public static double kCoralDistanceOffset = 5.0f; // temproral
-	public static double kPreDistance = 5.0f;
+	public static double kCoralDistance = 1; //Please Fix
+	public static double kCoralDistanceOffset = 1.0f; // temproral
+	public static double kPreDistance = 1.0f;
 
 	public enum CoralTarget {
 		TOP_LEFT(120.0),
@@ -102,6 +104,10 @@ public class FieldLayout {
 			this.coral1Pre = coral1Pre;
 			this.coral2Pre = coral2Pre;
 		}
+	}
+
+	static{
+		Logger.recordOutput("/Coral/Center", kCoralCenter.toLegacy());
 	}
 
 	public static CoralSet getCoralTargetPos(CoralTarget coralTarget) {
