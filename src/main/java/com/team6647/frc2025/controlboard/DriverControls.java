@@ -1,19 +1,26 @@
 package com.team6647.frc2025.controlboard;
 
+import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Radians;
+
 import org.littletonrobotics.junction.Logger;
 
-import com.team1678.frc2024.FieldLayout.CoralTarget;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.Drive.DriveControlState;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
+import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.actions.AssistModeExecutor;
 import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
+import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
+import edu.wpi.first.units.AngleUnit;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +30,8 @@ public class DriverControls {
 	ControlBoard mControlBoard = ControlBoard.getInstance();
 
 	Superstructure mSuperstructure = Superstructure.getInstance();
+	Superstructure s = mSuperstructure;
+
 	Drive mDrive = Drive.getInstance();
 
 	private boolean top_buttons_clear = true;
@@ -41,16 +50,28 @@ public class DriverControls {
 	private AssistModeExecutor mAssistedActionsExecutor;
 	private AutoModeBase coralPlacer;
 
-	public static CoralTarget angles[] = {CoralTarget.LEFT, CoralTarget.RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.BOTTOM_RIGHT, CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
-	public static int coralId = 0;
-	public static double level = 3;
-	public static int subCoralId = 1;
 	
+	
+	private MotorTest mMotorTest = MotorTest.getInstance();
+
 	/* TWO CONTROLLERS */
 
 	//driver/operator
 	@SuppressWarnings("unused")
 	public void twoControllerMode() {
+		if(mControlBoard.operator.aButton.wasActivated()){
+			mMotorTest.setState(MotorTest.State.FORWARD);
+		}
+		if (mControlBoard.operator.aButton.wasReleased()) {
+			mMotorTest.setState(MotorTest.State.IDLE);
+			
+		}
+		if(mControlBoard.operator.bButton.wasActivated()){
+			mMotorTest.setState(MotorTest.State.BACKWARD);
+		}
+		if (mControlBoard.operator.bButton.wasReleased()) {
+			mMotorTest.setState(MotorTest.State.IDLE);
+		}
 		
 		if(mControlBoard.driver.yButton.wasActivated()){
 			if(mAssistedActionsExecutor == null){
@@ -60,49 +81,82 @@ public class DriverControls {
 			mAssistedActionsExecutor.setAutoMode(coralPlacer);
 			mAssistedActionsExecutor.start();
 		}
-		if (mControlBoard.driver.yButton.wasReleased()&&mAssistedActionsExecutor != null) {
+		if (mControlBoard.driver.yButton.wasReleased()) {
+			stopAssist();
+		}
+		//Angle angle = Angle.ofBaseUnits(Math.toDegrees(Math.atan2(mControlBoard.operator.getRightX(), -mControlBoard.operator.getRightY())),Radians);
+		double angle = Angle.ofBaseUnits(Math.atan2(mControlBoard.operator.getRightX(), -mControlBoard.operator.getRightY()),Radians).in(Degrees);
+		angle = angle;
+		if(angle<0){
+			angle = 360+angle;
+		}
+		if(angle>360){
+			angle = angle-360;
+		}
+		Logger.recordOutput("/Coral/angle", angle);
+		//angle = angle.plus(Angle.ofBaseUnits(90, Degree));
+		if(Math.abs(mControlBoard.operator.getRightX())+Math.abs(mControlBoard.operator.getRightY())>0.5){
+			for (int i = 0; i < s.angles.length; i++) {
+				if (Math.abs(s.angles[i].angle-angle) < 30) {
+					s.go6(mClimberJog);
+					Logger.recordOutput("/Coral/Position", CoralTarget.values()[i].name());
+					s.coralId = i;
+					Logger.recordOutput("/Coral/id", s.coralId);
+					stopAssist();
+					if(angle-s.angles[i].angle>0){
+						s.subCoralId = 1;
+					}else{
+						s.subCoralId = 0;
+					}
+					Logger.recordOutput("/Coral/subId", s.subCoralId);
+					s.showAngle();
+					break;
+				}
+			}
+		}
+		
+		if(mControlBoard.operator.POV0.wasActivated()){
+			s.level++;
+			if (s.level>3){
+				s.level = 3;
+			}
+			//coralPlacer.stop();
+			s.showLevel();
+		}
+		if(mControlBoard.operator.POV180.wasActivated()){
+			s.level--;
+			if (s.level<0){
+				s.level = 0;
+			}
+			//coralPlacer.stop();
+			s.showLevel();
+		}
+		if(mControlBoard.operator.POV90.wasActivated()){
+			s.coralStationPosition++;
+			if (s.coralStationPosition>1){
+				s.coralStationPosition = 1;
+			}
+			//coralPlacer.stop();
+			s.showSource();
+		}
+		if(mControlBoard.operator.POV270.wasActivated()){
+			s.coralStationPosition--;
+			if (s.coralStationPosition<0){
+				s.coralStationPosition = 0;
+			}
+			//coralPlacer.stop();
+			s.showSource();
+		}
+
+	}
+
+	private void stopAssist(){
+		if(mAssistedActionsExecutor != null){
 			mAssistedActionsExecutor.stop();
 			mAssistedActionsExecutor = null;
 			mDrive.setControlState(DriveControlState.OPEN_LOOP);
 			coralPlacer = null;
 			//coralPlacer = null;
 		}
-		double angle = Math.toDegrees(Math.atan2(mControlBoard.operator.getRightX(), mControlBoard.driver.getRightY()));
-		if (angle < 0) {
-			angle += 360;
-		}
-		if(true){
-			for (int i = 0; i < angles.length; i++) {
-				if (Math.abs(angle - angles[i].angle) < 30) {
-					Logger.recordOutput("/Coral/Position", CoralTarget.values()[i].name());
-					coralId = i;
-					coralPlacer.stop();
-					if(angle-angles[i].angle>0){
-						subCoralId = 2;
-					}else{
-						subCoralId = 1;
-					}
-					break;
-				}
-			}
-		}
-		
-		if(mControlBoard.driver.POV0.wasActivated()){
-			level++;
-			if (level>4){
-				level = 1;
-			}
-			//coralPlacer.stop();
-		}
-		if(mControlBoard.driver.POV180.wasActivated()){
-			level--;
-			if (level<1){
-				level = 4;
-			}
-			//coralPlacer.stop();
-		}
-
 	}
-
-
 }

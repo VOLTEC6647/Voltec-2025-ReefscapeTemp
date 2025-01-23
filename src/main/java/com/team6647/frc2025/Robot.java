@@ -6,7 +6,6 @@ package com.team6647.frc2025;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.Constants1678;
-import com.team1678.frc2024.FieldLayout;
 import com.team1678.frc2024.RobotState;
 import com.team1678.frc2024.SubsystemManager;
 import com.team1678.frc2024.auto.AutoModeBase;
@@ -32,6 +31,7 @@ import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
+import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
 import choreo.Choreo;
@@ -74,11 +74,13 @@ public class Robot extends LoggedRobot {
 	private final DriverControls mDriverControls = new DriverControls();
 
 	// the boss
-	//private final Superstructure mSuperstructure = Superstructure.getInstance();
+	private final Superstructure mSuperstructure = Superstructure.getInstance();
 
 	// subsystem instances
 	private Drive mDrive;
 	private Cancoders mCancoders;
+
+	private MotorTest mMotorTest;
 
 	// vision
 	private final VisionDeviceManager mVisionDevices = VisionDeviceManager.getInstance();
@@ -123,6 +125,8 @@ public class Robot extends LoggedRobot {
 		CrashTracker.logRobotConstruction();
 
 		mDrive = Drive.getInstance();
+
+		mMotorTest = MotorTest.getInstance();
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
@@ -168,8 +172,9 @@ public class Robot extends LoggedRobot {
 			// spotless:off
 			mSubsystemManager.setSubsystems(
 				mDrive, 
-				//mSuperstructure,
-				mVisionDevices
+				mSuperstructure,
+				mVisionDevices,
+				mMotorTest
 
 			);
 			// spotless:on
@@ -184,6 +189,10 @@ public class Robot extends LoggedRobot {
 			RobotController.setBrownoutVoltage(5.5);
 
 			DataLogManager.start();
+
+			mSuperstructure.showLevel();
+			mSuperstructure.showAngle();
+
 
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);

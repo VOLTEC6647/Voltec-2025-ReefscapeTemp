@@ -1,17 +1,13 @@
 package com.team6647.frc2025.subsystems;
 
 import com.team1678.frc2024.Constants1678;
-import com.team1678.frc2024.FieldLayout;
 import com.team1678.frc2024.Ports1678;
 import com.team1678.frc2024.Robot1678;
 import com.team1678.frc2024.RobotState;
-import com.team1678.frc2024.FieldLayout.CoralTarget;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.led.TimedLEDState;
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
-import com.team1678.frc2024.shooting.FerryUtil;
-import com.team1678.frc2024.shooting.ShootingUtil;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.PeriodicLogs;
 import com.team1678.frc2024.subsystems.Subsystem;
@@ -25,13 +21,21 @@ import com.team1678.lib.requests.SequentialRequest;
 import com.team1678.lib.requests.WaitRequest;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
+import com.team254.lib.geometry.Translation2d;
+
 import com.team254.lib.util.TimeDelayedBoolean;
+import com.team6647.frc2025.FieldLayout;
+import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+
+import org.littletonrobotics.junction.Logger;
 
 public class Superstructure extends Subsystem {
 
@@ -63,18 +67,27 @@ public class Superstructure extends Subsystem {
 	private double mDistanceToTarget = 0.0;
 	private double mAngularErrToTarget = 0.0;
 
+	
+
 	// Manual param tuning
-	public final boolean kUseSmartdash = false;
-	public TunableNumber kCurveTuner = new TunableNumber("FiringParams/ManualCurveTune", 0.0, true);
-	public TunableNumber kSkewTuner = new TunableNumber("FiringParams/ManualSkewTune", 0.0, true);
-	public TunableNumber mHoodTuner = new TunableNumber("FiringParams/ManualHoodTune", 0.0, true);
-	public TunableNumber mRPMTuner = new TunableNumber("FiringParams/ManualRPMTune", 0.0, true);
+	//public final boolean kUseSmartdash = false;
+	//public TunableNumber kCurveTuner = new TunableNumber("FiringParams/ManualCurveTune", 0.0, true);
+	//public TunableNumber kSkewTuner = new TunableNumber("FiringParams/ManualSkewTune", 0.0, true);
+	//public TunableNumber mHoodTuner = new TunableNumber("FiringParams/ManualHoodTune", 0.0, true);
+	//public TunableNumber mRPMTuner = new TunableNumber("FiringParams/ManualRPMTune", 0.0, true);
 
 	// Trackers
-	private boolean CLIMB_MODE = false;
-	private boolean PREP = false;
-	private boolean FERRY_SHOT = false;
-	private boolean WANTS_SPINDOWN = false;
+	//private boolean CLIMB_MODE = false;
+	//private boolean PREP = false;
+	//private boolean FERRY_SHOT = false;
+	//private boolean WANTS_SPINDOWN = false;
+
+	//Corals
+	public CoralTarget angles[] = {CoralTarget.RIGHT, CoralTarget.BOTTOM_RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.LEFT,  CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
+	public int coralId = 0;
+	public int level = 3;
+	public int subCoralId = 1;
+	public int coralStationPosition = 0;
 
 	public boolean requestsCompleted() {
 		return allRequestsComplete;
@@ -170,7 +183,7 @@ public class Superstructure extends Subsystem {
 	@Override
 	public void outputTelemetry() {
 
-		SmartDashboard.putBoolean("Ferry Shot", FERRY_SHOT);
+		//SmartDashboard.putBoolean("Ferry Shot", FERRY_SHOT);
 
 		
 		SmartDashboard.putNumber("FiringParams/Angular Err To Target", mAngularErrToTarget);
@@ -179,6 +192,54 @@ public class Superstructure extends Subsystem {
 	/* Superstructure functions */
 	public void go6(boolean ferryShot) {
 		new test1();
+	}
+
+	public synchronized void showAngle(){
+		synchronized (Drive.getInstance()) {
+			Logger.recordOutput("CoralPose", FieldLayout.getCoralTargetPos(angles[coralId]).corals[subCoralId].toLegacy());
+		}
+	}
+
+	public synchronized void showSource(){
+		synchronized (Drive.getInstance()) {
+			Logger.recordOutput("CoralSource", FieldLayout.getCoralStation(true, coralStationPosition).toLegacy());
+		}
+	}
+
+	private double levelCenter = 8.77400016784668;
+	private Pose2d[] levels = {
+		Pose2d.fromTranslation(new Translation2d(levelCenter,1.3818594217300415)),
+		Pose2d.fromTranslation(new Translation2d(levelCenter,3.002558469772339)),
+		Pose2d.fromTranslation(new Translation2d(levelCenter,5.058445453643799)),
+		Pose2d.fromTranslation(new Translation2d(levelCenter,6.664137363433838)),
+	};
+	public synchronized void showLevel(){
+		synchronized (Drive.getInstance()) {
+			if(level==0){
+				Logger.recordOutput("Pointers/PointerC", levels[0].toLegacy());
+				Logger.recordOutput("Pointers/Pointer1", levels[1].toLegacy());
+				Logger.recordOutput("Pointers/Pointer2", levels[2].toLegacy());
+				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
+			}
+			if(level==1){
+				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
+				Logger.recordOutput("Pointers/PointerC", levels[1].toLegacy());
+				Logger.recordOutput("Pointers/Pointer2", levels[2].toLegacy());
+				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
+			}
+			if(level==2){
+				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
+				Logger.recordOutput("Pointers/Pointer2", levels[1].toLegacy());
+				Logger.recordOutput("Pointers/PointerC", levels[2].toLegacy());
+				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
+			}
+			if(level==3){
+				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
+				Logger.recordOutput("Pointers/Pointer2", levels[1].toLegacy());
+				Logger.recordOutput("Pointers/Pointer3", levels[2].toLegacy());
+				Logger.recordOutput("Pointers/PointerC", levels[3].toLegacy());
+			}
+		}
 	}
 
 	// spotless:off 

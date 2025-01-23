@@ -1,13 +1,21 @@
-package com.team1678.frc2024;
+package com.team6647.frc2025;
 
 import com.team1678.frc2024.auto.actions.LambdaAction;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.geometry.Translation2d;
+import com.team6647.frc2025.auto.modes.configuredQuals.putCoral;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
+import static edu.wpi.first.units.Units.Degrees;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
@@ -30,11 +38,9 @@ import org.littletonrobotics.junction.Logger;
  * Width refers to the <i>y</i> direction (as described by wpilib)
  */
 public class FieldLayout {
-	public static double kFieldLength = Units.inchesToMeters(651.223);
-	public static double kFieldWidth = Units.inchesToMeters(323.277);
-	public static double kWingX = Units.inchesToMeters(229.201);
-	public static double kPodiumX = Units.inchesToMeters(126.75);
-	public static double kStartingLineX = Units.inchesToMeters(74.111);
+	public static double kFieldLength = Units.inchesToMeters(690.876);
+	public static double kFieldWidth = Units.inchesToMeters(317);
+	public static double kStartingLineX = Units.inchesToMeters(299.438);
 
 	public static final double kApriltagWidth = Units.inchesToMeters(6.50);
 	public static final AprilTagFieldLayout kTagMap;
@@ -63,21 +69,30 @@ public class FieldLayout {
 			new Translation2d(Units.inchesToMeters(72.455), Units.inchesToMeters(322.996));
 
 	/** Center of the speaker opening (blue alliance) */
-	public static Pose2d kSpeakerCenter = new Pose2d(0.2, kFieldWidth - Units.inchesToMeters(104.0), new Rotation2d());
+	//public static Pose2d kSpeakerCenter = new Pose2d(0.2, kFieldWidth - Units.inchesToMeters(104.0), new Rotation2d());
 
-	public static Pose2d kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
+	public static Pose2d kCoralCenter;
+	static{
+		if(DriverStation.getAlliance().get() == Alliance.Red){
+			kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
+		}else{
+			kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
+		}
+	}
 
-	public static double kCoralDistance = 1; //Please Fix
-	public static double kCoralDistanceOffset = 1.0f; // temproral
+	public static double kCoralDistance = 1.6; //Please Fix
+	public static double kCoralDistanceOffset = 0.3f; // temproral
 	public static double kPreDistance = 1.0f;
 
 	public enum CoralTarget {
-		TOP_LEFT(120.0),
-		TOP_RIGHT(60.0),
-		BOTTOM_LEFT(240.0),
-		BOTTOM_RIGHT(300.0),
+		RIGHT(0.0),
+		BOTTOM_RIGHT(60.0),
+		BOTTOM_LEFT(120.0),
 		LEFT(180.0),
-		RIGHT(0.0);
+		TOP_LEFT(240.0),
+		TOP_RIGHT(300.0);
+			
+		public Angle angleA;
 
 		public double angle;
 
@@ -95,14 +110,16 @@ public class FieldLayout {
 		public Pose2d algaePre;
 		public Pose2d coral1Pre;
 		public Pose2d coral2Pre;
+		public Pose2d[] corals;
 
-		public CoralSet(Pose2d algae, Pose2d coral1, Pose2d coral2, Pose2d algaePre, Pose2d coral1Pre, Pose2d coral2Pre) {
+		public CoralSet(Pose2d algae, Pose2d coral1, Pose2d coral2, Pose2d algaePre, Pose2d coral1Pre, Pose2d coral2Pre, Pose2d[] corals) {
 			this.algae = algae;
 			this.coral1 = coral1;
 			this.coral2 = coral2;
 			this.algaePre = algaePre;
 			this.coral1Pre = coral1Pre;
 			this.coral2Pre = coral2Pre;
+			this.corals = corals;
 		}
 	}
 
@@ -111,9 +128,11 @@ public class FieldLayout {
 	}
 
 	public static CoralSet getCoralTargetPos(CoralTarget coralTarget) {
-		Rotation2d rot = Rotation2d.fromDegrees(coralTarget.angle);
+		Rotation2d rot = Rotation2d.fromDegrees(coralTarget.angle).inverse();
 		
-		Pose2d center = new Pose2d(kCoralCenter.getTranslation().x()+kCoralDistance, kCoralCenter.getTranslation().y(), new Rotation2d(180,true));
+		//Pose2d center = new Pose2d(kCoralCenter.getTranslation().x()+kCoralDistance, kCoralCenter.getTranslation().y(), new Rotation2d(180,true));
+		Pose2d center = new Pose2d(kCoralCenter.getTranslation().x()+kCoralDistance, kCoralCenter.getTranslation().y(),new Rotation2d());
+
 
 		Pose2d algae = center.transformBy(new Pose2d(new Translation2d(0, 0), new Rotation2d()));
 		Pose2d coral1 = center.transformBy(new Pose2d(new Translation2d(0, kCoralDistanceOffset), new Rotation2d()));
@@ -127,11 +146,17 @@ public class FieldLayout {
 		coral1 = rotatePoseFromPivot(coral1, rot);
 		coral2 = rotatePoseFromPivot(coral2, rot);
 
-		algaePre = rotatePoseFromPivot(algaePre, rot);
-		coral1Pre = rotatePoseFromPivot(coral1Pre, rot);
-		coral2Pre = rotatePoseFromPivot(coral2Pre, rot);
+		algae = handleCoralFlip(algae.rotateBy(Rotation2d.fromDegrees(180)),Robot.is_red_alliance);
+		coral1 = handleCoralFlip(coral1.rotateBy(Rotation2d.fromDegrees(180)),Robot.is_red_alliance);
+		coral2 = handleCoralFlip(coral2.rotateBy(Rotation2d.fromDegrees(180)),Robot.is_red_alliance);
 
-		return (new CoralSet(algae, coral1, coral2, algaePre, coral1Pre, coral2Pre));
+		algaePre = new Pose2d();//rotatePoseFromPivot(algaePre, rot);
+		coral1Pre = new Pose2d();//rotatePoseFromPivot(coral1Pre, rot);
+		coral2Pre = new Pose2d();//rotatePoseFromPivot(coral2Pre, rot);
+
+		Pose2d[] corals = {coral1, coral2};
+
+		return (new CoralSet(algae, coral1, coral2, algaePre, coral1Pre, coral2Pre, corals));
 	}
 
 	public static Pose2d rotatePoseFromPivot(Pose2d coral, Rotation2d rot) {
@@ -149,6 +174,40 @@ public class FieldLayout {
     public static Rotation2d getCoralTargetRotation(CoralTarget coralTarget) {
 		return Rotation2d.fromDegrees(coralTarget.angle).flip();
     }
+
+	public static Pose2d handleCoralFlip(Pose2d blue_pose, boolean is_red_alliance) {
+		if (is_red_alliance) {
+			blue_pose = blue_pose.mirrorAboutX(kFieldLength / 2.0).mirrorAboutY(kFieldWidth / 2.0);
+		}
+
+		return blue_pose;
+	}
+
+	public static Pose2d[] coralStations = {
+		//Left Center
+		new Pose2d(
+            Units.inchesToMeters(33.526),
+            Units.inchesToMeters(291.176),
+            //Rotation2d.fromDegrees(90 - 144.011)),
+            Rotation2d.fromDegrees(90)),
+
+
+		//Right Center
+		new Pose2d(
+            Units.inchesToMeters(33.526),
+            Units.inchesToMeters(291.176),
+            //Rotation2d.fromDegrees(90 - 144.011)),
+            Rotation2d.fromDegrees(90)),
+	};
+
+	public static Pose2d getCoralStation(boolean bottomStation,int positionId){
+		Pose2d coralStation = coralStations[positionId];
+		if(bottomStation){
+			coralStation = coralStation.mirrorAboutY(kFieldWidth / 2.0);
+		}
+		coralStation = handleAllianceFlip(coralStation, Robot.is_red_alliance);
+		return coralStation;
+	}
 
 	public static Pose2d handleAllianceFlip(Pose2d blue_pose, boolean is_red_alliance) {
 		if (is_red_alliance) {

@@ -1,8 +1,8 @@
 package com.team1678.frc2024.auto.actions;
 
-import com.team1678.frc2024.FieldLayout;
 import com.team1678.frc2024.Robot1678;
 import com.team1678.frc2024.subsystems.Drive;
+import com.team6647.frc2025.FieldLayout;
 
 public class WaitToPassXCoordinateAction implements Action {
 	double startingXCoordinate;

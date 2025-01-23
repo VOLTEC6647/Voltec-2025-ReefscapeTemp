@@ -1,7 +1,6 @@
 package com.team6647.frc2025.auto.paths;
 
 import com.team1678.frc2024.Constants1678;
-import com.team1678.frc2024.FieldLayout;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.lib.swerve.DriveMotionPlanner;
 import com.team254.lib.geometry.Pose2d;
@@ -10,7 +9,9 @@ import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
 import com.team254.lib.trajectory.timing.TimingConstraint;
+import com.team6647.frc2025.FieldLayout;
 import com.team6647.frc2025.controlboard.DriverControls;
+import com.team6647.frc2025.subsystems.Superstructure;
 
 import edu.wpi.first.math.util.Units;
 import java.util.ArrayList;
@@ -97,8 +98,6 @@ public class TrajectoryGenerator {
 			// spotless:off
 			center6 = center6();
 			testT = getTestTrajectory();
-			putCoral = getPutCoral();
-			enterCoral = getEnterCoral();
 			// spotless:on
 		}
 
@@ -225,11 +224,11 @@ public class TrajectoryGenerator {
 			List<Rotation2d> headings = new ArrayList<>();
 			waypoints.add(Drive.getInstance().getPose());
 			headings.add(Rotation2d.fromDegrees(0.0));
-			if(DriverControls.subCoralId == 1){
-				waypoints.add(FieldLayout.getCoralTargetPos(DriverControls.angles[DriverControls.coralId]).coral1Pre);
+			if(Superstructure.getInstance().subCoralId == 1){
+				waypoints.add(FieldLayout.getCoralTargetPos(Superstructure.getInstance().angles[Superstructure.getInstance().coralId]).coral1Pre);
 			}
-			if(DriverControls.subCoralId == 2){
-				waypoints.add(FieldLayout.getCoralTargetPos(DriverControls.angles[DriverControls.coralId]).coral2Pre);
+			if(Superstructure.getInstance().subCoralId == 2){
+				waypoints.add(FieldLayout.getCoralTargetPos(Superstructure.getInstance().angles[Superstructure.getInstance().coralId]).coral2Pre);
 			}
 			headings.add(Rotation2d.fromDegrees(0.0));
 			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
@@ -238,15 +237,15 @@ public class TrajectoryGenerator {
 		public Trajectory254<TimedState<Pose2dWithMotion>> getEnterCoral() {
 			List<Pose2d> waypoints = new ArrayList<>();
 			List<Rotation2d> headings = new ArrayList<>();
-			if(DriverControls.subCoralId == 1){
-				waypoints.add(FieldLayout.getCoralTargetPos(DriverControls.angles[DriverControls.coralId]).coral1Pre);
+			if(Superstructure.getInstance().subCoralId == 1){
+				waypoints.add(FieldLayout.getCoralTargetPos(Superstructure.getInstance().angles[Superstructure.getInstance().coralId]).coral1Pre);
 				headings.add(Rotation2d.fromDegrees(0.0));
-				waypoints.add(FieldLayout.getCoralTargetPos(DriverControls.angles[DriverControls.coralId]).coral1);
+				waypoints.add(FieldLayout.getCoralTargetPos(Superstructure.getInstance().angles[Superstructure.getInstance().coralId]).coral1);
 			}
-			if(DriverControls.subCoralId == 2){
-				waypoints.add(FieldLayout.getCoralTargetPos(DriverControls.angles[DriverControls.coralId]).coral2Pre);
+			if(Superstructure.getInstance().subCoralId == 2){
+				waypoints.add(FieldLayout.getCoralTargetPos(Superstructure.getInstance().angles[Superstructure.getInstance().coralId]).coral2Pre);
 				headings.add(Rotation2d.fromDegrees(0.0));
-				waypoints.add(FieldLayout.getCoralTargetPos(DriverControls.angles[DriverControls.coralId]).coral2);
+				waypoints.add(FieldLayout.getCoralTargetPos(Superstructure.getInstance().angles[Superstructure.getInstance().coralId]).coral2);
 			}
 			headings.add(Rotation2d.fromDegrees(0.0));
 			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);

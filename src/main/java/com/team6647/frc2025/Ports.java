@@ -58,6 +58,9 @@ public class Ports {
 	public static final CanDeviceId CLIMBER_MAIN = new CanDeviceId(-18, "rio");
 	public static final CanDeviceId CLIMBER_FOLLOWER = new CanDeviceId(-19, "rio");
 
+	public static final CanDeviceId TESTING_MOTOR = new CanDeviceId(55, "rio");
+
+
 	public static final int PIGEON = 13;
 	
 	public static final CanDeviceId LEDS = new CanDeviceId(-21, "rio");
