@@ -16,6 +16,8 @@ import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.actions.AssistModeExecutor;
 import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
+import com.team6647.frc2025.subsystems.AlgaeHolder;
+import com.team6647.frc2025.subsystems.AlgaeRollers;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
@@ -53,6 +55,8 @@ public class DriverControls {
 	
 	
 	private MotorTest mMotorTest = MotorTest.getInstance();
+	private AlgaeRollers mAlgaeRollers = AlgaeRollers.getInstance();
+	private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
 
 	/* TWO CONTROLLERS */
 
@@ -146,6 +150,25 @@ public class DriverControls {
 			}
 			//coralPlacer.stop();
 			s.showSource();
+		}
+		if(mControlBoard.operator.leftTrigger.wasActivated()){
+			mAlgaeRollers.setState(AlgaeRollers.State.INTAKING);
+		}
+		if(mControlBoard.operator.rightTrigger.wasActivated()){
+			mAlgaeRollers.setState(AlgaeRollers.State.EXHAUST);
+		}
+		if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
+			mAlgaeRollers.setState(AlgaeRollers.State.IDLE);
+		}
+
+		if(mControlBoard.operator.leftBumper.wasActivated()){
+			mAlgaeHolder.setState(AlgaeHolder.State.RETRACTING);
+		}
+		if(mControlBoard.operator.rightBumper.wasActivated()){
+			mAlgaeHolder.setState(AlgaeHolder.State.DEPLOYING);
+		}
+		if(mControlBoard.operator.leftBumper.wasReleased()||mControlBoard.operator.rightBumper.wasReleased()){
+			mAlgaeHolder.setState(AlgaeHolder.State.IDLE);
 		}
 
 	}

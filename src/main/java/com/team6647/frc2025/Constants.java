@@ -1,18 +1,22 @@
 package com.team6647.frc2025;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem.ServoMotorSubsystemConstants;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem.TalonFXConstants;
 import com.team1678.lib.Conversions;
 import com.team254.lib.drivers.CanDeviceId;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class Constants {
     public static class OperatorConstants {
 
     }
     public static class DriveConstants {
-        public static String swerveCANBus = "6647_CANivore";
+        public static String swerveCANBus = "6647_Swerves";
+		public static String mechanismsCANBus = "6647_CANivore";
         //public static String swerveCANBus = "rio";
 
 
@@ -72,6 +76,38 @@ public class Constants {
 		//public static double kHomingVelocityWindow = 0.1; // "units" / second
 		//public static double kHomingOutput = -2.0; // volts
     }
+
+	public static final class AlgaeRollerConstants {
+		public static TalonFXConfiguration RollerFXConfig() {
+			TalonFXConfiguration config = new TalonFXConfiguration();
+
+			config.CurrentLimits.SupplyCurrentLimitEnable = true;
+			config.CurrentLimits.SupplyCurrentLimit = 40.0;
+
+			config.CurrentLimits.StatorCurrentLimitEnable = true;
+			config.CurrentLimits.StatorCurrentLimit = 80.0;
+
+			config.Voltage.PeakForwardVoltage = 12.0;
+			config.Voltage.PeakReverseVoltage = -12.0;
+
+			config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+			return config;
+		}
+	}
+
+	public static final class AlgaeHolderConstants {
+		public static SparkMaxConfig SparkMaxConfig() {
+			SparkMaxConfig config = new SparkMaxConfig();
+
+			config.smartCurrentLimit(30);
+
+			//config.Voltage.PeakForwardVoltage = 12.0;
+			//config.Voltage.PeakReverseVoltage = -12.0;
+
+			config.idleMode(IdleMode.kBrake);
+			return config;
+		}
+	}
 
     
     

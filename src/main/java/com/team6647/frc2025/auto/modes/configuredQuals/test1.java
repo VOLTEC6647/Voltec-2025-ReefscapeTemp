@@ -36,6 +36,7 @@ public class test1 extends AutoModeBase {
 
 	public test1() {
 		//Logger.recordOutput();
+		Drive.getInstance().setUsePIDControl(true);
 		SmartDashboard.putBoolean("/Auto/test1Start", true);
 		TrajectorySet s = TrajectoryGenerator.getInstance().getTrajectorySet();
 		center6 = logTrajectory(s.center6);

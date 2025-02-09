@@ -31,6 +31,7 @@ import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
+import com.team6647.frc2025.subsystems.AlgaeRollers;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
@@ -81,6 +82,7 @@ public class Robot extends LoggedRobot {
 	private Cancoders mCancoders;
 
 	private MotorTest mMotorTest;
+	private AlgaeRollers mAlgaeRollers;
 
 	// vision
 	private final VisionDeviceManager mVisionDevices = VisionDeviceManager.getInstance();
@@ -127,6 +129,7 @@ public class Robot extends LoggedRobot {
 		mDrive = Drive.getInstance();
 
 		mMotorTest = MotorTest.getInstance();
+		mAlgaeRollers = mAlgaeRollers.getInstance();
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
@@ -171,10 +174,11 @@ public class Robot extends LoggedRobot {
 
 			// spotless:off
 			mSubsystemManager.setSubsystems(
-				mDrive, 
+				//mDrive, 
 				mSuperstructure,
 				mVisionDevices,
-				mMotorTest
+				mMotorTest,
+				mAlgaeRollers				
 
 			);
 			// spotless:on
