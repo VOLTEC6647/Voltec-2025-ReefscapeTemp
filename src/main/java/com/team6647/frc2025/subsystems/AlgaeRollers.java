@@ -28,8 +28,8 @@ public class AlgaeRollers extends Subsystem {
 
 	public enum State {
 		IDLE(0.0),
-		INTAKING(1.5),
-		EXHAUST(-1.5);
+		INTAKING(0.5),
+		EXHAUST(-0.5);
 
 		public double roller_voltage;
 
@@ -48,7 +48,7 @@ public class AlgaeRollers extends Subsystem {
         //mRoller = new SparkMax(com.team6647.frc2025.Ports.ALGAE_ROLLER.getDeviceNumber(), MotorType.kBrushless);
 		mRoller1 = new TalonFX(Ports.ALGAE_ROLLER1.getDeviceNumber(), Ports.ALGAE_ROLLER1.getBus());
 		TalonUtil.applyAndCheckConfiguration(mRoller1, AlgaeRollerConstants.RollerFXConfig());
-		mRoller1.setInverted(false);
+		mRoller1.setInverted(true);
 
         mRoller2 = new TalonFX(Ports.ALGAE_ROLLER2.getDeviceNumber(), Ports.ALGAE_ROLLER2.getBus());
 		TalonUtil.applyAndCheckConfiguration(mRoller2, AlgaeRollerConstants.RollerFXConfig());

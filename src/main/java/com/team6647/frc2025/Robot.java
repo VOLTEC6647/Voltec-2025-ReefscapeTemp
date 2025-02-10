@@ -18,6 +18,7 @@ import com.team1678.frc2024.loops.CrashTracker;
 import com.team1678.frc2024.loops.Looper;
 import com.team1678.frc2024.paths.TrajectoryGenerator1678;
 import com.team1678.frc2024.subsystems.Cancoders;
+import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.limelight.Limelight;
 import com.team1678.frc2024.subsystems.limelight.Limelight.Pipeline;
@@ -31,7 +32,9 @@ import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
+import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
+import com.team6647.frc2025.subsystems.CoralRoller;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
@@ -83,6 +86,11 @@ public class Robot extends LoggedRobot {
 
 	private MotorTest mMotorTest;
 	private AlgaeRollers mAlgaeRollers;
+	private AlgaeHolder mAlgaeHolder;
+	private CoralPivot mCoralPivot;
+	private CoralRoller mCoralRoller;
+
+
 
 	// vision
 	private final VisionDeviceManager mVisionDevices = VisionDeviceManager.getInstance();
@@ -128,8 +136,11 @@ public class Robot extends LoggedRobot {
 
 		mDrive = Drive.getInstance();
 
-		mMotorTest = MotorTest.getInstance();
-		mAlgaeRollers = mAlgaeRollers.getInstance();
+		//mMotorTest = MotorTest.getInstance();
+		mAlgaeRollers = AlgaeRollers.getInstance();
+		mAlgaeHolder = AlgaeHolder.getInstance();
+		mCoralPivot = CoralPivot.getInstance();
+		mCoralRoller = CoralRoller.getInstance();
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
@@ -177,8 +188,11 @@ public class Robot extends LoggedRobot {
 				//mDrive, 
 				mSuperstructure,
 				mVisionDevices,
-				mMotorTest,
-				mAlgaeRollers				
+				//mMotorTest,
+				mAlgaeRollers,
+				mAlgaeHolder,
+				mCoralPivot,
+				mCoralRoller	
 
 			);
 			// spotless:on

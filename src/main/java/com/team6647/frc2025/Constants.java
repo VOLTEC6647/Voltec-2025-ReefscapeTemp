@@ -1,10 +1,12 @@
 package com.team6647.frc2025;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem.ServoMotorSubsystemConstants;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem.TalonFXConstants;
+import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystemWithCancoder.AbsoluteEncoderConstants;
 import com.team1678.lib.Conversions;
 import com.team254.lib.drivers.CanDeviceId;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -15,7 +17,7 @@ public class Constants {
 
     }
     public static class DriveConstants {
-        public static String swerveCANBus = "6647_Swerves";
+        public static String swerveCANBus = "6647_Swerve";
 		public static String mechanismsCANBus = "6647_CANivore";
         //public static String swerveCANBus = "rio";
 
@@ -42,6 +44,8 @@ public class Constants {
 			kElevatorServoConstants.kMaxUnitsLimit = 0.46;
 			kElevatorServoConstants.kMinUnitsLimit = 0.0;
 
+			//14/20
+			//81/20
 			kElevatorServoConstants.kRotationsPerUnitDistance = (9.0) / (Conversions.inchesToMeters(1.432) * Math.PI);
 
 			kElevatorServoConstants.kKp = 1.0; // Raw output / raw error
@@ -90,7 +94,8 @@ public class Constants {
 			config.Voltage.PeakForwardVoltage = 12.0;
 			config.Voltage.PeakReverseVoltage = -12.0;
 
-			config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+			config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+			
 			return config;
 		}
 	}
@@ -106,6 +111,60 @@ public class Constants {
 
 			config.idleMode(IdleMode.kBrake);
 			return config;
+		}
+	}
+
+	public static final class CoralPivotConstants {
+
+		public static final double kRotorRotationsPerOutputRotation = 25.0 / 1.0; // Rotor to unit distance
+
+		public static final ServoMotorSubsystemConstants kHoodServoConstants = new ServoMotorSubsystemConstants();
+		public static final AbsoluteEncoderConstants kHoodEncoderConstants = new AbsoluteEncoderConstants();
+
+		public static final double kHomingVoltage = -2.0;
+		public static final double kHomingCurrentThreshold = 10.0;
+		public static final double kMinHomingTime = 0.2;
+		public static final double kMaxHomingTime = 4.0;
+
+		static {
+			kHoodServoConstants.kName = "CoralPivot";
+
+			kHoodServoConstants.kMainConstants.id = Ports.CORAL_PIVOT;
+			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
+
+			kHoodServoConstants.kHomePosition = 0; // Degrees
+			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0) /* (7.16 / 1.0)*/; // Cancoder to unit distance
+			kHoodServoConstants.kKp = 100;
+			kHoodServoConstants.kKi = 0;
+			kHoodServoConstants.kKd = 0.0;
+			kHoodServoConstants.kKg = 0.7;
+			kHoodServoConstants.kKs = 0.0;
+			kHoodServoConstants.kDeadband = 0; // Ticks
+
+			kHoodServoConstants.kMinUnitsLimit = 15.0;
+			kHoodServoConstants.kMaxUnitsLimit = 62.0;
+
+			kHoodServoConstants.kCruiseVelocity = 200.0; // degrees / s
+			kHoodServoConstants.kAcceleration = 2400.0; // degrees / s^2
+
+			kHoodServoConstants.kEnableSupplyCurrentLimit = true;
+			kHoodServoConstants.kSupplyCurrentLimit = 40;
+			kHoodServoConstants.kSupplyCurrentThreshold = 40;
+
+			kHoodServoConstants.kEnableStatorCurrentLimit = true;
+			kHoodServoConstants.kStatorCurrentLimit = 40;
+
+			kHoodServoConstants.kMaxForwardOutput = 4.0;
+			kHoodServoConstants.kMaxReverseOutput = -4.0;//12
+
+			kHoodServoConstants.kRampRate = 0.0;
+
+			kHoodServoConstants.kNeutralMode = NeutralModeValue.Coast;
+
+			kHoodEncoderConstants.encoder_type = FeedbackSensorSourceValue.RemoteCANcoder; //FusedCANcoder
+			kHoodEncoderConstants.remote_encoder_port = Ports.CORAL_CANCODER;
+			kHoodEncoderConstants.rotor_rotations_per_output = 314.0;
+			kHoodEncoderConstants.remote_encoder_offset = 81;
 		}
 	}
 

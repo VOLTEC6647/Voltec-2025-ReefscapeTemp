@@ -19,20 +19,20 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AlgaeHolder extends Subsystem {
-	private static AlgaeHolder mInstance;
+public class CoralRoller extends Subsystem {
+	private static CoralRoller mInstance;
 
-	public static AlgaeHolder getInstance() {
+	public static CoralRoller getInstance() {
 		if (mInstance == null) {
-			mInstance = new AlgaeHolder();
+			mInstance = new CoralRoller();
 		}
 		return mInstance;
 	}
 
 	public enum State {
 		IDLE(0.0),
-		DEPLOYING(1.0),
-		RETRACTING(-1.0);
+		INTAKING(1.0),
+		OUTAKING(-1.0);
 
 		public double holder_voltage;
 
@@ -41,15 +41,15 @@ public class AlgaeHolder extends Subsystem {
 		}
 	}
 
-	private final SparkMax mHolder;
+	private final SparkMax mRoller;
 
 	private State mState = State.IDLE;
 	private PeriodicIO mPeriodicIO = new PeriodicIO();
 
-	private AlgaeHolder() {
-        mHolder = new SparkMax(Ports.ALGAE_HOLDER.getDeviceNumber(), MotorType.kBrushless);
-        mHolder.configure(AlgaeHolderConstants.SparkMaxConfig(),ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-		mHolder.setInverted(false);
+	private CoralRoller() {
+        mRoller = new SparkMax(Ports.CORAL_ROLLER.getDeviceNumber(), MotorType.kBrushless);
+        mRoller.configure(AlgaeHolderConstants.SparkMaxConfig(),ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+		mRoller.setInverted(false);
 	}
 
 	public void registerEnabledLoops(ILooper enabledLooper) {
@@ -121,13 +121,13 @@ public class AlgaeHolder extends Subsystem {
 
 	@Override
 	public void readPeriodicInputs() {
-		mPeriodicIO.holder_output_voltage = mHolder.getAppliedOutput();
-		mPeriodicIO.holder_stator_current = mHolder.getOutputCurrent();
+		mPeriodicIO.holder_output_voltage = mRoller.getAppliedOutput();
+		mPeriodicIO.holder_stator_current = mRoller.getOutputCurrent();
 	}
 
 	@Override
 	public void writePeriodicOutputs() {
-		mHolder.setVoltage(mPeriodicIO.holder_demand);
+		mRoller.setVoltage(mPeriodicIO.holder_demand);
 	}
 
 	@Override

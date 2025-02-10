@@ -41,9 +41,11 @@ public class Ports {
 	public static final CanDeviceId ALGAE_ROLLER1 = new CanDeviceId(15, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId ALGAE_ROLLER2 = new CanDeviceId(16, DriveConstants.mechanismsCANBus);
 
-	public static final CanDeviceId ALGAE_HOLDER = new CanDeviceId(17, DriveConstants.mechanismsCANBus);
+	public static final CanDeviceId ALGAE_HOLDER = new CanDeviceId(17, "rio");
 
-	public static final CanDeviceId CORAL_INTAKE = new CanDeviceId(18, DriveConstants.mechanismsCANBus);
+	public static final CanDeviceId CORAL_ROLLER = new CanDeviceId(21, "rio");
+
+	//public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(18, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(19, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId CORAL_CANCODER = new CanDeviceId(20, DriveConstants.mechanismsCANBus);
 

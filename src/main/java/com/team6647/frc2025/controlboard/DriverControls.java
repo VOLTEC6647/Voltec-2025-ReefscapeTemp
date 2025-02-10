@@ -18,6 +18,7 @@ import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
+import com.team6647.frc2025.subsystems.CoralRoller;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
@@ -57,6 +58,8 @@ public class DriverControls {
 	private MotorTest mMotorTest = MotorTest.getInstance();
 	private AlgaeRollers mAlgaeRollers = AlgaeRollers.getInstance();
 	private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
+	private CoralRoller mCoralRoller = CoralRoller.getInstance();
+
 
 	/* TWO CONTROLLERS */
 
@@ -151,24 +154,34 @@ public class DriverControls {
 			//coralPlacer.stop();
 			s.showSource();
 		}
+		//if(mControlBoard.operator.leftTrigger.wasActivated()){
+		//	mAlgaeRollers.setState(AlgaeRollers.State.INTAKING);
+		//}
+		//if(mControlBoard.operator.rightTrigger.wasActivated()){
+		//	mAlgaeRollers.setState(AlgaeRollers.State.EXHAUST);
+		//}
+		//if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
+		//	mAlgaeRollers.setState(AlgaeRollers.State.IDLE);
+		//}
+
+		//if(mControlBoard.operator.leftTrigger.wasActivated()){
+		//	mAlgaeHolder.setState(AlgaeHolder.State.RETRACTING);
+		//}
+		//if(mControlBoard.operator.rightTrigger.wasActivated()){
+		//	mAlgaeHolder.setState(AlgaeHolder.State.DEPLOYING);
+		//}
+		//if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
+		//	mAlgaeHolder.setState(AlgaeHolder.State.IDLE);
+		//}
+
 		if(mControlBoard.operator.leftTrigger.wasActivated()){
-			mAlgaeRollers.setState(AlgaeRollers.State.INTAKING);
+			mCoralRoller.setState(CoralRoller.State.INTAKING);
 		}
 		if(mControlBoard.operator.rightTrigger.wasActivated()){
-			mAlgaeRollers.setState(AlgaeRollers.State.EXHAUST);
+			mCoralRoller.setState(CoralRoller.State.OUTAKING);
 		}
 		if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
-			mAlgaeRollers.setState(AlgaeRollers.State.IDLE);
-		}
-
-		if(mControlBoard.operator.leftBumper.wasActivated()){
-			mAlgaeHolder.setState(AlgaeHolder.State.RETRACTING);
-		}
-		if(mControlBoard.operator.rightBumper.wasActivated()){
-			mAlgaeHolder.setState(AlgaeHolder.State.DEPLOYING);
-		}
-		if(mControlBoard.operator.leftBumper.wasReleased()||mControlBoard.operator.rightBumper.wasReleased()){
-			mAlgaeHolder.setState(AlgaeHolder.State.IDLE);
+			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
 
 	}
