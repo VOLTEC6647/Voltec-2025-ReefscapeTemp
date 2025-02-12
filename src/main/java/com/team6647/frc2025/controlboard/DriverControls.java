@@ -66,6 +66,7 @@ public class DriverControls {
 	//driver/operator
 	@SuppressWarnings("unused")
 	public void twoControllerMode() {
+		/*
 		if(mControlBoard.operator.aButton.wasActivated()){
 			mMotorTest.setState(MotorTest.State.FORWARD);
 		}
@@ -79,6 +80,7 @@ public class DriverControls {
 		if (mControlBoard.operator.bButton.wasReleased()) {
 			mMotorTest.setState(MotorTest.State.IDLE);
 		}
+			 */
 		
 		if(mControlBoard.driver.yButton.wasActivated()){
 			if(mAssistedActionsExecutor == null){

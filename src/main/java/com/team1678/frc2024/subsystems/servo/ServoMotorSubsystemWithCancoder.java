@@ -62,6 +62,7 @@ public class ServoMotorSubsystemWithCancoder extends ServoMotorSubsystem {
 		return;
 	}
 
+	@Override
 	public synchronized void setPosition(double value) {
 		mCancoder.setPosition(value);
 	}

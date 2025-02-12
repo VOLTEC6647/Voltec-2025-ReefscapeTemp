@@ -14,6 +14,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
 import com.team1678.frc2024.subsystems.Subsystem;
+import com.team1678.lib.requests.Request;
 import com.team254.lib.drivers.CanDeviceId;
 import com.team254.lib.drivers.Phoenix6Util;
 import com.team254.lib.drivers.TalonFXFactory;
@@ -62,6 +63,7 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 
 		public NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
 		public double kHomePosition = 0.0; // Units
+		public double kTolerance = 0.0; // Units
 		public double kRotationsPerUnitDistance = 1.0;
 		public double kSoftLimitDeadband = 0.0;
 		public double kKp = 0; // Raw output / raw error
@@ -185,8 +187,8 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 		mMainConfig.Slot1.kI = mConstants.kPositionKi;
 		mMainConfig.Slot1.kD = mConstants.kPositionKd;
 		mMainConfig.Slot1.kV = mConstants.kVelocityFeedforward;
-		mMainConfig.MotionMagic.MotionMagicCruiseVelocity = unitsToRotations(mConstants.kCruiseVelocity);
-		mMainConfig.MotionMagic.MotionMagicAcceleration = unitsToRotations(mConstants.kAcceleration);
+		mMainConfig.MotionMagic.MotionMagicCruiseVelocity = mConstants.kCruiseVelocity;
+		mMainConfig.MotionMagic.MotionMagicAcceleration = mConstants.kAcceleration;
 		mMainConfig.MotionMagic.MotionMagicJerk = mConstants.kJerk;
 
 		mMainConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = mConstants.kRampRate;
@@ -401,6 +403,10 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 	}
 
 	public synchronized void handleMainReset(boolean reset) {}
+
+	public synchronized void setPosition(double value) {
+		mMain.setPosition(value);
+	}
 
 	@Override
 	public void registerEnabledLoops(ILooper mEnabledLooper) {
@@ -638,4 +644,20 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 		}
 		return true;
 	}
+
+	public synchronized boolean inTolerance() {
+		return Util.epsilonEquals(mPeriodicIO.position_units, getSetpoint(), mConstants.kTolerance);
+	}
+
+	public Request waitRequest() {
+    return new Request() {
+        @Override
+        public void act() {}
+        
+        @Override
+        public boolean isFinished() {
+            return inTolerance();
+        }
+    };
+}
 }

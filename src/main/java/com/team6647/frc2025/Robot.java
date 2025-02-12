@@ -19,6 +19,7 @@ import com.team1678.frc2024.loops.Looper;
 import com.team1678.frc2024.paths.TrajectoryGenerator1678;
 import com.team1678.frc2024.subsystems.Cancoders;
 import com.team1678.frc2024.subsystems.CoralPivot;
+import com.team1678.frc2024.subsystems.CoralPivotSolo;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.limelight.Limelight;
 import com.team1678.frc2024.subsystems.limelight.Limelight.Pipeline;
@@ -87,7 +88,7 @@ public class Robot extends LoggedRobot {
 	private MotorTest mMotorTest;
 	private AlgaeRollers mAlgaeRollers;
 	private AlgaeHolder mAlgaeHolder;
-	private CoralPivot mCoralPivot;
+	private CoralPivotSolo mCoralPivot;
 	private CoralRoller mCoralRoller;
 
 
@@ -139,7 +140,7 @@ public class Robot extends LoggedRobot {
 		//mMotorTest = MotorTest.getInstance();
 		mAlgaeRollers = AlgaeRollers.getInstance();
 		mAlgaeHolder = AlgaeHolder.getInstance();
-		mCoralPivot = CoralPivot.getInstance();
+		mCoralPivot = CoralPivotSolo.getInstance();
 		mCoralRoller = CoralRoller.getInstance();
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
