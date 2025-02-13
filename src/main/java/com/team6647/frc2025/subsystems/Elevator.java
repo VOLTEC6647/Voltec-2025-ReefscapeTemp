@@ -30,7 +30,7 @@ public class Elevator extends ServoMotorSubsystem {
 	}
 
 	public static final double kL1Height = 0.0;
-	public static final double kL2Height = 0.0;
+	public static final double kL2Height = 10.0;
 	public static final double kL3Height = 0.0;
 	public static final double kL4Height = 0.0;
 
@@ -107,6 +107,8 @@ public class Elevator extends ServoMotorSubsystem {
 	public void outputTelemetry() {
 		SmartDashboard.putBoolean(mConstants.kName + "/Homing", mHoming);
 		SmartDashboard.putBoolean(mConstants.kName + "/Within Homing Window", atHomingLocation());
+		SmartDashboard.putNumber(mConstants.kName + "/Setpoint", getSetpoint());
+
 
 		super.outputTelemetry();
 	}

@@ -136,8 +136,8 @@ public class Constants1678 {
 		/*** MODULE SPECIFIC CONSTANTS ***/
 		/* Front Left Module - Module 0 */
 		public static final class Mod0 {
-			public static final double compAngleOffset = 0;
-			public static final double epsilonAngleOffset = 0.720947;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.087402).getDegrees();
+			public static final double compAngleOffset = 1.057373;
+			public static final double epsilonAngleOffset = 0;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.087402).getDegrees();
 
 			public static SwerveModuleConstants SwerveModuleConstants() {
 				return new SwerveModuleConstants(
@@ -151,8 +151,8 @@ public class Constants1678 {
 
 		/* Front Right Module - Module 1 */
 		public static final class Mod1 {
-			public static final double compAngleOffset = 254.880;
-			public static final double epsilonAngleOffset = 0.931641;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.885010).getDegrees();
+			public static final double compAngleOffset = 0.880615;
+			public static final double epsilonAngleOffset = 0;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.885010).getDegrees();
 
 			
 			public static SwerveModuleConstants SwerveModuleConstants() {
@@ -167,8 +167,8 @@ public class Constants1678 {
 
 		/* Back Left Module - Module 2 */
 		public static final class Mod2 {
-			public static final double compAngleOffset = 180.0;
-			public static final double epsilonAngleOffset = 0.596924;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.476807).getDegrees();;
+			public static final double compAngleOffset = 0.143311;
+			public static final double epsilonAngleOffset = 0;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.476807).getDegrees();;
 
 			public static SwerveModuleConstants SwerveModuleConstants() {
 				return new SwerveModuleConstants(
@@ -182,8 +182,8 @@ public class Constants1678 {
 
 		/* Back Right Module - Module 3 */
 		public static final class Mod3 {
-			public static final double compAngleOffset = 181.5822;
-			public static final double epsilonAngleOffset = 0.021973;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.532471).getDegrees();
+			public static final double compAngleOffset = 0.526855;
+			public static final double epsilonAngleOffset = 0;//edu.wpi.first.math.geometry.Rotation2d.fromRotations(0.532471).getDegrees();
 
 			public static SwerveModuleConstants SwerveModuleConstants() {
 				return new SwerveModuleConstants(

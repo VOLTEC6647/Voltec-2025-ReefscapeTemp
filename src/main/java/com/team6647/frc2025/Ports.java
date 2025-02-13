@@ -51,8 +51,8 @@ public class Ports {
 
 	public static final CanDeviceId TESTING_MOTOR = new CanDeviceId(55, DriveConstants.mechanismsCANBus);
 
-	public static final CanDeviceId ELEVATOR_MAIN = new CanDeviceId(-13, DriveConstants.mechanismsCANBus);
-	public static final CanDeviceId ELEVATOR_FOLLOWER = new CanDeviceId(-14, DriveConstants.mechanismsCANBus);
+	public static final CanDeviceId ELEVATOR_MAIN = new CanDeviceId(13, DriveConstants.mechanismsCANBus);
+	public static final CanDeviceId ELEVATOR_FOLLOWER = new CanDeviceId(14, DriveConstants.mechanismsCANBus);
 
 
 	public static final int PIGEON = 13;

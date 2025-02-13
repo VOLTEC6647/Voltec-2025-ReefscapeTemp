@@ -6,6 +6,7 @@ import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystemWithCancoder;
+import com.team1678.lib.TunableNumber;
 import com.team1678.lib.requests.Request;
 import com.team1678.lib.util.Stopwatch;
 import com.team254.lib.util.Util;
@@ -26,6 +27,24 @@ public class CoralPivotSolo extends ServoMotorSubsystem {
 					CoralPivotConstants.kHoodServoConstants);
 		}
 		return mInstance;
+	}
+
+	private static TunableNumber depositing = new TunableNumber(Constants.CoralPivotConstants.kHoodServoConstants.kName + "/POSdepositing", 1, false);
+	private static TunableNumber intaking = new TunableNumber(Constants.CoralPivotConstants.kHoodServoConstants.kName + "/POSdeploying", 2, false);
+
+	public enum PivotPosition {
+		DEPOSITING(depositing.get()),
+		INTAKING(intaking.get());
+
+		private final double position;
+
+		private PivotPosition(double position) {
+			this.position = position;
+		}
+
+		public double getPosition() {
+			return position;
+		}
 	}
 
 	private CoralPivotSolo(final ServoMotorSubsystemConstants constants) {

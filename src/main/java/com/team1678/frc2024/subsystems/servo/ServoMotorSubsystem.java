@@ -234,7 +234,7 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 			followerConfig.MotorOutput.NeutralMode = mConstants.kNeutralMode;
 			followerConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
 			followerConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
-			follower.setControl(new Follower(mConstants.kMainConstants.id.getDeviceNumber(), false));
+			follower.setControl(new Follower(mConstants.kMainConstants.id.getDeviceNumber(), mConstants.kMainConstants.counterClockwisePositive));
 
 			TalonUtil.applyAndCheckConfiguration(follower, followerConfig);
 		}

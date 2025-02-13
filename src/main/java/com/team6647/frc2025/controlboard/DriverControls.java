@@ -19,6 +19,7 @@ import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
 import com.team6647.frc2025.subsystems.CoralRoller;
+import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
@@ -59,6 +60,7 @@ public class DriverControls {
 	private AlgaeRollers mAlgaeRollers = AlgaeRollers.getInstance();
 	private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
 	private CoralRoller mCoralRoller = CoralRoller.getInstance();
+	private Elevator mElevator = Elevator.getInstance();
 
 
 	/* TWO CONTROLLERS */
@@ -184,6 +186,12 @@ public class DriverControls {
 		}
 		if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
 			mCoralRoller.setState(CoralRoller.State.IDLE);
+		}
+
+		if(mControlBoard.operator.xButton.wasActivated()){
+			s.request(mElevator.L2Request());
+			//mElevator.setSetpointMotionMagic(20);
+			System.out.println(mElevator.getSetpoint());
 		}
 
 	}

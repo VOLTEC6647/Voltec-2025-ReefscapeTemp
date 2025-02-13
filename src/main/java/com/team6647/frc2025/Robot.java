@@ -36,6 +36,7 @@ import com.team254.lib.trajectory.timing.TimedState;
 import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
 import com.team6647.frc2025.subsystems.CoralRoller;
+import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 
@@ -88,8 +89,11 @@ public class Robot extends LoggedRobot {
 	private MotorTest mMotorTest;
 	private AlgaeRollers mAlgaeRollers;
 	private AlgaeHolder mAlgaeHolder;
-	private CoralPivotSolo mCoralPivot;
+	private CoralPivot mCoralPivot;
 	private CoralRoller mCoralRoller;
+
+	private Elevator mElevator;
+
 
 
 
@@ -140,8 +144,9 @@ public class Robot extends LoggedRobot {
 		//mMotorTest = MotorTest.getInstance();
 		mAlgaeRollers = AlgaeRollers.getInstance();
 		mAlgaeHolder = AlgaeHolder.getInstance();
-		mCoralPivot = CoralPivotSolo.getInstance();
+		mCoralPivot = CoralPivot.getInstance();
 		mCoralRoller = CoralRoller.getInstance();
+		mElevator = Elevator.getInstance();
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
@@ -193,7 +198,8 @@ public class Robot extends LoggedRobot {
 				mAlgaeRollers,
 				mAlgaeHolder,
 				mCoralPivot,
-				mCoralRoller	
+				mElevator,
+				mCoralRoller
 
 			);
 			// spotless:on
