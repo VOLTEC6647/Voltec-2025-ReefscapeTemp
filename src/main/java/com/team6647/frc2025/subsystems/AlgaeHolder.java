@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AlgaeHolder extends Subsystem {
 	private static AlgaeHolder mInstance;
+	//private double 
 
 	public static AlgaeHolder getInstance() {
 		if (mInstance == null) {
@@ -60,6 +61,7 @@ public class AlgaeHolder extends Subsystem {
 			@Override
 			public void onLoop(double timestamp) {
 				mPeriodicIO.holder_demand = mState.holder_voltage;
+				//.
 			}
 
 			@Override
@@ -71,6 +73,8 @@ public class AlgaeHolder extends Subsystem {
 		// Inputs
 		private double holder_output_voltage;
 		private double holder_stator_current;
+		private double positionSegment;
+		private boolean moving = false;
 
 		// Outputs
 		private double holder_demand;
@@ -128,6 +132,7 @@ public class AlgaeHolder extends Subsystem {
 	@Override
 	public void writePeriodicOutputs() {
 		mHolder.setVoltage(mPeriodicIO.holder_demand);
+		
 	}
 
 	@Override

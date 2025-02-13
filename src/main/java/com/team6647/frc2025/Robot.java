@@ -197,8 +197,8 @@ public class Robot extends LoggedRobot {
 				//mMotorTest,
 				mAlgaeRollers,
 				mAlgaeHolder,
-				mCoralPivot,
-				mElevator,
+				//mCoralPivot,
+				//mElevator,
 				mCoralRoller
 
 			);

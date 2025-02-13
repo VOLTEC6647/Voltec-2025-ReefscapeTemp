@@ -168,16 +168,17 @@ public class DriverControls {
 		//	mAlgaeRollers.setState(AlgaeRollers.State.IDLE);
 		//}
 
-		//if(mControlBoard.operator.leftTrigger.wasActivated()){
-		//	mAlgaeHolder.setState(AlgaeHolder.State.RETRACTING);
-		//}
-		//if(mControlBoard.operator.rightTrigger.wasActivated()){
-		//	mAlgaeHolder.setState(AlgaeHolder.State.DEPLOYING);
-		//}
-		//if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
-		//	mAlgaeHolder.setState(AlgaeHolder.State.IDLE);
-		//}
+		if(mControlBoard.operator.leftTrigger.wasActivated()){
+			mAlgaeHolder.setState(AlgaeHolder.State.RETRACTING);
+		}
+		if(mControlBoard.operator.rightTrigger.wasActivated()){
+			mAlgaeHolder.setState(AlgaeHolder.State.DEPLOYING);
+		}
+		if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
+			mAlgaeHolder.setState(AlgaeHolder.State.IDLE);
+		}
 
+		/*
 		if(mControlBoard.operator.leftTrigger.wasActivated()){
 			mCoralRoller.setState(CoralRoller.State.INTAKING);
 		}
@@ -193,6 +194,7 @@ public class DriverControls {
 			//mElevator.setSetpointMotionMagic(20);
 			System.out.println(mElevator.getSetpoint());
 		}
+			 */
 
 	}
 

@@ -114,6 +114,7 @@ public class Constants {
 			config.idleMode(IdleMode.kBrake);
 			return config;
 		}
+		public double movementThreshold = 5.0;
 	}
 
 	public static final class CoralPivotConstants {
