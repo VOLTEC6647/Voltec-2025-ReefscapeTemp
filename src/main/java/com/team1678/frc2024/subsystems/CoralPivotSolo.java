@@ -14,12 +14,14 @@ import com.team6647.frc2025.Constants;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.Ports;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralPivotSolo extends ServoMotorSubsystem {
 	private static CoralPivotSolo mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
+	private DutyCycleEncoder mCoralEncoder;
 
 	public static CoralPivotSolo getInstance() {
 		if (mInstance == null) {
@@ -52,12 +54,13 @@ public class CoralPivotSolo extends ServoMotorSubsystem {
 		zeroSensors();
 		changeTalonConfig((conf) -> {
 			conf.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-			conf.Feedback.FeedbackRemoteSensorID = Ports.CORAL_CANCODER.getDeviceNumber();
-			conf.Feedback.RotorToSensorRatio = (CoralPivotConstants.kRotorRotationsPerOutputRotation)
-					/ (mConstants.kRotationsPerUnitDistance * 360.0);
-			conf.Feedback.SensorToMechanismRatio = 1.0;
+			
+			//conf.Feedback.RotorToSensorRatio = (CoralPivotConstants.kRotorRotationsPerOutputRotation)
+			//		/ (mConstants.kRotationsPerUnitDistance * 360.0);
+			conf.Feedback.SensorToMechanismRatio = 25.0/360.0;
 			return conf;
 		});
+		mCoralEncoder = new DutyCycleEncoder(Ports.CORAL_ENCODER);
 		setPosition(CoralPivotConstants.kHoodEncoderConstants.remote_encoder_offset);
 	}
 
@@ -101,6 +104,7 @@ public class CoralPivotSolo extends ServoMotorSubsystem {
 	@Override
 	public synchronized void outputTelemetry() {
 		SmartDashboard.putBoolean(mConstants.kName + "/homing", mHoming);
+		SmartDashboard.putNumber(mConstants.kName + "/encoder", mCoralEncoder.get());
 		super.outputTelemetry();
 	}
 	

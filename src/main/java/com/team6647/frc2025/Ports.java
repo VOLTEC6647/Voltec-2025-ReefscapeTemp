@@ -48,6 +48,7 @@ public class Ports {
 	//public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(18, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(19, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId CORAL_CANCODER = new CanDeviceId(20, DriveConstants.mechanismsCANBus);
+	public static final int CORAL_ENCODER = 0;
 
 	public static final CanDeviceId TESTING_MOTOR = new CanDeviceId(55, DriveConstants.mechanismsCANBus);
 
