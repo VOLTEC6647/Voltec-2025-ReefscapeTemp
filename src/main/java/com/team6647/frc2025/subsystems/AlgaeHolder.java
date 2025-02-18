@@ -21,7 +21,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AlgaeHolder extends Subsystem {
 	private static AlgaeHolder mInstance;
-	//private double 
+	//private double isMoving = false;
+	private double lastChangeTimestamp;
+	private double lastPosition;
 
 	public static AlgaeHolder getInstance() {
 		if (mInstance == null) {
@@ -50,18 +52,35 @@ public class AlgaeHolder extends Subsystem {
 	private AlgaeHolder() {
         mHolder = new SparkMax(Ports.ALGAE_HOLDER.getDeviceNumber(), MotorType.kBrushless);
         mHolder.configure(AlgaeHolderConstants.SparkMaxConfig(),ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-		mHolder.setInverted(false);
+		mHolder.setInverted(true);
 	}
 
 	public void registerEnabledLoops(ILooper enabledLooper) {
 		enabledLooper.register(new Loop() {
 			@Override
-			public void onStart(double timestamp) {}
+			public void onStart(double timestamp) {
+				lastChangeTimestamp = timestamp;
+				lastPosition = mHolder.getEncoder().getPosition();
+			}
 
 			@Override
 			public void onLoop(double timestamp) {
 				mPeriodicIO.holder_demand = mState.holder_voltage;
-				//.
+				if(mState == State.IDLE){
+					lastChangeTimestamp = timestamp;
+					lastPosition = mHolder.getEncoder().getPosition();
+				}else{
+					if (timestamp-lastChangeTimestamp>0.5){
+						if(Math.abs(Math.abs(mHolder.getEncoder().getPosition())-Math.abs(lastPosition))<AlgaeHolderConstants.movementThreshold){
+							mPeriodicIO.moving = false;
+							setState(State.IDLE);
+						}else{
+							mPeriodicIO.moving = true;
+							lastChangeTimestamp = timestamp;
+							lastPosition = mHolder.getEncoder().getPosition();
+						}
+					}
+				}
 			}
 
 			@Override
@@ -73,6 +92,7 @@ public class AlgaeHolder extends Subsystem {
 		// Inputs
 		private double holder_output_voltage;
 		private double holder_stator_current;
+
 		private double positionSegment;
 		private boolean moving = false;
 
@@ -149,5 +169,8 @@ public class AlgaeHolder extends Subsystem {
 	public void outputTelemetry() {
 		SmartDashboard.putString("AlgaeHolder/State", mState.toString());
 		SmartDashboard.putData("AlgaeHolder/IO", mPeriodicIO);
+		SmartDashboard.putNumber("AlgaeHolder/Position", mHolder.getEncoder().getPosition());
+		SmartDashboard.putBoolean("AlgaeHolder/Moving", mPeriodicIO.moving);
+		SmartDashboard.putNumber("AlgaeHolder/LastTimestamp", lastChangeTimestamp);
 	}
 }

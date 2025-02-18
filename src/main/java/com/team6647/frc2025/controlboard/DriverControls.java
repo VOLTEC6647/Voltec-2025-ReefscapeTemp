@@ -188,13 +188,14 @@ public class DriverControls {
 		if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
 			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
+			*/
 
 		if(mControlBoard.operator.xButton.wasActivated()){
-			s.request(mElevator.L2Request());
-			//mElevator.setSetpointMotionMagic(20);
+			//s.request(mElevator.L2Request());
+			mElevator.setSetpointMotionMagic(20);
 			System.out.println(mElevator.getSetpoint());
 		}
-			 */
+			 
 
 	}
 

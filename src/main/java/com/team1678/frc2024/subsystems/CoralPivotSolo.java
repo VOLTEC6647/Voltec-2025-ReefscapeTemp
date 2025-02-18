@@ -12,6 +12,7 @@ import com.team1678.lib.util.Stopwatch;
 import com.team254.lib.util.Util;
 import com.team6647.frc2025.Constants;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
+import com.team6647.frc2025.Constants.CoralPivotConstantsSolo;
 import com.team6647.frc2025.Ports;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -22,6 +23,7 @@ public class CoralPivotSolo extends ServoMotorSubsystem {
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
 	private DutyCycleEncoder mCoralEncoder;
+	private boolean reset = true;
 
 	public static CoralPivotSolo getInstance() {
 		if (mInstance == null) {
@@ -57,11 +59,13 @@ public class CoralPivotSolo extends ServoMotorSubsystem {
 			
 			//conf.Feedback.RotorToSensorRatio = (CoralPivotConstants.kRotorRotationsPerOutputRotation)
 			//		/ (mConstants.kRotationsPerUnitDistance * 360.0);
-			conf.Feedback.SensorToMechanismRatio = 25.0/360.0;
+			conf.Feedback.SensorToMechanismRatio = Constants.CoralPivotConstantsSolo.kHoodEncoderConstants.rotor_rotations_per_output;
 			return conf;
 		});
-		mCoralEncoder = new DutyCycleEncoder(Ports.CORAL_ENCODER);
-		setPosition(CoralPivotConstants.kHoodEncoderConstants.remote_encoder_offset);
+		//mCoralEncoder = new DutyCycleEncoder(Ports.CORAL_ENCODER);
+		
+		setPosition(0);
+		setSetpointMotionMagic(0);
 	}
 
 	@Override
@@ -85,17 +89,20 @@ public class CoralPivotSolo extends ServoMotorSubsystem {
 
 	@Override
 	public synchronized void writePeriodicOutputs() {
+		//if(reset&&){
+		//	setWantHome(true);
+		//}
 		if (mHoming) {
 			if (Math.abs(mPeriodicIO.main_stator_current) > CoralPivotConstants.kHomingCurrentThreshold
 					&& mHomingStart.getTime()
-							> CoralPivotConstants.kMinHomingTime) { // Stop homing if we've hit a hardstop
+							> CoralPivotConstantsSolo.kMinHomingTime) { // Stop homing if we've hit a hardstop
 				//setOpenLoop(0.0);
-				enableSoftLimits(true);
+				enableSoftLimits(false);
 				mHoming = false;
-			} else if (mHomingStart.getTime() > CoralPivotConstants.kMaxHomingTime) {
+			} else if (mHomingStart.getTime() > CoralPivotConstantsSolo.kMaxHomingTime) {
 				mHoming = false;
 			} else {
-				setOpenLoop(CoralPivotConstants.kHomingVoltage / 12.0);
+				setOpenLoop(CoralPivotConstantsSolo.kHomingVoltage / 12.0);
 			}
 		}
 		super.writePeriodicOutputs();

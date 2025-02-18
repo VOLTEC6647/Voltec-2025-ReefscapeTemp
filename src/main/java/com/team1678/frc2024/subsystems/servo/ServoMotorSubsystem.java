@@ -199,8 +199,8 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 		mMainConfig.ClosedLoopRamps.VoltageClosedLoopRampPeriod = mConstants.kRampRate;
 		mMainConfig.ClosedLoopRamps.TorqueClosedLoopRampPeriod = mConstants.kRampRate;
 
-		mMainConfig.CurrentLimits.SupplyCurrentLimit = mConstants.kSupplyCurrentLimit+mConstants.kSupplyCurrentThreshold;
-		mMainConfig.CurrentLimits.SupplyCurrentLowerLimit = mConstants.kSupplyCurrentLimit-mConstants.kSupplyCurrentThreshold;
+		mMainConfig.CurrentLimits.SupplyCurrentLimit = mConstants.kSupplyCurrentLimit;//+mConstants.kSupplyCurrentThreshold;
+		//mMainConfig.CurrentLimits.SupplyCurrentLowerLimit = mConstants.kSupplyCurrentLimit-mConstants.kSupplyCurrentThreshold;
 		mMainConfig.CurrentLimits.SupplyCurrentLowerTime = mConstants.kSupplyCurrentTimeout; //SUS treshhold to lower
 		mMainConfig.CurrentLimits.SupplyCurrentLimitEnable = mConstants.kEnableSupplyCurrentLimit;
 

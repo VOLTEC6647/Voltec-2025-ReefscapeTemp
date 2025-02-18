@@ -89,7 +89,7 @@ public class Robot extends LoggedRobot {
 	private MotorTest mMotorTest;
 	private AlgaeRollers mAlgaeRollers;
 	private AlgaeHolder mAlgaeHolder;
-	private CoralPivot mCoralPivot;
+	private CoralPivotSolo mCoralPivot;
 	private CoralRoller mCoralRoller;
 
 	private Elevator mElevator;
@@ -144,7 +144,7 @@ public class Robot extends LoggedRobot {
 		//mMotorTest = MotorTest.getInstance();
 		mAlgaeRollers = AlgaeRollers.getInstance();
 		mAlgaeHolder = AlgaeHolder.getInstance();
-		mCoralPivot = CoralPivot.getInstance();
+		mCoralPivot = CoralPivotSolo.getInstance();
 		mCoralRoller = CoralRoller.getInstance();
 		mElevator = Elevator.getInstance();
 		
@@ -193,13 +193,13 @@ public class Robot extends LoggedRobot {
 			mSubsystemManager.setSubsystems(
 				//mDrive, 
 				mSuperstructure,
-				mVisionDevices,
+				//mVisionDevices,
 				//mMotorTest,
-				mAlgaeRollers,
-				mAlgaeHolder,
-				//mCoralPivot,
-				//mElevator,
-				mCoralRoller
+				//mAlgaeRollers,
+				//mAlgaeHolder,
+				mCoralPivot
+				//mElevator
+				//mCoralRoller
 
 			);
 			// spotless:on
@@ -274,7 +274,7 @@ public class Robot extends LoggedRobot {
 			VisionDeviceManager.setDisableVision(false);
 			mDisabledLooper.stop();
 			mEnabledLooper.start();
-
+			//mCoralPivot.setWantHome(true);
 			//mLimelight.setPipeline(Pipeline.TELEOP);
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
