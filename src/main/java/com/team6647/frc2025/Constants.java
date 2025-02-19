@@ -190,7 +190,7 @@ public class Constants {
 		public static final double kMaxHomingTime = 4.0;
 
 		static {
-			kHoodServoConstants.kName = "CoralPivot";
+			kHoodServoConstants.kName = "CoralPivotSolo";
 
 			kHoodServoConstants.kMainConstants.id = Ports.CORAL_PIVOT;
 			kHoodServoConstants.kMainConstants.counterClockwisePositive = true;
