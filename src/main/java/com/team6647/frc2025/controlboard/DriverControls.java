@@ -9,9 +9,12 @@ import org.littletonrobotics.junction.Logger;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team1678.frc2024.controlboard.ControlBoard;
+import com.team1678.frc2024.subsystems.CoralPivot;
+import com.team1678.frc2024.subsystems.CoralPivotSolo;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.Drive.DriveControlState;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
+import com.team6647.frc2025.Constants.CoralPivotConstantsSolo;
 import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.actions.AssistModeExecutor;
 import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
@@ -61,6 +64,8 @@ public class DriverControls {
 	private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
 	private CoralRoller mCoralRoller = CoralRoller.getInstance();
 	private Elevator mElevator = Elevator.getInstance();
+	private CoralPivotSolo mCoralPivot = CoralPivotSolo.getInstance();
+
 
 
 	/* TWO CONTROLLERS */
@@ -188,13 +193,20 @@ public class DriverControls {
 		if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
 			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
+			 */
 
 		if(mControlBoard.operator.xButton.wasActivated()){
-			s.request(mElevator.L2Request());
-			//mElevator.setSetpointMotionMagic(20);
-			System.out.println(mElevator.getSetpoint());
+			//s.request(mElevator.L2Request());
+			mCoralPivot.setSetpointMotionMagic(100);
+			System.out.println(mCoralPivot.getSetpoint());
 		}
-			 */
+
+		if(mControlBoard.operator.yButton.wasActivated()){
+			//s.request(mElevator.L2Request());
+			mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
+			System.out.println(mCoralPivot.getSetpoint());
+		}
+			
 
 	}
 
