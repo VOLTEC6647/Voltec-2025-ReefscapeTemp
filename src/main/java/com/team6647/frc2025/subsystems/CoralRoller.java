@@ -1,18 +1,13 @@
 package com.team6647.frc2025.subsystems;
 
-import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
 import com.team1678.frc2024.subsystems.Subsystem;
 import com.team1678.lib.requests.Request;
-import com.team254.lib.drivers.TalonUtil;
-import com.team6647.frc2025.Constants.AlgaeHolderConstants;
-import com.team6647.frc2025.Constants.AlgaeRollerConstants;
 import com.team6647.frc2025.Ports;
 
 import edu.wpi.first.util.sendable.Sendable;
@@ -41,15 +36,22 @@ public class CoralRoller extends Subsystem {
 		}
 	}
 
-	private final SparkMax mRoller;
+	//private final SparkMax mRoller;
+	private final TalonFX mRoller;
+	private final TalonFXConfiguration mConfig;
 
 	private State mState = State.IDLE;
-	private PeriodicIO mPeriodicIO = new PeriodicIO();
+	private final PeriodicIO mPeriodicIO = new PeriodicIO();
 
 	private CoralRoller() {
-        mRoller = new SparkMax(Ports.CORAL_ROLLER.getDeviceNumber(), MotorType.kBrushless);
-        mRoller.configure(AlgaeHolderConstants.SparkMaxConfig(),ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-		mRoller.setInverted(false);
+		mRoller = new TalonFX(Ports.CORAL_ROLLER.getDeviceNumber());
+		mConfig = new TalonFXConfiguration();
+
+		mRoller.setNeutralMode(NeutralModeValue.Brake);
+		mConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // this probably fucking broken idk
+		mConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+		mConfig.CurrentLimits.SupplyCurrentLimit = 30.0f;
+		mRoller.getConfigurator().apply(mConfig);
 	}
 
 	public void registerEnabledLoops(ILooper enabledLooper) {
@@ -121,8 +123,8 @@ public class CoralRoller extends Subsystem {
 
 	@Override
 	public void readPeriodicInputs() {
-		mPeriodicIO.holder_output_voltage = mRoller.getAppliedOutput();
-		mPeriodicIO.holder_stator_current = mRoller.getOutputCurrent();
+		mPeriodicIO.holder_output_voltage = mRoller.getMotorOutputStatus().getValueAsDouble(); // maybe we need to check idk
+		mPeriodicIO.holder_stator_current = mRoller.getStatorCurrent().getValueAsDouble();
 	}
 
 	@Override
