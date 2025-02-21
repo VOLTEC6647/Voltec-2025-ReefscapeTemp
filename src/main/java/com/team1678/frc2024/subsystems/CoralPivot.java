@@ -1,9 +1,12 @@
 package com.team1678.frc2024.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
+import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystemWithCancoder;
 import com.team1678.lib.requests.Request;
 import com.team1678.lib.util.Stopwatch;
@@ -14,7 +17,7 @@ import com.team6647.frc2025.Ports;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class CoralPivot extends ServoMotorSubsystemWithCancoder {
+public class CoralPivot extends ServoMotorSubsystem {
 	private static CoralPivot mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
@@ -22,16 +25,16 @@ public class CoralPivot extends ServoMotorSubsystemWithCancoder {
 	public static CoralPivot getInstance() {
 		if (mInstance == null) {
 			mInstance = new CoralPivot(
-					CoralPivotConstants.kHoodServoConstants, CoralPivotConstants.kHoodEncoderConstants);
+					CoralPivotConstants.kHoodServoConstants);//, CoralPivotConstants.kHoodEncoderConstants
 		}
 		return mInstance;
 	}
 
-	private CoralPivot(final ServoMotorSubsystemConstants constants, final AbsoluteEncoderConstants encoder_constants) {
-		super(constants, encoder_constants);
+	private CoralPivot(final ServoMotorSubsystemConstants constants) {//, final AbsoluteEncoderConstants encoder_constants
+		super(constants);//, encoder_constants
 		zeroSensors();
 		changeTalonConfig((conf) -> {
-			conf.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+			conf.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
 			conf.Feedback.FeedbackRemoteSensorID = Ports.CORAL_CANCODER.getDeviceNumber();
 			conf.Feedback.RotorToSensorRatio = (CoralPivotConstants.kRotorRotationsPerOutputRotation)
 					/ (mConstants.kRotationsPerUnitDistance * 360.0);
@@ -68,6 +71,7 @@ public class CoralPivot extends ServoMotorSubsystemWithCancoder {
 				setOpenLoop(0.0);
 				setPosition(0.0);
 				enableSoftLimits(true);
+				zeroSensors();
 				mHoming = false;
 			} else if (mHomingStart.getTime() > CoralPivotConstants.kMaxHomingTime) {
 				mHoming = false;
@@ -80,7 +84,7 @@ public class CoralPivot extends ServoMotorSubsystemWithCancoder {
 
 	@Override
 	public synchronized void outputTelemetry() {
-		SmartDashboard.putBoolean(mConstants.kName + "/homing", mHoming);
+		Logger.recordOutput(mConstants.kName + "/homing", mHoming);
 		super.outputTelemetry();
 	}
 	

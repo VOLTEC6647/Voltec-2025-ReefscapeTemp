@@ -10,11 +10,9 @@ import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.subsystems.CoralPivot;
-import com.team1678.frc2024.subsystems.CoralPivotSolo;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.Drive.DriveControlState;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
-import com.team6647.frc2025.Constants.CoralPivotConstantsSolo;
 import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.actions.AssistModeExecutor;
 import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
@@ -64,7 +62,7 @@ public class DriverControls {
 	private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
 	private CoralRoller mCoralRoller = CoralRoller.getInstance();
 	private Elevator mElevator = Elevator.getInstance();
-	private CoralPivotSolo mCoralPivot = CoralPivotSolo.getInstance();
+	private CoralPivot mCoralPivot = CoralPivot.getInstance();
 
 
 
@@ -75,18 +73,22 @@ public class DriverControls {
 	public void twoControllerMode() {
 		
 		if(mControlBoard.operator.aButton.wasActivated()){
-			mMotorTest.setState(MotorTest.State.FORWARD);
+			mCoralPivot.setSetpointMotionMagic(140);
+			System.out.println(mCoralPivot.getSetpoint());
 		}
-		if (mControlBoard.operator.aButton.wasReleased()) {
-			mMotorTest.setState(MotorTest.State.IDLE);
+		
+		if (mControlBoard.operator.bButton.wasActivated()) {
+			
 			
 		}
+		/*
 		if(mControlBoard.operator.bButton.wasActivated()){
 			mMotorTest.setState(MotorTest.State.BACKWARD);
 		}
 		if (mControlBoard.operator.bButton.wasReleased()) {
 			mMotorTest.setState(MotorTest.State.IDLE);
 		}
+			 */
 			 
 		
 		if(mControlBoard.driver.yButton.wasActivated()){
@@ -210,6 +212,7 @@ public class DriverControls {
 			mElevator.setSetpointMotionMagic(20);
 		}
 			 */
+			 
 			
 
 	}

@@ -10,7 +10,7 @@ import com.team1678.frc2024.RobotState;
 import com.team1678.frc2024.SubsystemManager;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
-import com.team6647.frc2025.Constants.CoralPivotConstantsSolo;
+import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.auto.AutoModeSelector;
 import com.team6647.frc2025.auto.paths.TrajectoryGenerator;
 import com.team1678.frc2024.controlboard.ControlBoard;
@@ -20,7 +20,6 @@ import com.team1678.frc2024.loops.Looper;
 import com.team1678.frc2024.paths.TrajectoryGenerator1678;
 import com.team1678.frc2024.subsystems.Cancoders;
 import com.team1678.frc2024.subsystems.CoralPivot;
-import com.team1678.frc2024.subsystems.CoralPivotSolo;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.limelight.Limelight;
 import com.team1678.frc2024.subsystems.limelight.Limelight.Pipeline;
@@ -198,10 +197,10 @@ public class Robot extends LoggedRobot {
 				//mMotorTest,
 				//mAlgaeRollers,
 				//mAlgaeHolder,
-				//mCoralPivot
+				mCoralPivot
 				//mElevator
 				//mCoralRoller
-				mMotorTest
+				//mMotorTest
 
 			);
 			// spotless:on
@@ -278,7 +277,7 @@ public class Robot extends LoggedRobot {
 			mEnabledLooper.start();
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
-			mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
+			mCoralPivot.setWantHome(true);
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
 			throw t;

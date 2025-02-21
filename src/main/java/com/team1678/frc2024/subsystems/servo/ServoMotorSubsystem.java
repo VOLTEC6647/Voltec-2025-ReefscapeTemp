@@ -15,6 +15,7 @@ import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
 import com.team1678.frc2024.subsystems.Subsystem;
 import com.team1678.lib.requests.Request;
+import com.team1678.lib.swerve.SwerveModule.mPeriodicIO;
 import com.team254.lib.drivers.CanDeviceId;
 import com.team254.lib.drivers.Phoenix6Util;
 import com.team254.lib.drivers.TalonFXFactory;
@@ -33,6 +34,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.function.UnaryOperator;
+
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Abstract base class for a subsystem with a single sensored servo-mechanism.
@@ -297,48 +300,14 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 		TalonUtil.applyAndCheckConfiguration(mMain, mMainConfig);
 	}
 
-	public static class PeriodicIO implements Sendable {
-		// INPUTS
-		public double timestamp;
-		public double position_rots; // motor rotations
-		public double position_units;
-		public double velocity_rps;
-		public double prev_vel_rps;
-		public double output_percent;
-		public double output_voltage;
-		public double main_stator_current;
-		public double main_supply_current;
-		public double error_rotations;
-		public boolean reset_occured;
-		public double active_trajectory_position;
-		public double active_trajectory_velocity;
-		public double active_trajectory_acceleration;
-
-		// OUTPUTS
-		public double demand; // position (motor rots) or percent output
-
-		@Override
-		public void initSendable(SendableBuilder builder) {
-			builder.addDoubleProperty("PositionRots", () -> position_rots, null);
-			builder.addDoubleProperty("PositionUnits", () -> position_units, null);
-			builder.addDoubleProperty("VelocityRpS", () -> velocity_rps, null);
-			builder.addDoubleProperty("OutputVoltage", () -> output_voltage, null);
-			builder.addDoubleProperty("StatorCurrent", () -> main_stator_current, null);
-			builder.addDoubleProperty("SupplyCurrent", () -> main_supply_current, null);
-			builder.addDoubleProperty("ActiveTrajectoryPosition", () -> active_trajectory_position, null);
-			builder.addDoubleProperty("Demand", () -> demand, null);
-		}
-	}
-
 	protected enum ControlState {
 		OPEN_LOOP,
 		MOTION_MAGIC,
 		POSITION_PID
 	}
 
-	protected PeriodicIO mPeriodicIO = new PeriodicIO();
+	protected ServoMotorSubsystemIOInputsAutoLogged mPeriodicIO = new ServoMotorSubsystemIOInputsAutoLogged();
 	protected ControlState mControlState = ControlState.OPEN_LOOP;
-	protected ReflectingCSVWriter<PeriodicIO> mCSVWriter = null;
 	protected boolean mHasBeenZeroed = false;
 	protected StatusSignal<Integer> mMainStickyFault;
 
@@ -385,10 +354,7 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 					Math.signum(newVelocity - mPeriodicIO.active_trajectory_velocity) * mConstants.kAcceleration;
 		}
 		mPeriodicIO.active_trajectory_velocity = newVelocity;
-
-		if (mCSVWriter != null) {
-			mCSVWriter.add(mPeriodicIO);
-		}
+		Logger.processInputs(mConstants.kName+"/SSSSSS", mPeriodicIO);
 	}
 
 	@Override
@@ -437,10 +403,6 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 
 			@Override
 			public void onStop(double timestamp) {
-				if (mCSVWriter != null) {
-					mCSVWriter.flush();
-					mCSVWriter = null;
-				}
 
 				stop();
 			}
@@ -620,9 +582,11 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 
 	@Override
 	public synchronized void outputTelemetry() {
-		SmartDashboard.putNumber(mConstants.kName + "/position units", mPeriodicIO.position_units);
-		SmartDashboard.putNumber(mConstants.kName + "/position rots", mPeriodicIO.position_rots);
-		SmartDashboard.putData(mConstants.kName + "/IO", mPeriodicIO);
+		Logger.recordOutput(mConstants.kName + "/position units", mPeriodicIO.position_units);
+		//Logger.recordOutput(mConstants.kName + "/position units2", );
+		Logger.recordOutput(mConstants.kName + "/position rots", mPeriodicIO.position_rots);
+		Logger.recordOutput(mConstants.kName + "/mode", mMain.getControlMode().toString());
+
 	}
 
 	@Override

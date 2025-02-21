@@ -124,21 +124,23 @@ public class Constants {
 		public static final ServoMotorSubsystemConstants kHoodServoConstants = new ServoMotorSubsystemConstants();
 		public static final AbsoluteEncoderConstants kHoodEncoderConstants = new AbsoluteEncoderConstants();
 
-		public static final double kHomingVoltage = -2.0;
-		public static final double kHomingCurrentThreshold = 10.0;
+		public static final double kHomingVoltage = -3.5;
+		public static final double kHomingCurrentThreshold = 15.0;
 		public static final double kMinHomingTime = 0.2;
-		public static final double kMaxHomingTime = 4.0;
+		public static final double kMaxHomingTime = 10.0;
+
+        public static double kHomePosition = 0;
 
 		static {
 			kHoodServoConstants.kName = "CoralPivot";
 
 			kHoodServoConstants.kMainConstants.id = Ports.CORAL_PIVOT;
-			kHoodServoConstants.kMainConstants.counterClockwisePositive = true;
+			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
 
 			kHoodServoConstants.kHomePosition = 0; // Degrees
 			kHoodServoConstants.kTolerance = 1; // Degrees
-			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0) /* (7.16 / 1.0)*/; // Cancoder to unit distance
-			kHoodServoConstants.kKp = 30.0;
+			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0 * 75) /* (7.16 / 1.0)*/; // Cancoder to unit distance
+			kHoodServoConstants.kKp = 1.0;
 			kHoodServoConstants.kKi = 0;
 			kHoodServoConstants.kKd = 0.0;
 			kHoodServoConstants.kKg = 0;
@@ -152,84 +154,24 @@ public class Constants {
 			kHoodServoConstants.kAcceleration = 20.0; // degrees / s^2
 
 			kHoodServoConstants.kEnableSupplyCurrentLimit = true;
-			kHoodServoConstants.kSupplyCurrentLimit = 40;
-			kHoodServoConstants.kSupplyCurrentThreshold = 40;
+			kHoodServoConstants.kSupplyCurrentLimit = 120;
+			kHoodServoConstants.kSupplyCurrentThreshold = 0;
 
 			kHoodServoConstants.kEnableStatorCurrentLimit = true;
 			kHoodServoConstants.kStatorCurrentLimit = 40;
 
-			kHoodServoConstants.kMaxForwardOutput = 12.0;
-			kHoodServoConstants.kMaxReverseOutput = -12.0;//12
+			kHoodServoConstants.kMaxForwardOutput = 6.0;
+			kHoodServoConstants.kMaxReverseOutput = -6.0;//12
 
 			kHoodServoConstants.kRampRate = 0.0;
 
 			kHoodServoConstants.kNeutralMode = NeutralModeValue.Coast;
 
-			kHoodEncoderConstants.encoder_type = FeedbackSensorSourceValue.FusedCANcoder; //FusedCANcoder
+			kHoodEncoderConstants.encoder_type = FeedbackSensorSourceValue.RotorSensor; //FusedCANcoder
 			kHoodEncoderConstants.remote_encoder_port = Ports.CORAL_CANCODER;
-			kHoodEncoderConstants.rotor_rotations_per_output = 0.0;
-			kHoodEncoderConstants.remote_encoder_offset = 6.644531;
+			kHoodEncoderConstants.rotor_rotations_per_output = 1.0;
+			kHoodEncoderConstants.remote_encoder_offset = 0;
 		}
-	}
-
-	public static final class CoralPivotConstantsSolo {
-
-		public static final double kRotorRotationsPerOutputRotation = 25.0 / 1.0; // Rotor to unit distance
-
-		public static final ServoMotorSubsystemConstants kHoodServoConstants = new ServoMotorSubsystemConstants();
-		public static final AbsoluteEncoderConstants kHoodEncoderConstants = new AbsoluteEncoderConstants();
-
-		public static final double kHomingVoltage = -2.0;
-		public static final double kHomingCurrentThreshold = 10.0;
-		public static final double kMinHomingTime = 0.2;
-		public static final double kMaxHomingTime = 4.0;
-		public static final double kHomePosition = 30;
-
-		static {
-			kHoodServoConstants.kName = "CoralPivot";
-
-			kHoodServoConstants.kMainConstants.id = Ports.CORAL_PIVOT;
-			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
-
-			kHoodServoConstants.kHomePosition = 50; // Degrees
-			kHoodServoConstants.kTolerance = 1; // Degrees
-			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0) /* (7.16 / 1.0)*/; // Cancoder to unit distance
-			kHoodServoConstants.kKp = 30.0;
-			kHoodServoConstants.kKi = 0;
-			kHoodServoConstants.kKd = 0.0;
-			kHoodServoConstants.kKg = 0;
-			kHoodServoConstants.kKs = 0.0;
-			kHoodServoConstants.kDeadband = 0; // Ticks
-
-			//kHoodServoConstants.kMinUnitsLimit = 15.0;
-			//kHoodServoConstants.kMaxUnitsLimit = 62.0;
-
-			kHoodServoConstants.kCruiseVelocity = 200.0; // degrees / s
-			kHoodServoConstants.kAcceleration = 60.0; // degrees / s^2
-
-			kHoodServoConstants.kEnableSupplyCurrentLimit = true;
-			kHoodServoConstants.kSupplyCurrentLimit = 40;
-			kHoodServoConstants.kSupplyCurrentThreshold = 40;
-
-			kHoodServoConstants.kEnableStatorCurrentLimit = true;
-			kHoodServoConstants.kStatorCurrentLimit = 40;
-
-			kHoodServoConstants.kMaxForwardOutput = 12.0;
-			kHoodServoConstants.kMaxReverseOutput = -12.0;//12
-
-			kHoodServoConstants.kRampRate = 0.0;
-
-			kHoodServoConstants.kNeutralMode = NeutralModeValue.Coast;
-
-			kHoodEncoderConstants.encoder_type = FeedbackSensorSourceValue.FusedCANcoder; //FusedCANcoder
-			kHoodEncoderConstants.remote_encoder_port = Ports.CORAL_CANCODER;
-			kHoodEncoderConstants.rotor_rotations_per_output = 0.0;
-			kHoodEncoderConstants.remote_encoder_offset = 6.644531;
-
-			
-		}
-	}
-
-    
+	}    
     
 }
