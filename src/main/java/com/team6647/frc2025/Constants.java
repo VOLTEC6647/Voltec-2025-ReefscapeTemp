@@ -1,14 +1,19 @@
 package com.team6647.frc2025;
 
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem.ServoMotorSubsystemConstants;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem.TalonFXConstants;
+import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem2Config;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystemWithCancoder.AbsoluteEncoderConstants;
 import com.team1678.lib.Conversions;
 import com.team254.lib.drivers.CanDeviceId;
+import com.team254.lib.util.Units;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -24,63 +29,103 @@ public class Constants {
 
     }
 
-    public static class ElevatorConstants {
-        public static final ServoMotorSubsystemConstants kElevatorServoConstants = new ServoMotorSubsystemConstants();
+	public static final ClosedLoopRampsConfigs makeDefaultClosedLoopRampConfig() {
+        return new ClosedLoopRampsConfigs()
+                .withDutyCycleClosedLoopRampPeriod(0.02)
+                .withTorqueClosedLoopRampPeriod(0.02)
+                .withVoltageClosedLoopRampPeriod(0.02);
+    }
 
-		static {
-			kElevatorServoConstants.kName = "Elevator";
+    public static final OpenLoopRampsConfigs makeDefaultOpenLoopRampConfig() {
+        return new OpenLoopRampsConfigs()
+                .withDutyCycleOpenLoopRampPeriod(0.02)
+                .withTorqueOpenLoopRampPeriod(0.02)
+                .withVoltageOpenLoopRampPeriod(0.02);
+    }
 
-			kElevatorServoConstants.kMainConstants.counterClockwisePositive = true;
-			kElevatorServoConstants.kMainConstants.invert_sensor_phase = false;
+	public static final class ClimberConstants {
+        public static final CanDeviceId kClimberTalonCanID = Ports.CORAL_PIVOT;
+        public static final double kClimberP = 1.0;
+        public static final double kForwardMaxPositionRotations = 119.0;
+        public static final double kHooksUpPositionRotations = kForwardMaxPositionRotations * 0.9;
+        public static final double kStageHooksRotations = kForwardMaxPositionRotations * 0.4;
+        public static final double kClimbClimbedPositionToleranceRotations = kForwardMaxPositionRotations * 0.1;
+        public static final double kPositionToleranceRotations = 2.0;
+        public static final double kClimberGearRatio = 1.0 / (10.0);
+        public static double kReverseMinPositionRotations = 0.0;
+    }
 
-			kElevatorServoConstants.kFollowerConstants = new TalonFXConstants[1];
-			kElevatorServoConstants.kFollowerConstants[0] = new TalonFXConstants();
-			kElevatorServoConstants.kMainConstants.id = Ports.ELEVATOR_MAIN;
-			kElevatorServoConstants.kFollowerConstants[0].id = Ports.ELEVATOR_FOLLOWER;
-			kElevatorServoConstants.kFollowerConstants[0].counterClockwisePositive = false;
+    public static final ServoMotorSubsystem2Config kClimberConfig = new ServoMotorSubsystem2Config();
+    static {
+        kClimberConfig.name = "Climber";
+        kClimberConfig.talonCANID = Ports.CORAL_PIVOT;
+        kClimberConfig.kMaxPositionUnits = ClimberConstants.kForwardMaxPositionRotations;
+        kClimberConfig.kMinPositionUnits = 0.0;
+        kClimberConfig.fxConfig.Slot0.kP = 1.0;
+        kClimberConfig.fxConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        kClimberConfig.fxConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        kClimberConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        kClimberConfig.fxConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        kClimberConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.ClimberConstants.kForwardMaxPositionRotations
+                - Constants.ClimberConstants.kPositionToleranceRotations;
+        kClimberConfig.fxConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
 
-			kElevatorServoConstants.kHomePosition = 0.0; // meters
+        kClimberConfig.fxConfig.Audio.BeepOnBoot = false;
+        kClimberConfig.fxConfig.Audio.BeepOnConfig = false;
+        kClimberConfig.unitToRotorRatio = 1.0;
 
-			//kElevatorServoConstants.kMaxUnitsLimit = 0.46;
-			//kElevatorServoConstants.kMinUnitsLimit = 0.0;
+        kClimberConfig.fxConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+        kClimberConfig.fxConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        kClimberConfig.fxConfig.ClosedLoopRamps = makeDefaultClosedLoopRampConfig();
+        kClimberConfig.fxConfig.OpenLoopRamps = makeDefaultOpenLoopRampConfig();
+    }
 
-			//14/20
-			//81/20
-			kElevatorServoConstants.kRotationsPerUnitDistance = 1.0; /// 360.0;
+    public static final class ElevatorConstants {
+        public static final double ElevatorMinPositionRotations = 0.0;
+        public static final double ElevatorMaxPositionRotations = 15.356933;
+        public static final double ElevatorMaxHeightInches = 16.5;
+        public static final double kElevatorGearRatio = (11.0 / 36.0) * (18. / 15.);
+        public static final double kElevatorPositionToleranceRotations = 0.1;
+        public static final double kAmpScoringHeightInches = 16.0;
+        public static final double kElevatorHomeHeightInches = 0.0;
+        public static final double kIntakeFromSourceHeightInches = 14.5;
+        public static final double kElevatorPositioningToleranceInches = 0.5;
+        public static final double kClimbHeightInches = 16.0;
+        public static final double kSpoolDiameter = Units.inches_to_meters(0.940);
+		public static double kTolerance = 20; /////
+    }
 
-			kElevatorServoConstants.kKp = 6.0; // Raw output / raw error
-			kElevatorServoConstants.kKi = 0.0; // Raw output / sum of raw error
-			kElevatorServoConstants.kKd = 0.0; // Raw output / (err - prevErr)
-			kElevatorServoConstants.kKa = 0.0; // Raw output / accel in (rots/s) / s
-			kElevatorServoConstants.kKg = 0;
-			kElevatorServoConstants.kDeadband = 0; // rots
+    public static final ServoMotorSubsystem2Config kElevatorConfig = new ServoMotorSubsystem2Config();
+    static {
+        kElevatorConfig.name = "Elevator";
+        kElevatorConfig.talonCANID = Ports.ELEVATOR_MAIN;
+        kElevatorConfig.fxConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        kElevatorConfig.fxConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        kElevatorConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        kElevatorConfig.fxConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        kElevatorConfig.fxConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = (ElevatorConstants.ElevatorMaxHeightInches
+                - 0.25) / ElevatorConstants.ElevatorMaxHeightInches * ElevatorConstants.ElevatorMaxPositionRotations;
+        kElevatorConfig.fxConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0.0;
+        kElevatorConfig.fxConfig.Slot0.kG = 0.26;
+        kElevatorConfig.fxConfig.Slot0.kS = 0.18;
+        kElevatorConfig.fxConfig.Slot0.kV = 0.135;
+        kElevatorConfig.fxConfig.Slot0.kA = 0.0001 * 12.0;
+        kElevatorConfig.fxConfig.Slot0.kP = 3.0;
 
-			kElevatorServoConstants.kCruiseVelocity = 3.0;//12.0; // m / s
-			kElevatorServoConstants.kAcceleration = 3.0; // m / s^2
-			kElevatorServoConstants.kRampRate = 0.0; // s
+        kElevatorConfig.fxConfig.MotionMagic.MotionMagicAcceleration = 800;
+        kElevatorConfig.fxConfig.MotionMagic.MotionMagicCruiseVelocity = 80;
+        kElevatorConfig.unitToRotorRatio = ElevatorConstants.ElevatorMaxHeightInches
+                / (ElevatorConstants.ElevatorMaxPositionRotations - ElevatorConstants.ElevatorMinPositionRotations);
+        kElevatorConfig.kMinPositionUnits = 0.0;
+        kElevatorConfig.kMaxPositionUnits = ElevatorConstants.ElevatorMaxHeightInches;
 
-			kElevatorServoConstants.kMaxForwardOutput = 12.0;
-			kElevatorServoConstants.kMaxReverseOutput = -12.0;
+        kElevatorConfig.fxConfig.Audio.BeepOnBoot = false;
+        kElevatorConfig.fxConfig.Audio.BeepOnConfig = false;
 
-			kElevatorServoConstants.kEnableSupplyCurrentLimit = true;
-			kElevatorServoConstants.kSupplyCurrentLimit = 40; // amps
-			kElevatorServoConstants.kSupplyCurrentThreshold = 40; // amps
-			kElevatorServoConstants.kSupplyCurrentTimeout = 0.01; // seconds
-
-			kElevatorServoConstants.kNeutralMode = NeutralModeValue.Brake;
-			
-		}
-		
-
-		public static double kHomingZone = 0.1; // meters
-		public static double kHomingTimeout = 0.5; // seconds
-		public static double kHomingVelocityWindow = 0.1; // "units" / second
-		public static double kHomingOutput = -2.0; // volts
-
-		//public static double kHomingZone = 0; // meters
-		//public static double kHomingTimeout = 0.5; // seconds
-		//public static double kHomingVelocityWindow = 0.1; // "units" / second
-		//public static double kHomingOutput = -2.0; // volts
+        kElevatorConfig.fxConfig.CurrentLimits.StatorCurrentLimit = 80.0;
+        kElevatorConfig.fxConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        //kElevatorConfig.fxConfig.ClosedLoopRamps = makeDefaultClosedLoopRampConfig();
+        //kElevatorConfig.fxConfig.OpenLoopRamps = makeDefaultOpenLoopRampConfig();
     }
 
 	public static final class AlgaeRollerConstants {

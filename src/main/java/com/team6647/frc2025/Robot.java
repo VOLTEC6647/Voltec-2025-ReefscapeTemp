@@ -19,7 +19,6 @@ import com.team1678.frc2024.loops.CrashTracker;
 import com.team1678.frc2024.loops.Looper;
 import com.team1678.frc2024.paths.TrajectoryGenerator1678;
 import com.team1678.frc2024.subsystems.Cancoders;
-import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.CoralPivotSolo;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.limelight.Limelight;
@@ -36,10 +35,10 @@ import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
 import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
-import com.team6647.frc2025.subsystems.CoralRoller;
-import com.team6647.frc2025.subsystems.Elevator;
+//import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import choreo.Choreo;
 import choreo.auto.AutoFactory;
@@ -90,10 +89,10 @@ public class Robot extends LoggedRobot {
 	private MotorTest mMotorTest;
 	private AlgaeRollers mAlgaeRollers;
 	private AlgaeHolder mAlgaeHolder;
-	private CoralPivot mCoralPivot;
+	//private CoralPivot mCoralPivot;
 	private CoralRoller mCoralRoller;
 
-	private Elevator mElevator;
+	//private Elevator mElevator;
 
 
 
@@ -145,9 +144,9 @@ public class Robot extends LoggedRobot {
 		//mMotorTest = MotorTest.getInstance();
 		mAlgaeRollers = AlgaeRollers.getInstance();
 		mAlgaeHolder = AlgaeHolder.getInstance();
-		mCoralPivot = CoralPivot.getInstance();
+		//mCoralPivot = CoralPivot.getInstance();
 		mCoralRoller = CoralRoller.getInstance();
-		mElevator = Elevator.getInstance();
+		//mElevator = Elevator.getInstance();
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
@@ -278,7 +277,7 @@ public class Robot extends LoggedRobot {
 			mEnabledLooper.start();
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
-			mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
+			//mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
 			throw t;

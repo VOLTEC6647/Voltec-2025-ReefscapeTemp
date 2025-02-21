@@ -1,12 +1,19 @@
 package com.team1678.frc2024.subsystems.servo;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.team1678.frc2024.loops.ILooper;
+import com.team1678.frc2024.loops.Loop;
+import com.team1678.frc2024.subsystems.MotorIO;
+import com.team1678.frc2024.subsystems.MotorInputsAutoLogged;
 import com.team1678.frc2024.subsystems.Subsystem;
+import com.team1678.lib.requests.LambdaRequest;
+import com.team1678.lib.requests.Request;
+import com.team1678.lib.requests.SequentialRequest;
 import com.team254.lib.util.Util;
+import com.team6647.frc2025.Constants;
 
 import edu.wpi.first.wpilibj2.command.*;
 
-import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.function.DoubleSupplier;
@@ -16,30 +23,39 @@ import java.util.function.DoubleSupplier;
  * 
  * @param <T>
  */
-public class ServoMotorSubsystem extends Subsystem {
+public class ServoMotorSubsystem2<T extends MotorInputsAutoLogged, U extends MotorIO> extends Subsystem {
     protected U io;
     protected T inputs;
     private double positionSetpoint = 0.0;
 
-    protected ServoMotorSubsystemConfig conf;
+    protected ServoMotorSubsystem2Config conf;
 
-    public ServoMotorSubsystem(ServoMotorSubsystemConfig config, T inputs, U io) {
-        super(config.name);
+    public ServoMotorSubsystem2(ServoMotorSubsystem2Config config, T inputs, U io) {
+        //super(config.name);
         this.conf = config;
         this.io = io;
         this.inputs = inputs;
-
-        setDefaultCommand(dutyCycleCommand(() -> 0.0).withName(
-                getName() + " Default Command Neutral"));
     }
+
+    public void registerEnabledLoops(ILooper enabledLooper) {
+		enabledLooper.register(new Loop() {
+			@Override
+			public void onStart(double timestamp) {}
+
+			@Override
+			public void onLoop(double timestamp) {
+				io.readInputs(inputs);
+			}
+
+			@Override
+			public void onStop(double timestamp) {}
+		});
+	}
 
     @Override
-    public void periodic() {
-        double timestamp = RobotTime.getTimestampSeconds();
-        io.readInputs(inputs);
-        Logger.processInputs(getName(), inputs);
-        Logger.recordOutput(getName() + "/latencyPeriodicSec", RobotTime.getTimestampSeconds() - timestamp);
-    }
+	public void outputTelemetry() {
+		Logger.processInputs(getName(), inputs);
+	}
 
     protected void setOpenLoopDutyCycleImpl(double dutyCycle) {
         Logger.recordOutput(getName() + "/API/setOpenLoopDutyCycle/dutyCycle", dutyCycle);
@@ -80,45 +96,51 @@ public class ServoMotorSubsystem extends Subsystem {
         return positionSetpoint;
     }
 
-    public Command dutyCycleCommand(DoubleSupplier dutyCycle) {
-        return runEnd(() -> {
-            setOpenLoopDutyCycleImpl(dutyCycle.getAsDouble());
-        }, () -> {
-            setOpenLoopDutyCycleImpl(0.0);
-        }).withName(getName() + " DutyCycleControl");
-    }
+    //public Request dutyCycleCommand(DoubleSupplier dutyCycle) {
+    //    runEnd(() -> {
+    //        setOpenLoopDutyCycleImpl(dutyCycle.getAsDouble());
+    //    }, () -> {
+    //        setOpenLoopDutyCycleImpl(0.0);
+    //    }).withName(getName() + " DutyCycleControl");
+    //}
 
-    public Command velocitySetpointCommand(DoubleSupplier velocitySupplier) {
-        return runEnd(() -> {
+    public Request velocitySetpointCommand(DoubleSupplier velocitySupplier) {
+        return new LambdaRequest(()->{
             setVelocitySetpointImpl(velocitySupplier.getAsDouble());
-        }, () -> {
-        }).withName(getName() + " VelocityControl");
+        });
     }
 
-    public Command setCoast() {
-        return startEnd(() -> setNeutralModeImpl(NeutralModeValue.Coast),
-                () -> setNeutralModeImpl(NeutralModeValue.Brake)).withName(getName() + "CoastMode")
-                .ignoringDisable(true);
+    public Request setCoast() {
+        return new LambdaRequest(()->{
+            setNeutralModeImpl(NeutralModeValue.Brake);
+        });
     }
 
-    public Command positionSetpointCommand(DoubleSupplier unitSupplier) {
-        return runEnd(() -> {
+    public Request positionSetpointCommand(DoubleSupplier unitSupplier) {
+        return new LambdaRequest(()->{
             setPositionSetpointImpl(unitSupplier.getAsDouble());
-        }, () -> {
-        }).withName(getName() + " positionSetpointCommand");
+        });
     }
 
-    public Command positionSetpointUntilOnTargetCommand(DoubleSupplier unitSupplier, DoubleSupplier epsilon) {
-        return new ParallelDeadlineGroup(new WaitUntilCommand(
-                () -> Util.epsilonEquals(unitSupplier.getAsDouble(), inputs.unitPosition, epsilon.getAsDouble())),
-                positionSetpointCommand(unitSupplier));
-    }
+    public Request positionSetpointUntilOnTargetCommand(DoubleSupplier unitSupplier, DoubleSupplier epsilon) {
+		return new Request() {
 
-    public Command motionMagicSetpointCommand(DoubleSupplier unitSupplier) {
-        return runEnd(() -> {
+			@Override
+			public void act() {
+				positionSetpointCommand(unitSupplier);
+			}
+
+			@Override
+			public boolean isFinished() {
+				return Util.epsilonEquals(unitSupplier.getAsDouble(), inputs.unitPosition, epsilon.getAsDouble());
+			}
+		};
+	}
+
+    public Request motionMagicSetpointCommand(DoubleSupplier unitSupplier) {
+        return new LambdaRequest(()->{
             setMotionMagicSetpointImpl(unitSupplier.getAsDouble());
-        }, () -> {
-        }).withName(getName() + " motionMagicSetpointCommand");
+        });
     }
 
     protected void setCurrentPositionAsZero() {
@@ -131,7 +153,7 @@ public class ServoMotorSubsystem extends Subsystem {
 
     public Command waitForElevatorPosition(DoubleSupplier targetPosition) {
         return new WaitUntilCommand(() -> Util.epsilonEquals(inputs.unitPosition, targetPosition.getAsDouble(),
-                Constants.ElevatorConstants.kElevatorPositioningToleranceInches));
+                Constants.ElevatorConstants.kTolerance));
     }
 
     protected Command withoutLimitsTemporarily() {
@@ -148,11 +170,8 @@ public class ServoMotorSubsystem extends Subsystem {
         });
     }
 
-    @AutoLog
-    public class ServoMotorSubsystemInputs {
-        public double myNumber = 0.0;
-        public Pose2d myPose = new Pose2d();
-        public MyEnum myEnum = MyEnum.VALUE;
+    public String getName(){
+        return conf.name;
     }
 
 }

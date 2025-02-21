@@ -9,7 +9,6 @@ import org.littletonrobotics.junction.Logger;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team1678.frc2024.controlboard.ControlBoard;
-import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.CoralPivotSolo;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.Drive.DriveControlState;
@@ -21,10 +20,9 @@ import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
-import com.team6647.frc2025.subsystems.CoralRoller;
-import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import edu.wpi.first.units.AngleUnit;
 import edu.wpi.first.units.measure.Angle;
@@ -63,7 +61,7 @@ public class DriverControls {
 	private AlgaeRollers mAlgaeRollers = AlgaeRollers.getInstance();
 	private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
 	private CoralRoller mCoralRoller = CoralRoller.getInstance();
-	private Elevator mElevator = Elevator.getInstance();
+	//private Elevator mElevator = Elevator.getInstance();
 	private CoralPivotSolo mCoralPivot = CoralPivotSolo.getInstance();
 
 
