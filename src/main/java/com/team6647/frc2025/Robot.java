@@ -10,6 +10,7 @@ import com.team1678.frc2024.RobotState;
 import com.team1678.frc2024.SubsystemManager;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
+import com.team6647.frc2025.Constants.CoralPivotConstantsSolo;
 import com.team6647.frc2025.auto.AutoModeSelector;
 import com.team6647.frc2025.auto.paths.TrajectoryGenerator;
 import com.team1678.frc2024.controlboard.ControlBoard;
@@ -193,13 +194,14 @@ public class Robot extends LoggedRobot {
 			mSubsystemManager.setSubsystems(
 				//mDrive, 
 				mSuperstructure,
-				mVisionDevices,
+				//mVisionDevices,
 				//mMotorTest,
-				mAlgaeRollers,
-				mAlgaeHolder,
-				//mCoralPivot,
-				//mElevator,
-				mCoralRoller
+				//mAlgaeRollers,
+				//mAlgaeHolder,
+				//mCoralPivot
+				//mElevator
+				//mCoralRoller
+				mMotorTest
 
 			);
 			// spotless:on
@@ -276,6 +278,7 @@ public class Robot extends LoggedRobot {
 			mEnabledLooper.start();
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
+			mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
 			throw t;

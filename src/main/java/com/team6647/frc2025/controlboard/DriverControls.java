@@ -73,7 +73,7 @@ public class DriverControls {
 	//driver/operator
 	@SuppressWarnings("unused")
 	public void twoControllerMode() {
-		/*
+		
 		if(mControlBoard.operator.aButton.wasActivated()){
 			mMotorTest.setState(MotorTest.State.FORWARD);
 		}
@@ -87,7 +87,7 @@ public class DriverControls {
 		if (mControlBoard.operator.bButton.wasReleased()) {
 			mMotorTest.setState(MotorTest.State.IDLE);
 		}
-			 */
+			 
 		
 		if(mControlBoard.driver.yButton.wasActivated()){
 			if(mAssistedActionsExecutor == null){
@@ -195,17 +195,21 @@ public class DriverControls {
 		}
 			 */
 
+			 /*
 		if(mControlBoard.operator.xButton.wasActivated()){
 			//s.request(mElevator.L2Request());
-			mCoralPivot.setSetpointMotionMagic(100);
-			System.out.println(mCoralPivot.getSetpoint());
+			//mCoralPivot.setSetpointMotionMagic(100);
+			//System.out.println(mCoralPivot.getSetpoint());
+			mElevator.setSetpointMotionMagic(120);
 		}
 
 		if(mControlBoard.operator.yButton.wasActivated()){
 			//s.request(mElevator.L2Request());
-			mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
-			System.out.println(mCoralPivot.getSetpoint());
+			//mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
+			//System.out.println(mCoralPivot.getSetpoint());
+			mElevator.setSetpointMotionMagic(20);
 		}
+			 */
 			
 
 	}

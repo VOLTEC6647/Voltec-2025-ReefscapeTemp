@@ -25,8 +25,8 @@ public class MotorTest extends Subsystem {
 
 	public enum State {
 		IDLE(0.0),
-		FORWARD(10.0),
-		BACKWARD(-10.0);
+		FORWARD(1.0),
+		BACKWARD(-1.0);
 
 		public double feeder_voltage;
 

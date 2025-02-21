@@ -187,8 +187,8 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 		mMainConfig.Slot1.kI = mConstants.kPositionKi;
 		mMainConfig.Slot1.kD = mConstants.kPositionKd;
 		mMainConfig.Slot1.kV = mConstants.kVelocityFeedforward;
-		mMainConfig.MotionMagic.MotionMagicCruiseVelocity = mConstants.kCruiseVelocity;
-		mMainConfig.MotionMagic.MotionMagicAcceleration = mConstants.kAcceleration;
+		mMainConfig.MotionMagic.MotionMagicCruiseVelocity = unitsToRotations(mConstants.kCruiseVelocity);
+		mMainConfig.MotionMagic.MotionMagicAcceleration = unitsToRotations(mConstants.kAcceleration);
 		mMainConfig.MotionMagic.MotionMagicJerk = mConstants.kJerk;
 
 		mMainConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = mConstants.kRampRate;
