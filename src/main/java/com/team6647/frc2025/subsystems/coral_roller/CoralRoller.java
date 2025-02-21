@@ -1,6 +1,9 @@
-package com.team6647.frc2025.subsystems;
+package com.team6647.frc2025.subsystems.coral_roller;
+
+import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -19,7 +22,7 @@ public class CoralRoller extends Subsystem {
 
 	public static CoralRoller getInstance() {
 		if (mInstance == null) {
-			mInstance = new CoralRoller();
+			mInstance = new CoralRoller(new CoralRollerIOTalonFX());
 		}
 		return mInstance;
 	}
@@ -29,29 +32,19 @@ public class CoralRoller extends Subsystem {
 		INTAKING(1.0),
 		OUTAKING(-1.0);
 
-		public double holder_voltage;
+		public double roller_demand;
 
-		State(double holder_voltage) {
-			this.holder_voltage = holder_voltage;
+		State(double roller_demand) {
+			this.roller_demand = roller_demand;
 		}
 	}
 
-	//private final SparkMax mRoller;
-	private final TalonFX mRoller;
-	private final TalonFXConfiguration mConfig;
-
 	private State mState = State.IDLE;
-	private final PeriodicIO mPeriodicIO = new PeriodicIO();
+	private CoralRollerIO io;
+	private final CoralRollerIOInputsAutoLogged inputs = new CoralRollerIOInputsAutoLogged();
 
-	private CoralRoller() {
-		mRoller = new TalonFX(Ports.CORAL_ROLLER.getDeviceNumber());
-		mConfig = new TalonFXConfiguration();
-
-		mRoller.setNeutralMode(NeutralModeValue.Brake);
-		mConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // this probably fucking broken idk
-		mConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-		mConfig.CurrentLimits.SupplyCurrentLimit = 30.0f;
-		mRoller.getConfigurator().apply(mConfig);
+	private CoralRoller(CoralRollerIO io) {
+		this.io = io;
 	}
 
 	public void registerEnabledLoops(ILooper enabledLooper) {
@@ -61,28 +54,12 @@ public class CoralRoller extends Subsystem {
 
 			@Override
 			public void onLoop(double timestamp) {
-				mPeriodicIO.holder_demand = mState.holder_voltage;
+				inputs.roller_demand = mState.roller_demand;
 			}
 
 			@Override
 			public void onStop(double timestamp) {}
 		});
-	}
-
-	private static class PeriodicIO implements Sendable {
-		// Inputs
-		private double holder_output_voltage;
-		private double holder_stator_current;
-
-		// Outputs
-		private double holder_demand;
-
-		@Override
-		public void initSendable(SendableBuilder builder) {
-			builder.addDoubleProperty("Demand", () -> holder_demand, null);
-			builder.addDoubleProperty("OutputVoltage", () -> holder_output_voltage, null);
-			builder.addDoubleProperty("StatorCurrent", () -> holder_stator_current, null);
-		}
 	}
 
 	/**
@@ -116,25 +93,27 @@ public class CoralRoller extends Subsystem {
 
 			@Override
 			public boolean isFinished() {
-				return mPeriodicIO.holder_demand == _wantedState.holder_voltage;
+				return inputs.roller_demand == _wantedState.roller_demand;
 			}
 		};
 	}
 
 	@Override
 	public void readPeriodicInputs() {
-		mPeriodicIO.holder_output_voltage = mRoller.getMotorOutputStatus().getValueAsDouble(); // maybe we need to check idk
-		mPeriodicIO.holder_stator_current = mRoller.getStatorCurrent().getValueAsDouble();
+		io.updateInputs(inputs);
 	}
 
 	@Override
 	public void writePeriodicOutputs() {
-		mRoller.setVoltage(mPeriodicIO.holder_demand);
+		//mRoller.setVoltage(mPeriodicIO.holder_demand);
+		//mRoller.setControl(new VoltageOut(mPeriodicIO.holder_demand));
+		io.setVoltage(mState.roller_demand);
 	}
+
 
 	@Override
 	public void stop() {
-		mPeriodicIO.holder_demand = 0.0;
+		inputs.roller_demand = 0.0;
 	}
 
 	@Override
@@ -144,7 +123,7 @@ public class CoralRoller extends Subsystem {
 
 	@Override
 	public void outputTelemetry() {
-		SmartDashboard.putString("AlgaeHolder/State", mState.toString());
-		SmartDashboard.putData("AlgaeHolder/IO", mPeriodicIO);
+		Logger.recordOutput("subsystems/CoralRoller/State", mState.toString());
+		Logger.processInputs("subsystems/CoralRoller/IO", inputs);
 	}
 }

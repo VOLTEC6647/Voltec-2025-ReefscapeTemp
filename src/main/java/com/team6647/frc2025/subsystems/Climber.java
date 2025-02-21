@@ -1,8 +1,8 @@
 package com.team6647.frc2025.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
@@ -14,46 +14,42 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class CoralRoller extends Subsystem {
-	private static CoralRoller mInstance;
+public class Climber extends Subsystem {
+    private static Climber mInstance;
 
-	public static CoralRoller getInstance() {
-		if (mInstance == null) {
-			mInstance = new CoralRoller();
-		}
-		return mInstance;
-	}
+    public static Climber getInstance() {
+        if (mInstance == null) {
+            mInstance = new Climber();
+        }
+        return mInstance;
+    }
 
-	public enum State {
-		IDLE(0.0),
-		INTAKING(1.0),
-		OUTAKING(-1.0);
+    public enum State {
+        IDLE(0.0),
+        CLIMBING(1.0),
+        RETRACTING(-1.0);
 
-		public double holder_voltage;
+        public double climber_voltage;
 
-		State(double holder_voltage) {
-			this.holder_voltage = holder_voltage;
-		}
-	}
+        State(double climber_voltage) {
+            this.climber_voltage = climber_voltage;
+        }
+    }
 
-	//private final SparkMax mRoller;
-	private final TalonFX mRoller;
-	private final TalonFXConfiguration mConfig;
+    private State mState = State.IDLE;
 
-	private State mState = State.IDLE;
-	private final PeriodicIO mPeriodicIO = new PeriodicIO();
+    private final PeriodicIO mPeriodicIO = new PeriodicIO();
+    private final TalonFX mClimber;
+    private final TalonFXConfiguration mConfig;
 
-	private CoralRoller() {
-		mRoller = new TalonFX(Ports.CORAL_ROLLER.getDeviceNumber());
-		mConfig = new TalonFXConfiguration();
+    private Climber() {
+        mClimber = new TalonFX(Ports.CLIMBER_LINEAR_ACTUATOR);
+        mConfig = new TalonFXConfiguration();
+        
+        mClimber.setNeutralMode(NeutralModeValue.Brake);
+    }
 
-		mRoller.setNeutralMode(NeutralModeValue.Brake);
-		mConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // this probably fucking broken idk
-		mConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-		mConfig.CurrentLimits.SupplyCurrentLimit = 30.0f;
-		mRoller.getConfigurator().apply(mConfig);
-	}
-
+    @Override
 	public void registerEnabledLoops(ILooper enabledLooper) {
 		enabledLooper.register(new Loop() {
 			@Override
@@ -61,7 +57,8 @@ public class CoralRoller extends Subsystem {
 
 			@Override
 			public void onLoop(double timestamp) {
-				mPeriodicIO.holder_demand = mState.holder_voltage;
+				mPeriodicIO.climber_demand = mState.climber_voltage;
+				//.
 			}
 
 			@Override
@@ -71,17 +68,19 @@ public class CoralRoller extends Subsystem {
 
 	private static class PeriodicIO implements Sendable {
 		// Inputs
-		private double holder_output_voltage;
-		private double holder_stator_current;
+		private double climber_output_voltage;
+		private double climber_stator_current;
+		private double positionSegment;
+		private boolean moving = false;
 
 		// Outputs
-		private double holder_demand;
+		private double climber_demand;
 
 		@Override
 		public void initSendable(SendableBuilder builder) {
-			builder.addDoubleProperty("Demand", () -> holder_demand, null);
-			builder.addDoubleProperty("OutputVoltage", () -> holder_output_voltage, null);
-			builder.addDoubleProperty("StatorCurrent", () -> holder_stator_current, null);
+			builder.addDoubleProperty("Demand", () -> climber_demand, null);
+			builder.addDoubleProperty("OutputVoltage", () -> climber_output_voltage, null);
+			builder.addDoubleProperty("StatorCurrent", () -> climber_stator_current, null);
 		}
 	}
 
@@ -116,25 +115,26 @@ public class CoralRoller extends Subsystem {
 
 			@Override
 			public boolean isFinished() {
-				return mPeriodicIO.holder_demand == _wantedState.holder_voltage;
+				return mPeriodicIO.climber_demand == _wantedState.climber_voltage;
 			}
 		};
 	}
 
 	@Override
 	public void readPeriodicInputs() {
-		mPeriodicIO.holder_output_voltage = mRoller.getMotorOutputStatus().getValueAsDouble(); // maybe we need to check idk
-		mPeriodicIO.holder_stator_current = mRoller.getStatorCurrent().getValueAsDouble();
+		mPeriodicIO.climber_output_voltage = mClimber.getMotorOutputStatus().getValueAsDouble();
+		mPeriodicIO.climber_stator_current = mClimber.getStatorCurrent().getValueAsDouble();
 	}
 
 	@Override
 	public void writePeriodicOutputs() {
-		mRoller.setVoltage(mPeriodicIO.holder_demand);
+		//mClimber.setVoltage(mPeriodicIO.climber_demand);
+        mClimber.setControl(new VoltageOut(mPeriodicIO.climber_demand));
 	}
 
 	@Override
 	public void stop() {
-		mPeriodicIO.holder_demand = 0.0;
+		mPeriodicIO.climber_demand = 0.0;
 	}
 
 	@Override
