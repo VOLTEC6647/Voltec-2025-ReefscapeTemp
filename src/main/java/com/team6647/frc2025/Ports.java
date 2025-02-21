@@ -1,7 +1,6 @@
 //modified 6647
 package com.team6647.frc2025;
 
-import com.team1678.frc2024.Constants1678.ClimberConstants;
 import com.team254.lib.drivers.CanDeviceId;
 import com.team6647.frc2025.Constants.DriveConstants;
 
@@ -33,17 +32,13 @@ public class Ports {
 	public static final CanDeviceId FL_DRIVE = new CanDeviceId(11, DriveConstants.swerveCANBus);
 	public static final CanDeviceId FL_CANCODER = new CanDeviceId(12, DriveConstants.swerveCANBus);
 
-	
-
-	
-
 	/* SUBSYSTEM CAN DEVICE IDS */
 	public static final CanDeviceId ALGAE_ROLLER1 = new CanDeviceId(15, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId ALGAE_ROLLER2 = new CanDeviceId(16, DriveConstants.mechanismsCANBus);
 
 	public static final CanDeviceId ALGAE_HOLDER = new CanDeviceId(17, "rio");
 
-	public static final CanDeviceId CORAL_ROLLER = new CanDeviceId(21, "rio");
+	public static final CanDeviceId CORAL_ROLLER = new CanDeviceId(21, DriveConstants.mechanismsCANBus);
 
 	//public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(18, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(19, DriveConstants.mechanismsCANBus);
