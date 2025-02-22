@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.function.UnaryOperator;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -354,7 +355,8 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 					Math.signum(newVelocity - mPeriodicIO.active_trajectory_velocity) * mConstants.kAcceleration;
 		}
 		mPeriodicIO.active_trajectory_velocity = newVelocity;
-		Logger.processInputs(mConstants.kName+"/SSSSSS", mPeriodicIO);
+		mPeriodicIO.inTolerance = inTolerance();
+		Logger.processInputs(mConstants.kName+"/ServoMotor", mPeriodicIO);
 	}
 
 	@Override
@@ -610,7 +612,7 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 	}
 
 	public synchronized boolean inTolerance() {
-		return Util.epsilonEquals(mPeriodicIO.position_units, getSetpoint(), mConstants.kTolerance);
+		return Util.epsilonEquals(mPeriodicIO.position_rots-30, getSetpoint(), mConstants.kTolerance);
 	}
 
 	public Request waitRequest() {

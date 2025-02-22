@@ -1,5 +1,7 @@
 package com.team1678.frc2024.subsystems;
 
+import java.io.ObjectInputFilter.Config;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -13,6 +15,8 @@ import com.team1678.lib.util.Stopwatch;
 import com.team254.lib.util.Util;
 import com.team6647.frc2025.Constants;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
+import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.frc2025.subsystems.Superstructure.Levels;
 import com.team6647.frc2025.Ports;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +25,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 	private static CoralPivot mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
+	public static final double kLevel1Angle = 0.0, kLevel2Angle = 100.0, kLevel3Angle = 0.0, kLevel4Angle = 0.0;
 
 	public static CoralPivot getInstance() {
 		if (mInstance == null) {
@@ -32,7 +37,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 
 	private CoralPivot(final ServoMotorSubsystemConstants constants) {//, final AbsoluteEncoderConstants encoder_constants
 		super(constants);//, encoder_constants
-		zeroSensors();
+		//zeroSensors();
 		changeTalonConfig((conf) -> {
 			conf.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
 			conf.Feedback.FeedbackRemoteSensorID = Ports.CORAL_CANCODER.getDeviceNumber();
@@ -41,6 +46,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 			conf.Feedback.SensorToMechanismRatio = 1.0;
 			return conf;
 		});
+		enableSoftLimits(false);
 	}
 
 	@Override
@@ -57,7 +63,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 
 			@Override
 			public void onStop(double timestamp) {
-				setNeutralMode(NeutralModeValue.Brake);
+				setNeutralMode(NeutralModeValue.Coast);
 			}
 		});
 	}
@@ -70,7 +76,6 @@ public class CoralPivot extends ServoMotorSubsystem {
 							> CoralPivotConstants.kMinHomingTime) { // Stop homing if we've hit a hardstop
 				setOpenLoop(0.0);
 				setPosition(0.0);
-				enableSoftLimits(true);
 				zeroSensors();
 				mHoming = false;
 			} else if (mHomingStart.getTime() > CoralPivotConstants.kMaxHomingTime) {
@@ -86,6 +91,21 @@ public class CoralPivot extends ServoMotorSubsystem {
 	public synchronized void outputTelemetry() {
 		Logger.recordOutput(mConstants.kName + "/homing", mHoming);
 		super.outputTelemetry();
+	}
+
+	public Request LRequest(Levels level) {
+		return new Request() {
+
+			@Override
+			public void act() {
+				setSetpointMotionMagic(level.coralAngle);
+			}
+
+			@Override
+			public boolean isFinished() {
+				return inTolerance();
+			}
+		};
 	}
 	
 	/**

@@ -46,17 +46,17 @@ public class Constants {
 
 			//14/20
 			//81/20
-			kElevatorServoConstants.kRotationsPerUnitDistance = 1.0; /// 360.0;
+			kElevatorServoConstants.kRotationsPerUnitDistance = (9.0) / (Conversions.inchesToMeters(1.432) * Math.PI);;
 
-			kElevatorServoConstants.kKp = 6.0; // Raw output / raw error
+			kElevatorServoConstants.kKp = 10.0; // Raw output / raw error
 			kElevatorServoConstants.kKi = 0.0; // Raw output / sum of raw error
 			kElevatorServoConstants.kKd = 0.0; // Raw output / (err - prevErr)
 			kElevatorServoConstants.kKa = 0.0; // Raw output / accel in (rots/s) / s
 			kElevatorServoConstants.kKg = 0;
 			kElevatorServoConstants.kDeadband = 0; // rots
 
-			kElevatorServoConstants.kCruiseVelocity = 3.0;//12.0; // m / s
-			kElevatorServoConstants.kAcceleration = 3.0; // m / s^2
+			kElevatorServoConstants.kCruiseVelocity = 0.05;//12.0; // m / s
+			kElevatorServoConstants.kAcceleration = 0.05; // m / s^2
 			kElevatorServoConstants.kRampRate = 0.0; // s
 
 			kElevatorServoConstants.kMaxForwardOutput = 12.0;
@@ -64,10 +64,12 @@ public class Constants {
 
 			kElevatorServoConstants.kEnableSupplyCurrentLimit = true;
 			kElevatorServoConstants.kSupplyCurrentLimit = 40; // amps
-			kElevatorServoConstants.kSupplyCurrentThreshold = 40; // amps
-			kElevatorServoConstants.kSupplyCurrentTimeout = 0.01; // seconds
+			kElevatorServoConstants.kSupplyCurrentThreshold = 0; // amps
+			kElevatorServoConstants.kSupplyCurrentTimeout = 0.02; // seconds
 
 			kElevatorServoConstants.kNeutralMode = NeutralModeValue.Brake;
+
+			kElevatorServoConstants.kTolerance = 0.1;
 			
 		}
 		
@@ -126,7 +128,7 @@ public class Constants {
 
 		public static final double kHomingVoltage = -3.5;
 		public static final double kHomingCurrentThreshold = 15.0;
-		public static final double kMinHomingTime = 0.2;
+		public static final double kMinHomingTime = 0.4;
 		public static final double kMaxHomingTime = 10.0;
 
         public static double kHomePosition = 0;
@@ -138,7 +140,7 @@ public class Constants {
 			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
 
 			kHoodServoConstants.kHomePosition = 0; // Degrees
-			kHoodServoConstants.kTolerance = 1; // Degrees
+			kHoodServoConstants.kTolerance = 5; // Degrees
 			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0 * 75) /* (7.16 / 1.0)*/; // Cancoder to unit distance
 			kHoodServoConstants.kKp = 1.0;
 			kHoodServoConstants.kKi = 0;
@@ -150,11 +152,11 @@ public class Constants {
 			//kHoodServoConstants.kMinUnitsLimit = 15.0;
 			//kHoodServoConstants.kMaxUnitsLimit = 62.0;
 
-			kHoodServoConstants.kCruiseVelocity = 200.0; // degrees / s
+			kHoodServoConstants.kCruiseVelocity = 400.0; // degrees / s
 			kHoodServoConstants.kAcceleration = 20.0; // degrees / s^2
 
 			kHoodServoConstants.kEnableSupplyCurrentLimit = true;
-			kHoodServoConstants.kSupplyCurrentLimit = 120;
+			kHoodServoConstants.kSupplyCurrentLimit = 80;
 			kHoodServoConstants.kSupplyCurrentThreshold = 0;
 
 			kHoodServoConstants.kEnableStatorCurrentLimit = true;

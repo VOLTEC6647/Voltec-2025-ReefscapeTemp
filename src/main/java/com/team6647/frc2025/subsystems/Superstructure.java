@@ -8,6 +8,7 @@ import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team1678.frc2024.led.TimedLEDState;
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
+import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.PeriodicLogs;
 import com.team1678.frc2024.subsystems.Subsystem;
@@ -64,6 +65,8 @@ public class Superstructure extends Subsystem {
 
 	// Target tracking
 	private Drive mDrive = Drive.getInstance();
+	private Elevator mElevator = Elevator.getInstance();
+	private CoralPivot mCoralPivot = CoralPivot.getInstance();
 	private double mDistanceToTarget = 0.0;
 	private double mAngularErrToTarget = 0.0;
 
@@ -315,6 +318,27 @@ public class Superstructure extends Subsystem {
 	private Request idleRequest() {
 		return new ParallelRequest(
 
+		);
+	}
+
+	public enum Levels {
+		LEVEL1(Elevator.kL1Height,CoralPivot.kLevel1Angle),
+		LEVEL2(Elevator.kL2Height,CoralPivot.kLevel2Angle),
+		LEVEL3(Elevator.kL3Height,CoralPivot.kLevel3Angle),
+		LEVEL4(Elevator.kL4Height,CoralPivot.kLevel4Angle);
+
+		public double elevatorHeight;
+		public double coralAngle;
+		
+		private Levels(double elevatorHeight, double coralAngle){
+			this.elevatorHeight = elevatorHeight;
+			this.coralAngle = coralAngle;
+		}
+	}
+	public Request prepareLevel(Levels levelPos) {
+		return new ParallelRequest(
+			mElevator.LRequest(levelPos),
+			mCoralPivot.LRequest(levelPos)
 		);
 	}
 

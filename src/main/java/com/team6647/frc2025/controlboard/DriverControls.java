@@ -73,7 +73,7 @@ public class DriverControls {
 	public void twoControllerMode() {
 		
 		if(mControlBoard.operator.aButton.wasActivated()){
-			mCoralPivot.setSetpointMotionMagic(140);
+			mCoralPivot.setSetpointMotionMagic(70);
 			System.out.println(mCoralPivot.getSetpoint());
 		}
 		
@@ -197,12 +197,12 @@ public class DriverControls {
 		}
 			 */
 
-			 /*
+			
 		if(mControlBoard.operator.xButton.wasActivated()){
 			//s.request(mElevator.L2Request());
 			//mCoralPivot.setSetpointMotionMagic(100);
 			//System.out.println(mCoralPivot.getSetpoint());
-			mElevator.setSetpointMotionMagic(120);
+			mElevator.setSetpointMotionMagic(0.22);
 		}
 
 		if(mControlBoard.operator.yButton.wasActivated()){
@@ -211,7 +211,7 @@ public class DriverControls {
 			//System.out.println(mCoralPivot.getSetpoint());
 			mElevator.setSetpointMotionMagic(20);
 		}
-			 */
+			 
 			 
 			
 

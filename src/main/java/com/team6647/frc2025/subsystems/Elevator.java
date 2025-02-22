@@ -1,5 +1,7 @@
 package com.team6647.frc2025.subsystems;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
@@ -8,6 +10,7 @@ import com.team1678.lib.util.DelayedBoolean;
 import com.team254.lib.util.Util;
 import com.team6647.frc2025.Constants;
 import com.team6647.frc2025.Constants.ElevatorConstants;
+import com.team6647.frc2025.subsystems.Superstructure.Levels;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +33,7 @@ public class Elevator extends ServoMotorSubsystem {
 	}
 
 	public static final double kL1Height = 0.0;
-	public static final double kL2Height = 10.0;
+	public static final double kL2Height = 0.16;
 	public static final double kL3Height = 0.0;
 	public static final double kL4Height = 0.0;
 
@@ -127,7 +130,23 @@ public class Elevator extends ServoMotorSubsystem {
 
 			@Override
 			public boolean isFinished() {
-				return Util.epsilonEquals(getPosition(), kL2Height, 0.1);
+				return Util.epsilonEquals(getPosition(), kL2Height, mConstants.kTolerance);
+			}
+		};
+	}
+
+	public Request LRequest(Levels level) {
+		return new Request() {
+
+			@Override
+			public void act() {
+				setSetpointMotionMagic(level.elevatorHeight);
+				mNeedsToHome = true;
+			}
+
+			@Override
+			public boolean isFinished() {
+				return Util.epsilonEquals(getPosition(), level.elevatorHeight, 0.1);
 			}
 		};
 	}

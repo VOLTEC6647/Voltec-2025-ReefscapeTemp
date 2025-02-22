@@ -26,6 +26,10 @@ import com.team1678.frc2024.subsystems.limelight.Limelight.Pipeline;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
 import com.team1678.lib.Util;
 import com.team1678.lib.logger.LogUtil;
+import com.team1678.lib.requests.LambdaRequest;
+import com.team1678.lib.requests.ParallelRequest;
+import com.team1678.lib.requests.SequentialRequest;
+import com.team1678.lib.requests.WaitRequest;
 import com.team1678.lib.swerve.ChassisSpeeds;
 import com.team1678.lib.wpi.TimedRobot;
 import com.team254.lib.geometry.Pose2d;
@@ -39,6 +43,7 @@ import com.team6647.frc2025.subsystems.CoralRoller;
 import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.frc2025.subsystems.Superstructure.Levels;
 
 import choreo.Choreo;
 import choreo.auto.AutoFactory;
@@ -197,9 +202,9 @@ public class Robot extends LoggedRobot {
 				//mMotorTest,
 				//mAlgaeRollers,
 				//mAlgaeHolder,
-				mCoralPivot
-				//mElevator
-				//mCoralRoller
+				mCoralPivot,
+				mElevator,
+				mCoralRoller
 				//mMotorTest
 
 			);
@@ -277,7 +282,20 @@ public class Robot extends LoggedRobot {
 			mEnabledLooper.start();
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
+			mCoralPivot.zeroSensors();
 			mCoralPivot.setWantHome(true);
+			mSuperstructure.request(
+				new SequentialRequest(
+					new WaitRequest(2),
+					mSuperstructure.prepareLevel(Levels.LEVEL2),
+					new LambdaRequest(
+						()->{
+							mCoralRoller.setState(CoralRoller.State.OUTAKING);
+						}
+					)
+				)
+			);
+				
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
 			throw t;
@@ -324,6 +342,7 @@ public class Robot extends LoggedRobot {
 			CrashTracker.logDisabledInit();
 			mEnabledLooper.stop();
 			mDisabledLooper.start();
+			mCoralPivot.setOpenLoop(0);
 			disable_enter_time = Timer.getFPGATimestamp();
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
