@@ -39,11 +39,11 @@ import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
 import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
-import com.team6647.frc2025.subsystems.CoralRoller;
 import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 import com.team6647.frc2025.subsystems.Superstructure.Levels;
+import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import choreo.Choreo;
 import choreo.auto.AutoFactory;
@@ -196,14 +196,14 @@ public class Robot extends LoggedRobot {
 
 			// spotless:off
 			mSubsystemManager.setSubsystems(
-				//mDrive, 
+				mDrive, 
 				mSuperstructure,
 				//mVisionDevices,
 				//mMotorTest,
 				//mAlgaeRollers,
 				//mAlgaeHolder,
-				mCoralPivot,
-				mElevator,
+				//mCoralPivot,
+				//mElevator,
 				mCoralRoller
 				//mMotorTest
 
@@ -287,7 +287,7 @@ public class Robot extends LoggedRobot {
 			mSuperstructure.request(
 				new SequentialRequest(
 					new WaitRequest(2),
-					mSuperstructure.prepareLevel(Levels.LEVEL2),
+					mSuperstructure.prepareLevel(Levels.LEVEL3),
 					new LambdaRequest(
 						()->{
 							mCoralRoller.setState(CoralRoller.State.OUTAKING);

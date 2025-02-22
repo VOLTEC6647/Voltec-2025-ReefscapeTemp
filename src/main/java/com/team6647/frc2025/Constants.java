@@ -55,7 +55,7 @@ public class Constants {
 			kElevatorServoConstants.kKg = 0;
 			kElevatorServoConstants.kDeadband = 0; // rots
 
-			kElevatorServoConstants.kCruiseVelocity = 0.05;//12.0; // m / s
+			kElevatorServoConstants.kCruiseVelocity = 0.15;//12.0; // m / s
 			kElevatorServoConstants.kAcceleration = 0.05; // m / s^2
 			kElevatorServoConstants.kRampRate = 0.0; // s
 
@@ -69,7 +69,7 @@ public class Constants {
 
 			kElevatorServoConstants.kNeutralMode = NeutralModeValue.Brake;
 
-			kElevatorServoConstants.kTolerance = 0.1;
+			kElevatorServoConstants.kTolerance = 1;
 			
 		}
 		
@@ -140,9 +140,9 @@ public class Constants {
 			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
 
 			kHoodServoConstants.kHomePosition = 0; // Degrees
-			kHoodServoConstants.kTolerance = 5; // Degrees
+			kHoodServoConstants.kTolerance = 1; // Degrees
 			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0 * 75) /* (7.16 / 1.0)*/; // Cancoder to unit distance
-			kHoodServoConstants.kKp = 1.0;
+			kHoodServoConstants.kKp = 3.0;
 			kHoodServoConstants.kKi = 0;
 			kHoodServoConstants.kKd = 0.0;
 			kHoodServoConstants.kKg = 0;
@@ -162,8 +162,8 @@ public class Constants {
 			kHoodServoConstants.kEnableStatorCurrentLimit = true;
 			kHoodServoConstants.kStatorCurrentLimit = 40;
 
-			kHoodServoConstants.kMaxForwardOutput = 6.0;
-			kHoodServoConstants.kMaxReverseOutput = -6.0;//12
+			kHoodServoConstants.kMaxForwardOutput = 12.0;
+			kHoodServoConstants.kMaxReverseOutput = -12.0;//12
 
 			kHoodServoConstants.kRampRate = 0.0;
 

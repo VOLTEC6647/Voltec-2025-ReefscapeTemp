@@ -33,6 +33,8 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.text.DecimalFormat;
 import java.util.function.UnaryOperator;
 
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -356,6 +358,7 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 		}
 		mPeriodicIO.active_trajectory_velocity = newVelocity;
 		mPeriodicIO.inTolerance = inTolerance();
+		mPeriodicIO.trajectoryDone = trajectoryDone();
 		Logger.processInputs(mConstants.kName+"/ServoMotor", mPeriodicIO);
 	}
 
@@ -612,7 +615,19 @@ public abstract class ServoMotorSubsystem extends Subsystem {
 	}
 
 	public synchronized boolean inTolerance() {
-		return Util.epsilonEquals(mPeriodicIO.position_rots-30, getSetpoint(), mConstants.kTolerance);
+		//return Util.epsilonEquals(mPeriodicIO.position_rots-30, getSetpoint(), mConstants.kTolerance);
+		//return Util.epsilonEquals(mMainClosedLoopError.asSupplier().get(), getSetpoint(), mConstants.kTolerance);
+		return mMainClosedLoopError.asSupplier().get()<mConstants.kTolerance&&mPeriodicIO.demand==mPeriodicIO.active_trajectory_position;
+	}
+
+	public static double round2(double value) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setRoundingMode(java.math.RoundingMode.HALF_UP); // Optional: Set rounding mode
+        return Double.parseDouble(df.format(value));
+    }
+
+	public synchronized boolean trajectoryDone() {
+		return round2(mPeriodicIO.demand)==round2(mPeriodicIO.active_trajectory_position);
 	}
 
 	public Request waitRequest() {
@@ -622,7 +637,7 @@ public abstract class ServoMotorSubsystem extends Subsystem {
         
         @Override
         public boolean isFinished() {
-            return inTolerance();
+            return trajectoryDone();
         }
     };
 }

@@ -23,6 +23,7 @@ public interface ServoMotorSubsystemIO {
 		public double active_trajectory_velocity;
 		public double active_trajectory_acceleration;
 		public boolean inTolerance;
+		public boolean trajectoryDone;
 
 		// OUTPUTS
 		public double demand; // position (motor rots) or percent output

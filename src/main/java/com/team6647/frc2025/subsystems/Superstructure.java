@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.logging.Level;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -89,8 +90,25 @@ public class Superstructure extends Subsystem {
 	public CoralTarget angles[] = {CoralTarget.RIGHT, CoralTarget.BOTTOM_RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.LEFT,  CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
 	public int coralId = 0;
 	public int level = 3;
+	public Levels currentLevel = Levels.LEVEL3;
 	public int subCoralId = 1;
 	public int coralStationPosition = 0;
+
+	public void setLevel(int level){
+		this.level = level;
+		if(level == 1){
+			this.currentLevel = Levels.LEVEL1;
+		}
+		if(level == 2){
+			this.currentLevel = Levels.LEVEL2;
+		}
+		if(level == 3){
+			this.currentLevel = Levels.LEVEL3;
+		}
+		if(level == 4){
+			this.currentLevel = Levels.LEVEL4;
+		}
+	}
 
 	public boolean requestsCompleted() {
 		return allRequestsComplete;

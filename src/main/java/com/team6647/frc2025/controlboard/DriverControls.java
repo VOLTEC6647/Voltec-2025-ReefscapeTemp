@@ -13,16 +13,20 @@ import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.Drive.DriveControlState;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
+import com.team1678.lib.requests.LambdaRequest;
+import com.team1678.lib.requests.SequentialRequest;
+import com.team1678.lib.requests.WaitRequest;
 import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.actions.AssistModeExecutor;
 import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 import com.team6647.frc2025.subsystems.AlgaeHolder;
 import com.team6647.frc2025.subsystems.AlgaeRollers;
-import com.team6647.frc2025.subsystems.CoralRoller;
 import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.frc2025.subsystems.Superstructure.Levels;
+import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import edu.wpi.first.units.AngleUnit;
 import edu.wpi.first.units.measure.Angle;
@@ -73,13 +77,39 @@ public class DriverControls {
 	public void twoControllerMode() {
 		
 		if(mControlBoard.operator.aButton.wasActivated()){
-			mCoralPivot.setSetpointMotionMagic(70);
-			System.out.println(mCoralPivot.getSetpoint());
+			mSuperstructure.request(
+				new SequentialRequest(
+					mSuperstructure.prepareLevel(s.currentLevel),
+					new LambdaRequest(
+						()->{
+							mCoralRoller.setState(CoralRoller.State.OUTAKING);
+						}
+					)
+				)
+			);
+		}
+
+		if(mControlBoard.operator.aButton.wasReleased()){
+			mSuperstructure.request(
+				new SequentialRequest(
+					mSuperstructure.prepareLevel(s.currentLevel),
+					new LambdaRequest(
+						()->{
+							mCoralRoller.setState(CoralRoller.State.OUTAKING);
+						}
+					)
+				)
+			);
 		}
 		
 		if (mControlBoard.operator.bButton.wasActivated()) {
-			
-			
+
+			mCoralRoller.setState(CoralRoller.State.INTAKING);
+		}
+		if (mControlBoard.operator.bButton.wasReleased()) {
+
+			mCoralRoller.setState(CoralRoller.State.IDLE);
+
 		}
 		/*
 		if(mControlBoard.operator.bButton.wasActivated()){
@@ -134,17 +164,17 @@ public class DriverControls {
 		}
 		
 		if(mControlBoard.operator.POV0.wasActivated()){
-			s.level++;
+			s.setLevel(s.level+1);
 			if (s.level>3){
-				s.level = 3;
+				s.setLevel(3);
 			}
 			//coralPlacer.stop();
 			s.showLevel();
 		}
 		if(mControlBoard.operator.POV180.wasActivated()){
-			s.level--;
+			s.setLevel(s.level-1);
 			if (s.level<0){
-				s.level = 0;
+				s.setLevel(0);
 			}
 			//coralPlacer.stop();
 			s.showLevel();

@@ -25,7 +25,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 	private static CoralPivot mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
-	public static final double kLevel1Angle = 0.0, kLevel2Angle = 100.0, kLevel3Angle = 0.0, kLevel4Angle = 0.0;
+	public static final double kLevel1Angle = 0.0, kLevel2Angle = 100.0, kLevel3Angle = 100.0, kLevel4Angle = 0.0;
 
 	public static CoralPivot getInstance() {
 		if (mInstance == null) {
@@ -103,7 +103,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 
 			@Override
 			public boolean isFinished() {
-				return inTolerance();
+				return trajectoryDone();
 			}
 		};
 	}

@@ -33,8 +33,8 @@ public class Elevator extends ServoMotorSubsystem {
 	}
 
 	public static final double kL1Height = 0.0;
-	public static final double kL2Height = 0.16;
-	public static final double kL3Height = 0.0;
+	public static final double kL2Height = 0;
+	public static final double kL3Height = 0.16;
 	public static final double kL4Height = 0.0;
 
 	private boolean mHoming = false;
@@ -130,7 +130,7 @@ public class Elevator extends ServoMotorSubsystem {
 
 			@Override
 			public boolean isFinished() {
-				return Util.epsilonEquals(getPosition(), kL2Height, mConstants.kTolerance);
+				return trajectoryDone();
 			}
 		};
 	}
