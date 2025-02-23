@@ -29,8 +29,8 @@ public class CoralRoller extends Subsystem {
 
 	public enum State {
 		IDLE(0.0),
-		INTAKING(-1),
-		OUTAKING(1);
+		INTAKING(-1.3),
+		OUTAKING(1.3);
 
 		public double roller_demand;
 
