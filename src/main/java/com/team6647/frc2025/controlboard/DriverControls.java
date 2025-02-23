@@ -111,6 +111,10 @@ public class DriverControls {
 			mCoralRoller.setState(CoralRoller.State.IDLE);
 
 		}
+
+		if (mControlBoard.driver.backButton.wasActivated()) {
+			mDrive.zeroGyro(0);
+		}
 		/*
 		if(mControlBoard.operator.bButton.wasActivated()){
 			mMotorTest.setState(MotorTest.State.BACKWARD);

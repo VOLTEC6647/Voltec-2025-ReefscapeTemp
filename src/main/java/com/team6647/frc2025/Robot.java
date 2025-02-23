@@ -284,6 +284,9 @@ public class Robot extends LoggedRobot {
 			//mLimelight.setPipeline(Pipeline.TELEOP);
 			mCoralPivot.zeroSensors();
 			mCoralPivot.setWantHome(true);
+
+			mCoralRoller.setState(CoralRoller.State.INTAKING);
+
 			mSuperstructure.request(
 				new SequentialRequest(
 					new WaitRequest(2),

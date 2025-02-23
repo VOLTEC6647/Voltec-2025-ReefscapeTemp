@@ -27,6 +27,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 public class VisionDevice extends Subsystem {
 	private final VisionDeviceConstants mConstants;
 	private PeriodicIO mPeriodicIO = new PeriodicIO();
@@ -139,8 +141,9 @@ public class VisionDevice extends Subsystem {
 			xyStdDev = Math.max(0.02, xyStdDev);
 
 			LogUtil.recordPose3d("Vision " + mConstants.kTableName + "/Tag Poses", tagPoses.toArray(new Pose3d[0]));
-			SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/N Tags Seen", tagPoses.size());
-			SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/Calculated STDev", xyStdDev);
+			Logger.recordOutput("Vision " + mConstants.kTableName + "/N Tags Seen", tagPoses.size());
+			Logger.recordOutput("Vision Heading/" + mConstants.kTableName, xyStdDev);
+			Logger.recordOutput("Vision " + mConstants.kTableName + "/Calculated STDev", xyStdDev);
 			LogUtil.recordPose2d("Vision " + mConstants.kTableName + "/Camera Pose", camera_pose);
 			LogUtil.recordPose2d(
 					"Vision " + mConstants.kTableName + "/Robot Pose",
@@ -173,7 +176,7 @@ public class VisionDevice extends Subsystem {
 				rotation_degrees = Util.boundAngle0to360Degrees(rotation_degrees);
 			}
 
-			SmartDashboard.putNumber("Vision Heading/" + mConstants.kTableName, rotation_degrees);
+			Logger.recordOutput("Vision Heading/" + mConstants.kTableName, rotation_degrees);
 			VisionDeviceManager.getInstance().getMovingAverage().addNumber(rotation_degrees);
 		}
 	}
@@ -210,10 +213,9 @@ public class VisionDevice extends Subsystem {
 
 	@Override
 	public void outputTelemetry() {
-		SmartDashboard.putNumber(
-				"Vision " + mConstants.kTableName + "/Last Update Timestamp Timestamp", mPeriodicIO.latest_timestamp);
-		SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/N Queued Updates", mPeriodicIO.frames.size());
-		SmartDashboard.putBoolean("Vision " + mConstants.kTableName + "/is Connnected", mPeriodicIO.is_connected);
+		Logger.recordOutput("Vision " + mConstants.kTableName + "/Last Update Timestamp Timestamp", mPeriodicIO.latest_timestamp);
+		Logger.recordOutput("Vision " + mConstants.kTableName + "/N Queued Updates", mPeriodicIO.frames.size());
+		Logger.recordOutput("Vision " + mConstants.kTableName + "/is Connnected", mPeriodicIO.is_connected);
 	}
 
 	@Override
