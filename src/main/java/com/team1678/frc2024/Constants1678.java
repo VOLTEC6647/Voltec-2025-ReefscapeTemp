@@ -579,14 +579,14 @@ public class Constants1678 {
 		public static final Matrix<N2, N1> kLocalMeasurementStdDevs =
 				VecBuilder.fill(Math.pow(0.01, 1), Math.pow(0.01, 1));
 
-		/*
+		
 		public static final Map<String, CameraConfig> cameras = Map.ofEntries(
 				Map.entry(
 						"front",
 						new CameraConfig(
 								new Pose3d(
-										Units.inchesToMeters(8.215),
-										Units.inchesToMeters(11.712),
+										kLeftVisionDevice.kRobotToCamera.getX(),
+										kLeftVisionDevice.kRobotToCamera.getY(),
 										Units.inchesToMeters(6.071),
 										new Rotation3d(
 												Units.degreesToRadians(0),
@@ -605,7 +605,7 @@ public class Constants1678 {
 												Units.degreesToRadians(0),
 												Units.degreesToRadians(180))),
 								"{\"camera_matrix\":[[910.3756558875847,0,809.2765926238984],[0,909.8129438903156,644.2713243574459],[0,0,1]],\"distortion_coefficients\":[0.06236712235474046,-0.062294270427656145,0.004664145480488657,-0.0006911909097633055,-0.00762026244976393],\"tag_size\":0.163,\"camera_settings\":{\"width\":1600,\"height\":1200,\"fps\":50}}")));
-						*/
+						
 								}
 								 
 

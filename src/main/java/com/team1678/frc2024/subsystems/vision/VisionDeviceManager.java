@@ -31,8 +31,8 @@ public class VisionDeviceManager extends Subsystem {
 
 	private VisionDeviceManager() {
 		mLeftCamera = new VisionDevice(Constants1678.kLeftVisionDevice);
-		mRightCamera = new VisionDevice(Constants1678.kRightVisionDevice);
-		mAllCameras = List.of(mLeftCamera, mRightCamera);
+		//mRightCamera = new VisionDevice(Constants1678.kRightVisionDevice);
+		mAllCameras = List.of(mLeftCamera);
 	}
 
 	@Override
