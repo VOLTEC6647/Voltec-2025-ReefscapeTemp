@@ -232,5 +232,59 @@ public class Constants {
 			kHoodEncoderConstants.remote_encoder_offset = 0;
 		}
 	}
+
+	public static final class AlgaeTConstants {
+
+		public static final double kRotorRotationsPerOutputRotation = 1.0; // Rotor to unit distance
+
+		public static final ServoMotorSubsystemConstants kHoodServoConstants = new ServoMotorSubsystemConstants();
+		public static final AbsoluteEncoderConstants kHoodEncoderConstants = new AbsoluteEncoderConstants();
+
+        public static double kHomePosition = 0;
+
+		static {
+			kHoodServoConstants.kName = "AlgaeT";
+
+			kHoodServoConstants.kMainConstants.id = Ports.CORAL_PIVOT;
+			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
+
+			kHoodServoConstants.kHomePosition = 0; // Degrees
+			kHoodServoConstants.kTolerance = 1; // Degrees
+			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0 * 9*5*5*1.6) /* (7.16 / 1.0)*/; // Cancoder to unit distance
+			kHoodServoConstants.kKp = 3.0;
+			kHoodServoConstants.kKi = 0;
+			kHoodServoConstants.kKd = 0.0;
+			kHoodServoConstants.kKg = 0;
+			kHoodServoConstants.kKs = 0.0;
+			kHoodServoConstants.kDeadband = 0; // Ticks
+
+			//kHoodServoConstants.kMinUnitsLimit = 15.0;
+			//kHoodServoConstants.kMaxUnitsLimit = 62.0;
+
+			kHoodServoConstants.kCruiseVelocity = 400.0; // degrees / s
+			kHoodServoConstants.kAcceleration = 20.0; // degrees / s^2
+
+			kHoodServoConstants.kEnableSupplyCurrentLimit = true;
+			kHoodServoConstants.kSupplyCurrentLimit = 80;
+			kHoodServoConstants.kSupplyCurrentThreshold = 0;
+
+			kHoodServoConstants.kEnableStatorCurrentLimit = true;
+			kHoodServoConstants.kStatorCurrentLimit = 40;
+
+			kHoodServoConstants.kMaxForwardOutput = 12.0;
+			kHoodServoConstants.kMaxReverseOutput = -12.0;//12
+
+			kHoodServoConstants.kRampRate = 0.0;
+
+			kHoodServoConstants.kNeutralMode = NeutralModeValue.Coast;
+
+			kHoodEncoderConstants.encoder_type = FeedbackSensorSourceValue.RotorSensor; //FusedCANcoder
+			kHoodEncoderConstants.remote_encoder_port = Ports.CORAL_CANCODER;
+			kHoodEncoderConstants.rotor_rotations_per_output = 1.0;
+			kHoodEncoderConstants.remote_encoder_offset = 0;
+		}
+	}
+
+	
     
 }

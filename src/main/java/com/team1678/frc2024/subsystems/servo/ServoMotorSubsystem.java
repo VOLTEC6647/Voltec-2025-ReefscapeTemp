@@ -640,5 +640,22 @@ public abstract class ServoMotorSubsystem extends Subsystem {
             return trajectoryDone();
         }
     };
-}
+
+	
+	}
+
+	public Request setPositionRequest(Double position) {
+		return new Request() {
+
+			@Override
+			public void act() {
+				setSetpointMotionMagic(position);
+			}
+
+			@Override
+			public boolean isFinished() {
+				return trajectoryDone();
+			}
+		};
+	}
 }

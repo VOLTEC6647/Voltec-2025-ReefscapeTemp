@@ -282,7 +282,7 @@ public class Robot extends LoggedRobot {
 			mEnabledLooper.start();
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
-			mCoralPivot.zeroSensors();
+			//mCoralPivot.zeroSensors();
 			mCoralPivot.setWantHome(true);
 				
 		} catch (Throwable t) {
