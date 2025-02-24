@@ -78,7 +78,7 @@ public class VisionDevice extends Subsystem {
         }
 
         // Pose present. Start running Heuristic
-        var estStdDevs = VecBuilder.fill(0.1, 0.1, 0.1); // Base StdDevs, adjust as needed.
+        var estStdDevs = VecBuilder.fill(4, 4, 8); // Base StdDevs, adjust as needed.
         int numTags = 0;
         double avgDist = 0;
 
@@ -102,7 +102,7 @@ public class VisionDevice extends Subsystem {
             // One or more tags visible, run the full heuristic.
             avgDist /= numTags;
             // Decrease std devs if multiple targets are visible
-            if (numTags > 1) estStdDevs = VecBuilder.fill(0.05, 0.05, 0.05); // Reduce further - tune!
+            if (numTags > 1) estStdDevs = VecBuilder.fill(0.5, 0.5, 0.5); // Reduce further - tune!
             // Increase std devs based on (average) distance
             if (numTags == 1 && avgDist > 4)
                 estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
