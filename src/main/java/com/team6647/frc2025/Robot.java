@@ -198,12 +198,12 @@ public class Robot extends LoggedRobot {
 			mSubsystemManager.setSubsystems(
 				mDrive, 
 				mSuperstructure,
-				//mVisionDevices,
+				mVisionDevices,
 				//mMotorTest,
 				//mAlgaeRollers,
 				//mAlgaeHolder,
-				//mCoralPivot,
-				//mElevator,
+				mCoralPivot,
+				mElevator,
 				mCoralRoller
 				//mMotorTest
 
@@ -284,20 +284,6 @@ public class Robot extends LoggedRobot {
 			//mLimelight.setPipeline(Pipeline.TELEOP);
 			mCoralPivot.zeroSensors();
 			mCoralPivot.setWantHome(true);
-
-			mCoralRoller.setState(CoralRoller.State.INTAKING);
-
-			mSuperstructure.request(
-				new SequentialRequest(
-					new WaitRequest(2),
-					mSuperstructure.prepareLevel(Levels.LEVEL3),
-					new LambdaRequest(
-						()->{
-							mCoralRoller.setState(CoralRoller.State.OUTAKING);
-						}
-					)
-				)
-			);
 				
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
@@ -400,8 +386,7 @@ public class Robot extends LoggedRobot {
 			if (mControlBoard.driver.getBButton()) {
 				RobotState.getInstance().reset(Timer.getFPGATimestamp(), Pose2d.identity());
 			}
-
-			//SmartDashboard.putNumber("Vision Heading/Average", mVisionDevices.getMovingAverageRead());
+			Logger.recordOutput("Vision Heading/Average", mVisionDevices.getMovingAverageRead());
 
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);

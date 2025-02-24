@@ -113,7 +113,7 @@ public class Constants1678 {
 		/* Heading Controller */
 
 		// Stabilize Heading PID Values
-		public static final double kStabilizeSwerveHeadingKp = 10.0;
+		public static final double kStabilizeSwerveHeadingKp = 6.0;
 		public static final double kStabilizeSwerveHeadingKi = 0.0;
 		public static final double kStabilizeSwerveHeadingKd = 0.3;
 		public static final double kStabilizeSwerveHeadingKf = 2.0;
@@ -579,14 +579,15 @@ public class Constants1678 {
 		public static final Matrix<N2, N1> kLocalMeasurementStdDevs =
 				VecBuilder.fill(Math.pow(0.01, 1), Math.pow(0.01, 1));
 
+		/*
 		public static final Map<String, CameraConfig> cameras = Map.ofEntries(
 				Map.entry(
 						"front",
 						new CameraConfig(
 								new Pose3d(
-										Units.inchesToMeters(-12.042),
-										Units.inchesToMeters(-12.666),
-										Units.inchesToMeters(5.515),
+										Units.inchesToMeters(8.215),
+										Units.inchesToMeters(11.712),
+										Units.inchesToMeters(6.071),
 										new Rotation3d(
 												Units.degreesToRadians(0),
 												Units.degreesToRadians(0),
@@ -596,29 +597,31 @@ public class Constants1678 {
 						"back",
 						new CameraConfig(
 								new Pose3d(
-										Units.inchesToMeters(4.387),
-										Units.inchesToMeters(10.857),
-										Units.inchesToMeters(5.515),
+										Units.inchesToMeters(-8.215),
+										Units.inchesToMeters(-11.712),
+										Units.inchesToMeters(6.071),
 										new Rotation3d(
 												Units.degreesToRadians(0),
 												Units.degreesToRadians(0),
 												Units.degreesToRadians(180))),
 								"{\"camera_matrix\":[[910.3756558875847,0,809.2765926238984],[0,909.8129438903156,644.2713243574459],[0,0,1]],\"distortion_coefficients\":[0.06236712235474046,-0.062294270427656145,0.004664145480488657,-0.0006911909097633055,-0.00762026244976393],\"tag_size\":0.163,\"camera_settings\":{\"width\":1600,\"height\":1200,\"fps\":50}}")));
-	}
+						*/
+								}
+								 
 
 	public static VisionDeviceConstants kLeftVisionDevice = new VisionDeviceConstants(); // dot 13
 	public static VisionDeviceConstants kRightVisionDevice = new VisionDeviceConstants(); // dot 12
 
 	static {
-		kLeftVisionDevice.kTableName = "front";
+		kLeftVisionDevice.kTableName = "northstar1";
 		kLeftVisionDevice.kRobotToCamera = new com.team254.lib.geometry.Transform2d(
-				new Translation2d(Units.inchesToMeters(-12.042), Units.inchesToMeters(-12.666)),
-				Rotation2d.fromDegrees(0));
-
-		kRightVisionDevice.kTableName = "back";
-		kRightVisionDevice.kRobotToCamera = new com.team254.lib.geometry.Transform2d(
-				new Translation2d(Units.inchesToMeters(4.387), Units.inchesToMeters(10.857)),
+				new Translation2d(Units.inchesToMeters(11.712), Units.inchesToMeters(8.215)),
 				Rotation2d.fromDegrees(180));
+
+		kRightVisionDevice.kTableName = "northstar2";
+		kRightVisionDevice.kRobotToCamera = new com.team254.lib.geometry.Transform2d(
+				new Translation2d(Units.inchesToMeters(-8.215), Units.inchesToMeters(-11.712)),
+				Rotation2d.fromDegrees(0));
 	}
 
 	public static final class LinearServoConstants {

@@ -88,7 +88,7 @@ public class Superstructure extends Subsystem {
 
 	//Corals
 	public CoralTarget angles[] = {CoralTarget.RIGHT, CoralTarget.BOTTOM_RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.LEFT,  CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
-	public int coralId = 0;
+	public int coralId = 3;
 	public int level = 3;
 	public Levels currentLevel = Levels.LEVEL3;
 	public int subCoralId = 1;
@@ -236,25 +236,25 @@ public class Superstructure extends Subsystem {
 	};
 	public synchronized void showLevel(){
 		synchronized (Drive.getInstance()) {
-			if(level==0){
+			if(level==1){
 				Logger.recordOutput("Pointers/PointerC", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/Pointer1", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[2].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
 			}
-			if(level==1){
+			if(level==2){
 				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/PointerC", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[2].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
 			}
-			if(level==2){
+			if(level==3){
 				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/PointerC", levels[2].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
 			}
-			if(level==3){
+			if(level==4){
 				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[2].toLegacy());
@@ -357,6 +357,20 @@ public class Superstructure extends Subsystem {
 		return new ParallelRequest(
 			mElevator.LRequest(levelPos),
 			mCoralPivot.LRequest(levelPos)
+		);
+	}
+	public Request softHome() {
+		return new ParallelRequest(
+			//mElevator.LRequest(Levels.LEVEL1),
+			new LambdaRequest(
+				()->{
+					//clearRequestQueue();
+					mElevator.setOpenLoop(0);
+					mElevator.setWantHome(true);
+					//mElevator.LRequest(Levels.LEVEL1);
+				}
+			),
+			mCoralPivot.LRequest(Levels.LEVEL1)
 		);
 	}
 

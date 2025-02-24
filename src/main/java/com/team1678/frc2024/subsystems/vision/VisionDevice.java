@@ -27,6 +27,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 public class VisionDevice extends Subsystem {
 	private final VisionDeviceConstants mConstants;
 	private PeriodicIO mPeriodicIO = new PeriodicIO();
@@ -107,6 +109,7 @@ public class VisionDevice extends Subsystem {
 				default:
 					break;
 			}
+			//Logger.recordOutput("Vision " + mConstants.kTableName + "/Camera Pose", camera_pose.toLegacy());
 			if (camera_pose == null) continue;
 
 			double std_dev_multiplier = 1.0;
@@ -118,6 +121,7 @@ public class VisionDevice extends Subsystem {
 				Optional<Pose3d> tagPose = FieldLayout.kTagMap.getTagPose((int) tagId);
 				tagPose.ifPresent(tagPoses::add);
 			}
+			//Logger.recordOutput("Vision " + mConstants.kTableName + "/Poses Size", tagPoses.size());
 			if (tagPoses.size() == 0) {
 				continue;
 			}
@@ -139,7 +143,7 @@ public class VisionDevice extends Subsystem {
 			xyStdDev = Math.max(0.02, xyStdDev);
 
 			LogUtil.recordPose3d("Vision " + mConstants.kTableName + "/Tag Poses", tagPoses.toArray(new Pose3d[0]));
-			SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/N Tags Seen", tagPoses.size());
+			Logger.recordOutput("Vision " + mConstants.kTableName + "/N Tags Seen", tagPoses.size());
 			SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/Calculated STDev", xyStdDev);
 			LogUtil.recordPose2d("Vision " + mConstants.kTableName + "/Camera Pose", camera_pose);
 			LogUtil.recordPose2d(
@@ -210,10 +214,9 @@ public class VisionDevice extends Subsystem {
 
 	@Override
 	public void outputTelemetry() {
-		SmartDashboard.putNumber(
-				"Vision " + mConstants.kTableName + "/Last Update Timestamp Timestamp", mPeriodicIO.latest_timestamp);
-		SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/N Queued Updates", mPeriodicIO.frames.size());
-		SmartDashboard.putBoolean("Vision " + mConstants.kTableName + "/is Connnected", mPeriodicIO.is_connected);
+		Logger.recordOutput("Vision " + mConstants.kTableName + "/Last Update Timestamp Timestamp", mPeriodicIO.latest_timestamp);
+		Logger.recordOutput("Vision " + mConstants.kTableName + "/N Queued Updates", mPeriodicIO.frames.size());
+		Logger.recordOutput("Vision " + mConstants.kTableName + "/is Connnected", mPeriodicIO.is_connected);
 	}
 
 	@Override
@@ -233,7 +236,7 @@ public class VisionDevice extends Subsystem {
 		// inputs
 		double camera_exposure = 10;
 		boolean camera_auto_exposure = false;
-		double camera_gain = 25;
+		double camera_gain = 400;
 
 		// Outputs
 		long fps = -1;

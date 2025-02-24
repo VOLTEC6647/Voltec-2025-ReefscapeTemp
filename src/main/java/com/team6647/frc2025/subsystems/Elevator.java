@@ -1,6 +1,7 @@
 package com.team6647.frc2025.subsystems;
 
 import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
 
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
@@ -34,8 +35,8 @@ public class Elevator extends ServoMotorSubsystem {
 
 	public static final double kL1Height = 0.0;
 	public static final double kL2Height = 0;
-	public static final double kL3Height = 0.16;
-	public static final double kL4Height = 0.0;
+	public static final double kL3Height = 0.14;
+	public static final double kL4Height = 0.31;
 
 	private boolean mHoming = false;
 	private boolean mNeedsToHome = false;
@@ -108,10 +109,9 @@ public class Elevator extends ServoMotorSubsystem {
 
 	@Override
 	public void outputTelemetry() {
-		SmartDashboard.putBoolean(mConstants.kName + "/Homing", mHoming);
-		SmartDashboard.putBoolean(mConstants.kName + "/Within Homing Window", atHomingLocation());
-		SmartDashboard.putNumber(mConstants.kName + "/Setpoint", getSetpoint());
-
+		Logger.recordOutput(mConstants.kName + "/Homing", mHoming);
+		Logger.recordOutput(mConstants.kName + "/Within Homing Window", atHomingLocation());
+		Logger.recordOutput(mConstants.kName + "/Setpoint", getSetpoint());
 
 		super.outputTelemetry();
 	}

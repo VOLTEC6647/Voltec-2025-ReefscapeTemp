@@ -25,7 +25,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 	private static CoralPivot mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
-	public static final double kLevel1Angle = 0.0, kLevel2Angle = 100.0, kLevel3Angle = 100.0, kLevel4Angle = 0.0;
+	public static final double kLevel1Angle = 100.0, kLevel2Angle = 100.0, kLevel3Angle = 100.0, kLevel4Angle = 100.0, kIntakingAngle = 155.0;
 
 	public static CoralPivot getInstance() {
 		if (mInstance == null) {
@@ -75,7 +75,7 @@ public class CoralPivot extends ServoMotorSubsystem {
 					&& mHomingStart.getTime()
 							> CoralPivotConstants.kMinHomingTime) { // Stop homing if we've hit a hardstop
 				setOpenLoop(0.0);
-				setPosition(0.0);
+				//setPosition(0.0);
 				zeroSensors();
 				mHoming = false;
 			} else if (mHomingStart.getTime() > CoralPivotConstants.kMaxHomingTime) {
@@ -94,11 +94,15 @@ public class CoralPivot extends ServoMotorSubsystem {
 	}
 
 	public Request LRequest(Levels level) {
+		return setPivotRequest(level.coralAngle);
+	}
+
+	public Request setPivotRequest(Double position) {
 		return new Request() {
 
 			@Override
 			public void act() {
-				setSetpointMotionMagic(level.coralAngle);
+				setSetpointMotionMagic(position);
 			}
 
 			@Override

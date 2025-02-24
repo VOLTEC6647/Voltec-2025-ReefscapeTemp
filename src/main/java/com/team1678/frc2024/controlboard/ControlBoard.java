@@ -9,38 +9,55 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ControlBoard {
-	private final double kSwerveDeadband = Constants1678.stickDeadband;
-
-	private static ControlBoard mInstance = null;
-
-	public static ControlBoard getInstance() {
-		if (mInstance == null) {
-			mInstance = new ControlBoard();
+	private double kSwerveDeadband = Constants1678.stickDeadband;
+	
+		private static ControlBoard mInstance = null;
+	
+		private double globalMultiplyer = 1;
+	
+		public static ControlBoard getInstance() {
+			if (mInstance == null) {
+				mInstance = new ControlBoard();
+			}
+	
+			return mInstance;
+		}
+	
+		public final CustomXboxController1678 driver;
+		public final CustomXboxController1678 operator;
+	
+		private ControlBoard() {
+			driver = new CustomXboxController1678(0);
+			operator = new CustomXboxController1678(Constants1678.kButtonGamepadPort);
+		}
+	
+		public void update() {
+			
+			driver.update();
+			operator.update();
+		}
+	
+		/* DRIVER METHODS */
+		public Translation2d getSwerveTranslation() {
+			double forwardAxis = driver.getRawAxis(Axis.kLeftY.value);
+			double strafeAxis = driver.getRawAxis(Axis.kLeftX.value);
+	
+				
+			if(driver.getLeftBumperButton()){
+				globalMultiplyer = 0.5;
+				kSwerveDeadband = 0.05;
+			}else if(driver.getRightBumperButton()){
+				globalMultiplyer = 1;
+				kSwerveDeadband = Constants1678.stickDeadband;
 		}
 
-		return mInstance;
-	}
-
-	public final CustomXboxController1678 driver;
-	public final CustomXboxController1678 operator;
-
-	private ControlBoard() {
-		driver = new CustomXboxController1678(0);
-		operator = new CustomXboxController1678(Constants1678.kButtonGamepadPort);
-	}
-
-	public void update() {
-		driver.update();
-		operator.update();
-	}
-
-	/* DRIVER METHODS */
-	public Translation2d getSwerveTranslation() {
-		double forwardAxis = driver.getRawAxis(Axis.kLeftY.value);
-		double strafeAxis = driver.getRawAxis(Axis.kLeftX.value);
+		forwardAxis*=globalMultiplyer;
+		strafeAxis*=globalMultiplyer;
 
 		SmartDashboard.putNumber("Raw Y", forwardAxis);
 		SmartDashboard.putNumber("Raw X", strafeAxis);
+		SmartDashboard.putNumber("Global M", globalMultiplyer);
+
 
 		forwardAxis = Constants1678.SwerveConstants.invertYAxis ? forwardAxis : -forwardAxis;
 		strafeAxis = Constants1678.SwerveConstants.invertXAxis ? strafeAxis : -strafeAxis;
@@ -62,6 +79,7 @@ public class ControlBoard {
 
 	public double getSwerveRotation() {
 		double rotAxis = driver.getRightX() * 0.80;
+		rotAxis*=globalMultiplyer;
 		rotAxis = Constants1678.SwerveConstants.invertRAxis ? rotAxis : -rotAxis;
 
 		if (Math.abs(rotAxis) < kSwerveDeadband) {

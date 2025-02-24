@@ -14,8 +14,11 @@ import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.Drive.DriveControlState;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
 import com.team1678.lib.requests.LambdaRequest;
+import com.team1678.lib.requests.ParallelRequest;
 import com.team1678.lib.requests.SequentialRequest;
 import com.team1678.lib.requests.WaitRequest;
+import com.team254.lib.geometry.Rotation2d;
+import com.team6647.frc2025.FieldLayout;
 import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.actions.AssistModeExecutor;
 import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
@@ -63,7 +66,7 @@ public class DriverControls {
 	
 	private MotorTest mMotorTest = MotorTest.getInstance();
 	private AlgaeRollers mAlgaeRollers = AlgaeRollers.getInstance();
-	private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
+	//private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
 	private CoralRoller mCoralRoller = CoralRoller.getInstance();
 	private Elevator mElevator = Elevator.getInstance();
 	private CoralPivot mCoralPivot = CoralPivot.getInstance();
@@ -82,7 +85,7 @@ public class DriverControls {
 					mSuperstructure.prepareLevel(s.currentLevel),
 					new LambdaRequest(
 						()->{
-							mCoralRoller.setState(CoralRoller.State.OUTAKING);
+							//mCoralRoller.setState(CoralRoller.State.OUTAKING);
 						}
 					)
 				)
@@ -91,26 +94,36 @@ public class DriverControls {
 
 		if(mControlBoard.operator.aButton.wasReleased()){
 			mSuperstructure.request(
-				new SequentialRequest(
-					mSuperstructure.prepareLevel(s.currentLevel),
-					new LambdaRequest(
-						()->{
-							mCoralRoller.setState(CoralRoller.State.OUTAKING);
-						}
-					)
-				)
+				mSuperstructure.softHome()
+			);
+		}
+		if(mControlBoard.operator.bButton.wasActivated()){
+			//mElevator.setWantHome(true);
+			mSuperstructure.request(
+			mCoralPivot.setPivotRequest(CoralPivot.kIntakingAngle)
 			);
 		}
 		
-		if (mControlBoard.operator.bButton.wasActivated()) {
-
+		if (mControlBoard.operator.yButton.wasActivated()) {
 			mCoralRoller.setState(CoralRoller.State.INTAKING);
 		}
-		if (mControlBoard.operator.bButton.wasReleased()) {
-
+		if (mControlBoard.operator.yButton.wasReleased()) {
 			mCoralRoller.setState(CoralRoller.State.IDLE);
-
 		}
+		if (mControlBoard.driver.xButton.wasActivated()) {
+			mCoralRoller.setState(CoralRoller.State.OUTAKING);
+		}
+		if (mControlBoard.driver.xButton.wasReleased()) {
+			mCoralRoller.setState(CoralRoller.State.IDLE);
+		}
+		if (mControlBoard.operator.xButton.wasActivated()) {
+			mCoralRoller.setState(CoralRoller.State.OUTAKING);
+		}
+		if (mControlBoard.operator.xButton.wasReleased()) {
+			mCoralRoller.setState(CoralRoller.State.IDLE);
+		}
+		
+		
 
 		if (mControlBoard.driver.backButton.wasActivated()) {
 			mDrive.zeroGyro(0);
@@ -170,15 +183,15 @@ public class DriverControls {
 		if(mControlBoard.operator.POV0.wasActivated()){
 			s.setLevel(s.level+1);
 			if (s.level>3){
-				s.setLevel(3);
+				s.setLevel(4);
 			}
 			//coralPlacer.stop();
 			s.showLevel();
 		}
 		if(mControlBoard.operator.POV180.wasActivated()){
 			s.setLevel(s.level-1);
-			if (s.level<0){
-				s.setLevel(0);
+			if (s.level<1){
+				s.setLevel(1);
 			}
 			//coralPlacer.stop();
 			s.showLevel();
@@ -209,15 +222,33 @@ public class DriverControls {
 		//	mAlgaeRollers.setState(AlgaeRollers.State.IDLE);
 		//}
 
+		if(mControlBoard.driver.rightTrigger.wasActivated()){
+			mDrive.stabilizeHeading(Rotation2d.fromDegrees(125));
+		}
+		if(mControlBoard.driver.rightTrigger.wasReleased()){
+			mDrive.setControlState(DriveControlState.OPEN_LOOP);
+		}
+		if(mControlBoard.driver.leftTrigger.wasActivated()){
+			mDrive.stabilizeHeading(Rotation2d.fromDegrees(-48.4));
+		}
+		if(mControlBoard.driver.leftTrigger.wasReleased()){
+			mDrive.setControlState(DriveControlState.OPEN_LOOP);
+		}
+		if(mControlBoard.driver.aButton.wasActivated()){
+			Rotation2d coralRotation = FieldLayout.getCoralTargetPos(s.angles[s.coralId]).algae.getRotation();
+			mDrive.stabilizeHeading(coralRotation);
+		}
+		if(mControlBoard.driver.aButton.wasReleased()){
+			mDrive.setControlState(DriveControlState.OPEN_LOOP);
+		}
 		if(mControlBoard.operator.leftTrigger.wasActivated()){
-			mAlgaeHolder.setState(AlgaeHolder.State.RETRACTING);
+			Rotation2d coralRotation = FieldLayout.getCoralTargetPos(s.angles[s.coralId]).algae.getRotation();
+			mDrive.stabilizeHeading(coralRotation);
 		}
-		if(mControlBoard.operator.rightTrigger.wasActivated()){
-			mAlgaeHolder.setState(AlgaeHolder.State.DEPLOYING);
+		if(mControlBoard.operator.leftTrigger.wasReleased()){
+			mDrive.setControlState(DriveControlState.OPEN_LOOP);
 		}
-		if(mControlBoard.operator.leftTrigger.wasReleased()||mControlBoard.operator.rightTrigger.wasReleased()){
-			mAlgaeHolder.setState(AlgaeHolder.State.IDLE);
-		}
+
 
 		/*
 		if(mControlBoard.operator.leftTrigger.wasActivated()){
@@ -230,22 +261,7 @@ public class DriverControls {
 			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
 			 */
-
-			
-		if(mControlBoard.operator.xButton.wasActivated()){
-			//s.request(mElevator.L2Request());
-			//mCoralPivot.setSetpointMotionMagic(100);
-			//System.out.println(mCoralPivot.getSetpoint());
-			mElevator.setSetpointMotionMagic(0.22);
-		}
-
-		if(mControlBoard.operator.yButton.wasActivated()){
-			//s.request(mElevator.L2Request());
-			//mCoralPivot.setSetpointMotionMagic(CoralPivotConstantsSolo.kHomePosition);
-			//System.out.println(mCoralPivot.getSetpoint());
-			mElevator.setSetpointMotionMagic(20);
-		}
-			 
+ 
 			 
 			
 
