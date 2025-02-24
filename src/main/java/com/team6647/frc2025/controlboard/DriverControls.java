@@ -17,6 +17,7 @@ import com.team1678.lib.requests.LambdaRequest;
 import com.team1678.lib.requests.ParallelRequest;
 import com.team1678.lib.requests.SequentialRequest;
 import com.team1678.lib.requests.WaitRequest;
+import com.team1678.lib.util.NearestAngleFinder;
 import com.team254.lib.geometry.Rotation2d;
 import com.team6647.frc2025.FieldLayout;
 import com.team6647.frc2025.FieldLayout.CoralTarget;
@@ -235,7 +236,10 @@ public class DriverControls {
 			mDrive.setControlState(DriveControlState.OPEN_LOOP);
 		}
 		if(mControlBoard.driver.aButton.wasActivated()){
-			Rotation2d coralRotation = FieldLayout.getCoralTargetPos(s.angles[s.coralId]).algae.getRotation();
+			//Rotation2d coralRotation = FieldLayout.getCoralTargetPos(s.angles[s.coralId]).algae.getRotation();
+			//mDrive.stabilizeHeading(coralRotation);
+
+			Rotation2d coralRotation = Rotation2d.fromDegrees(NearestAngleFinder.findNearestAngle(s.angles, mDrive.getHeading().getDegrees()));
 			mDrive.stabilizeHeading(coralRotation);
 		}
 		if(mControlBoard.driver.aButton.wasReleased()){
