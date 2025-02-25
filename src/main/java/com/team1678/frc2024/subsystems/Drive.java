@@ -202,9 +202,9 @@ public class Drive extends Subsystem {
   private PIDController choreoX, choreoY, choreoRotation;
 
 
-public void choreoController(edu.wpi.first.math.geometry.Pose2d currentPoseL, SwerveSample sample) {
+public void choreoController(SwerveSample sample) {
 
-	Pose2d currentPose = Util.to254Pose(currentPoseL);
+	Pose2d currentPose = Util.to254Pose(getLegacyPose());
 	var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
 	  sample.vx + choreoX.calculate(currentPose.getTranslation().x(), sample.x),
 	  sample.vy + choreoY.calculate(currentPose.getTranslation().y(), sample.y),

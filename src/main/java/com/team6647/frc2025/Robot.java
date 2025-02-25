@@ -13,6 +13,7 @@ import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.auto.AutoModeSelector;
 import com.team6647.frc2025.auto.modes.configuredQuals.simpleForward2;
+import com.team6647.frc2025.auto.modes.configuredQuals.simpleForwardC;
 import com.team6647.frc2025.auto.paths.TrajectoryGenerator;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team6647.frc2025.controlboard.DriverControls;
@@ -49,6 +50,8 @@ import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import choreo.Choreo;
 import choreo.auto.AutoFactory;
+import choreo.trajectory.SwerveSample;
+import choreo.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -124,7 +127,8 @@ public class Robot extends LoggedRobot {
 	public static String serial;
 
 	double disable_enter_time = 0.0;
-
+	
+	
 	
 	static {
 		Logger.recordMetadata("Voltec", "Betabot");
@@ -257,8 +261,10 @@ public class Robot extends LoggedRobot {
 		RobotState.getInstance().setIsInAuto(true);
 		mDisabledLooper.stop();
 		mEnabledLooper.start();
-		mAutoModeExecutor.setAutoMode(new simpleForward2());
+		mAutoModeExecutor.setAutoMode(new simpleForwardC());
 		mAutoModeExecutor.start();
+
+		
 
 		//autoFactory = Choreo.createAutoFactory(mDrive,
 		//mDrive::getLegacyPose,
@@ -276,7 +282,10 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void autonomousPeriodic() {}
+	public void autonomousPeriodic() {
+
+		 
+	}
 
 	@Override
 	public void autonomousExit() {}

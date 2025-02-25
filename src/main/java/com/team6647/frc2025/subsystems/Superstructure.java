@@ -26,14 +26,20 @@ import com.team254.lib.geometry.Translation2d;
 
 import com.team254.lib.util.TimeDelayedBoolean;
 import com.team6647.frc2025.FieldLayout;
+import com.team6647.frc2025.Robot;
 import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
 
+import choreo.Choreo;
+import choreo.trajectory.SwerveSample;
+import choreo.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
 
@@ -58,10 +64,9 @@ public class Superstructure extends Subsystem {
 	private boolean allRequestsComplete = false;
 
 	// Subsystems
-	
 
 	// LEDs
-	//private final LEDs mLEDs = LEDs.getInstance();
+	// private final LEDs mLEDs = LEDs.getInstance();
 	private TimedLEDState mHeldState = TimedLEDState.NOTE_HELD_SHOT;
 
 	// Target tracking
@@ -71,41 +76,44 @@ public class Superstructure extends Subsystem {
 	private double mDistanceToTarget = 0.0;
 	private double mAngularErrToTarget = 0.0;
 
-	
-
 	// Manual param tuning
-	//public final boolean kUseSmartdash = false;
-	//public TunableNumber kCurveTuner = new TunableNumber("FiringParams/ManualCurveTune", 0.0, true);
-	//public TunableNumber kSkewTuner = new TunableNumber("FiringParams/ManualSkewTune", 0.0, true);
-	//public TunableNumber mHoodTuner = new TunableNumber("FiringParams/ManualHoodTune", 0.0, true);
-	//public TunableNumber mRPMTuner = new TunableNumber("FiringParams/ManualRPMTune", 0.0, true);
+	// public final boolean kUseSmartdash = false;
+	// public TunableNumber kCurveTuner = new
+	// TunableNumber("FiringParams/ManualCurveTune", 0.0, true);
+	// public TunableNumber kSkewTuner = new
+	// TunableNumber("FiringParams/ManualSkewTune", 0.0, true);
+	// public TunableNumber mHoodTuner = new
+	// TunableNumber("FiringParams/ManualHoodTune", 0.0, true);
+	// public TunableNumber mRPMTuner = new
+	// TunableNumber("FiringParams/ManualRPMTune", 0.0, true);
 
 	// Trackers
-	//private boolean CLIMB_MODE = false;
-	//private boolean PREP = false;
-	//private boolean FERRY_SHOT = false;
-	//private boolean WANTS_SPINDOWN = false;
+	// private boolean CLIMB_MODE = false;
+	// private boolean PREP = false;
+	// private boolean FERRY_SHOT = false;
+	// private boolean WANTS_SPINDOWN = false;
 
-	//Corals
-	public CoralTarget angles[] = {CoralTarget.RIGHT, CoralTarget.BOTTOM_RIGHT, CoralTarget.BOTTOM_LEFT, CoralTarget.LEFT,  CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT};
+	// Corals
+	public CoralTarget angles[] = { CoralTarget.RIGHT, CoralTarget.BOTTOM_RIGHT, CoralTarget.BOTTOM_LEFT,
+			CoralTarget.LEFT, CoralTarget.TOP_LEFT, CoralTarget.TOP_RIGHT };
 	public int coralId = 3;
 	public int level = 3;
 	public Levels currentLevel = Levels.LEVEL3;
 	public int subCoralId = 1;
 	public int coralStationPosition = 0;
 
-	public void setLevel(int level){
+	public void setLevel(int level) {
 		this.level = level;
-		if(level == 1){
+		if (level == 1) {
 			this.currentLevel = Levels.LEVEL1;
 		}
-		if(level == 2){
+		if (level == 2) {
 			this.currentLevel = Levels.LEVEL2;
 		}
-		if(level == 3){
+		if (level == 3) {
 			this.currentLevel = Levels.LEVEL3;
 		}
-		if(level == 4){
+		if (level == 4) {
 			this.currentLevel = Levels.LEVEL4;
 		}
 	}
@@ -171,7 +179,7 @@ public class Superstructure extends Subsystem {
 						activeRequest = null;
 					}
 
-					//updateShootingSetpoints();
+					// updateShootingSetpoints();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -204,9 +212,8 @@ public class Superstructure extends Subsystem {
 	@Override
 	public void outputTelemetry() {
 
-		//SmartDashboard.putBoolean("Ferry Shot", FERRY_SHOT);
+		// SmartDashboard.putBoolean("Ferry Shot", FERRY_SHOT);
 
-		
 		SmartDashboard.putNumber("FiringParams/Angular Err To Target", mAngularErrToTarget);
 	}
 
@@ -215,13 +222,14 @@ public class Superstructure extends Subsystem {
 		new test1();
 	}
 
-	public synchronized void showAngle(){
+	public synchronized void showAngle() {
 		synchronized (Drive.getInstance()) {
-			Logger.recordOutput("CoralPose", FieldLayout.getCoralTargetPos(angles[coralId]).corals[subCoralId].toLegacy());
+			Logger.recordOutput("CoralPose",
+					FieldLayout.getCoralTargetPos(angles[coralId]).corals[subCoralId].toLegacy());
 		}
 	}
 
-	public synchronized void showSource(){
+	public synchronized void showSource() {
 		synchronized (Drive.getInstance()) {
 			Logger.recordOutput("CoralSource", FieldLayout.getCoralStation(true, coralStationPosition).toLegacy());
 		}
@@ -229,32 +237,33 @@ public class Superstructure extends Subsystem {
 
 	private double levelCenter = 8.77400016784668;
 	private Pose2d[] levels = {
-		Pose2d.fromTranslation(new Translation2d(levelCenter,1.3818594217300415)),
-		Pose2d.fromTranslation(new Translation2d(levelCenter,3.002558469772339)),
-		Pose2d.fromTranslation(new Translation2d(levelCenter,5.058445453643799)),
-		Pose2d.fromTranslation(new Translation2d(levelCenter,6.664137363433838)),
+			Pose2d.fromTranslation(new Translation2d(levelCenter, 1.3818594217300415)),
+			Pose2d.fromTranslation(new Translation2d(levelCenter, 3.002558469772339)),
+			Pose2d.fromTranslation(new Translation2d(levelCenter, 5.058445453643799)),
+			Pose2d.fromTranslation(new Translation2d(levelCenter, 6.664137363433838)),
 	};
-	public synchronized void showLevel(){
+
+	public synchronized void showLevel() {
 		synchronized (Drive.getInstance()) {
-			if(level==1){
+			if (level == 1) {
 				Logger.recordOutput("Pointers/PointerC", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/Pointer1", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[2].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
 			}
-			if(level==2){
+			if (level == 2) {
 				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/PointerC", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[2].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
 			}
-			if(level==3){
+			if (level == 3) {
 				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/PointerC", levels[2].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[3].toLegacy());
 			}
-			if(level==4){
+			if (level == 4) {
 				Logger.recordOutput("Pointers/Pointer1", levels[0].toLegacy());
 				Logger.recordOutput("Pointers/Pointer2", levels[1].toLegacy());
 				Logger.recordOutput("Pointers/Pointer3", levels[2].toLegacy());
@@ -263,26 +272,22 @@ public class Superstructure extends Subsystem {
 		}
 	}
 
-	// spotless:off 
-	
-	
-
-
-
+	// spotless:off
 
 	/**
 	 * BeamBreak Sensor reading.
 	 * 
-	 * @param mBreak BeamBreak Sensor.
+	 * @param mBreak       BeamBreak Sensor.
 	 * @param target_state If wanted reading is true (broken) or false (not broken).
 	 * 
-	 * @return Boolean for if target state is acheived. 
+	 * @return Boolean for if target state is acheived.
 	 */
 	private Request breakWait(BeamBreak mBreak, boolean target_state) {
 		return new Request() {
 
 			@Override
-			public void act() {}
+			public void act() {
+			}
 
 			@Override
 			public boolean isFinished() {
@@ -291,12 +296,12 @@ public class Superstructure extends Subsystem {
 		};
 	}
 
-
 	private Request boolWait(BooleanSupplier func) {
 		return new Request() {
 
 			@Override
-			public void act() {}
+			public void act() {
+			}
 
 			@Override
 			public boolean isFinished() {
@@ -308,11 +313,12 @@ public class Superstructure extends Subsystem {
 	/**
 	 * Debounced BeamBreak Sensor reading.
 	 * 
-	 * @param mBreak BeamBreak Sensor.
-	 * @param target_state If wanted reading is true (broken) or false (not broken).
-	 * @param delayed_wait_seconds Debounces time from a BeamBreak Sensor. 
+	 * @param mBreak               BeamBreak Sensor.
+	 * @param target_state         If wanted reading is true (broken) or false (not
+	 *                             broken).
+	 * @param delayed_wait_seconds Debounces time from a BeamBreak Sensor.
 	 * 
-	 * @return Boolean for if target state is acheived after debouncing the signal. 
+	 * @return Boolean for if target state is acheived after debouncing the signal.
 	 */
 	private Request breakWait(BeamBreak mBreak, boolean target_state, double delayed_wait_seconds) {
 		return new Request() {
@@ -320,7 +326,8 @@ public class Superstructure extends Subsystem {
 			TimeDelayedBoolean timeout = new TimeDelayedBoolean();
 
 			@Override
-			public void act() {}
+			public void act() {
+			}
 
 			@Override
 			public boolean isFinished() {
@@ -328,7 +335,6 @@ public class Superstructure extends Subsystem {
 			}
 		};
 	}
-
 
 	/**
 	 * Stop Intake Rollers, Serializer, Feeder, and Amp Rollers.
@@ -340,38 +346,37 @@ public class Superstructure extends Subsystem {
 	}
 
 	public enum Levels {
-		LEVEL1(Elevator.kL1Height,CoralPivot.kLevel1Angle),
-		LEVEL2(Elevator.kL2Height,CoralPivot.kLevel2Angle),
-		LEVEL3(Elevator.kL3Height,CoralPivot.kLevel3Angle),
-		LEVEL4(Elevator.kL4Height,CoralPivot.kLevel4Angle);
+		LEVEL1(Elevator.kL1Height, CoralPivot.kLevel1Angle),
+		LEVEL2(Elevator.kL2Height, CoralPivot.kLevel2Angle),
+		LEVEL3(Elevator.kL3Height, CoralPivot.kLevel3Angle),
+		LEVEL4(Elevator.kL4Height, CoralPivot.kLevel4Angle);
 
 		public double elevatorHeight;
 		public double coralAngle;
-		
-		private Levels(double elevatorHeight, double coralAngle){
+
+		private Levels(double elevatorHeight, double coralAngle) {
 			this.elevatorHeight = elevatorHeight;
 			this.coralAngle = coralAngle;
 		}
 	}
+
 	public Request prepareLevel(Levels levelPos) {
 		return new ParallelRequest(
-			mElevator.LRequest(levelPos),
-			mCoralPivot.LRequest(levelPos)
-		);
+				mElevator.LRequest(levelPos),
+				mCoralPivot.LRequest(levelPos));
 	}
+
 	public Request softHome() {
 		return new ParallelRequest(
-			//mElevator.LRequest(Levels.LEVEL1),
-			new LambdaRequest(
-				()->{
-					//clearRequestQueue();
-					mElevator.setOpenLoop(0);
-					mElevator.setWantHome(true);
-					//mElevator.LRequest(Levels.LEVEL1);
-				}
-			),
-			mCoralPivot.LRequest(Levels.LEVEL1)
-		);
+				// mElevator.LRequest(Levels.LEVEL1),
+				new LambdaRequest(
+						() -> {
+							// clearRequestQueue();
+							mElevator.setOpenLoop(0);
+							mElevator.setWantHome(true);
+							// mElevator.LRequest(Levels.LEVEL1);
+						}),
+				mCoralPivot.LRequest(Levels.LEVEL1));
 	}
 
 	/**
@@ -383,10 +388,9 @@ public class Superstructure extends Subsystem {
 
 	ControlBoard mControlBoard = ControlBoard.getInstance();
 
-	public void preGen(){
-		
+	public void preGen() {
+
 	}
-	
-	
+
 	// spotless:on
 }
