@@ -27,10 +27,17 @@ public class CoralRoller extends Subsystem {
 		return mInstance;
 	}
 
+	private double kStandard = 1.3;
+	public State OUTAKING = State.OUTAKING3;
+
 	public enum State {
 		IDLE(0.0),
 		INTAKING(-1.3),
-		OUTAKING(1.3);
+		OUTAKING4(0.5),
+		OUTAKING3(1.3),
+		OUTAKING2(1.3),
+		OUTAKING1(0.5);
+
 
 		public double roller_demand;
 

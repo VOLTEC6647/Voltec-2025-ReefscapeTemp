@@ -29,6 +29,7 @@ import com.team6647.frc2025.FieldLayout;
 import com.team6647.frc2025.Robot;
 import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
+import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import choreo.Choreo;
 import choreo.trajectory.SwerveSample;
@@ -101,20 +102,25 @@ public class Superstructure extends Subsystem {
 	public Levels currentLevel = Levels.LEVEL3;
 	public int subCoralId = 1;
 	public int coralStationPosition = 0;
+	private CoralRoller mCoralRoller = CoralRoller.getInstance();
 
 	public void setLevel(int level) {
 		this.level = level;
 		if (level == 1) {
 			this.currentLevel = Levels.LEVEL1;
+			mCoralRoller.OUTAKING = CoralRoller.State.OUTAKING1;
 		}
 		if (level == 2) {
 			this.currentLevel = Levels.LEVEL2;
+			mCoralRoller.OUTAKING = CoralRoller.State.OUTAKING2;
 		}
 		if (level == 3) {
 			this.currentLevel = Levels.LEVEL3;
+			mCoralRoller.OUTAKING = CoralRoller.State.OUTAKING3;
 		}
 		if (level == 4) {
 			this.currentLevel = Levels.LEVEL4;
+			mCoralRoller.OUTAKING = CoralRoller.State.OUTAKING4;
 		}
 	}
 
@@ -353,10 +359,12 @@ public class Superstructure extends Subsystem {
 
 		public double elevatorHeight;
 		public double coralAngle;
+		public double rollerSpeed;
 
 		private Levels(double elevatorHeight, double coralAngle) {
 			this.elevatorHeight = elevatorHeight;
 			this.coralAngle = coralAngle;
+			this.rollerSpeed = rollerSpeed;
 		}
 	}
 

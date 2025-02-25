@@ -116,13 +116,13 @@ public class DriverControls {
 			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
 		if (mControlBoard.driver.xButton.wasActivated()) {
-			mCoralRoller.setState(CoralRoller.State.OUTAKING);
+			mCoralRoller.setState(mCoralRoller.OUTAKING);
 		}
 		if (mControlBoard.driver.xButton.wasReleased()) {
 			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
 		if (mControlBoard.operator.xButton.wasActivated()) {
-			mCoralRoller.setState(CoralRoller.State.OUTAKING);
+			mCoralRoller.setState(mCoralRoller.OUTAKING);
 		}
 		if (mControlBoard.operator.xButton.wasReleased()) {
 			mCoralRoller.setState(CoralRoller.State.IDLE);

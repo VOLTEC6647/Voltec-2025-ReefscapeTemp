@@ -45,7 +45,7 @@ public class simpleForwardC extends AutoModeBase {
 	protected void routine() throws AutoModeEndedException {
 		runAction(new ChoreoTrajectoryAction("SimpleForward"));
 		s.request(s.prepareLevel(Levels.LEVEL3));
-		CoralRoller.getInstance().setState(State.OUTAKING);
+		CoralRoller.getInstance().setState(CoralRoller.getInstance().OUTAKING);
 
 		System.out.println("Finished auto!");
 	}

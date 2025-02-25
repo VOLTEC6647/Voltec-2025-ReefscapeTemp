@@ -58,7 +58,7 @@ public class simpleForward2 extends AutoModeBase {
 		}));
 		runAction(new SwerveTrajectoryAction(forward, true));
 		s.request(s.prepareLevel(Levels.LEVEL3));
-		CoralRoller.getInstance().setState(State.OUTAKING);
+		CoralRoller.getInstance().setState(CoralRoller.getInstance().OUTAKING);
 
 		System.out.println("Finished auto!");
 	}

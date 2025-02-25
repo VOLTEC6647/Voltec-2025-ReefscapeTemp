@@ -26,11 +26,12 @@ public class AlgaeRoller extends Subsystem {
 		}
 		return mInstance;
 	}
+	
 
 	public enum State {
 		IDLE(0.0),
 		INTAKING(-1.3),
-		OUTAKING(1.3);
+		OUTAKING(-1.3);
 
 		public double roller_demand;
 
