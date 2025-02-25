@@ -34,14 +34,14 @@ public class Ports {
 
 	/* SUBSYSTEM CAN DEVICE IDS */
 	public static final CanDeviceId ALGAE_ROLLER1 = new CanDeviceId(15, DriveConstants.mechanismsCANBus);
-	public static final CanDeviceId ALGAE_ROLLER2 = new CanDeviceId(16, DriveConstants.mechanismsCANBus);
 
-	public static final CanDeviceId ALGAE_HOLDER = new CanDeviceId(17, "rio");
+	public static final CanDeviceId ALGAE_T = new CanDeviceId(17, DriveConstants.mechanismsCANBus);
+
 
 	public static final CanDeviceId CORAL_ROLLER = new CanDeviceId(21, DriveConstants.mechanismsCANBus);
 
 	//public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(18, DriveConstants.mechanismsCANBus);
-	public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(19, DriveConstants.mechanismsCANBus);
+	public static final CanDeviceId CORAL_PIVOT = new CanDeviceId(-19, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId CORAL_CANCODER = new CanDeviceId(20, DriveConstants.mechanismsCANBus);
 	public static final int CORAL_ENCODER = 0;
 
@@ -50,8 +50,8 @@ public class Ports {
 	public static final CanDeviceId ELEVATOR_MAIN = new CanDeviceId(13, DriveConstants.mechanismsCANBus);
 	public static final CanDeviceId ELEVATOR_FOLLOWER = new CanDeviceId(14, DriveConstants.mechanismsCANBus);
 
-	public static final CanDeviceId CLIMBER = new CanDeviceId(19, DriveConstants.mechanismsCANBus);
-	public static final CanDeviceId ALGAETHING = new CanDeviceId(19, DriveConstants.mechanismsCANBus);
+	public static final CanDeviceId CLIMBER = new CanDeviceId(22, DriveConstants.mechanismsCANBus);
+	public static final CanDeviceId ALGAETHING = new CanDeviceId(-1, DriveConstants.mechanismsCANBus);
 
 
 

@@ -12,13 +12,16 @@ import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.auto.AutoModeSelector;
+import com.team6647.frc2025.auto.modes.configuredQuals.simpleForward2;
 import com.team6647.frc2025.auto.paths.TrajectoryGenerator;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team6647.frc2025.controlboard.DriverControls;
 import com.team1678.frc2024.loops.CrashTracker;
 import com.team1678.frc2024.loops.Looper;
 import com.team1678.frc2024.paths.TrajectoryGenerator1678;
+import com.team1678.frc2024.subsystems.AlgaeT;
 import com.team1678.frc2024.subsystems.Cancoders;
+import com.team1678.frc2024.subsystems.Climber;
 import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.limelight.Limelight;
@@ -37,12 +40,11 @@ import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
-import com.team6647.frc2025.subsystems.AlgaeHolder;
-import com.team6647.frc2025.subsystems.AlgaeRollers;
 import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 import com.team6647.frc2025.subsystems.Superstructure.Levels;
+import com.team6647.frc2025.subsystems.algae_roller.AlgaeRoller;
 import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import choreo.Choreo;
@@ -92,12 +94,14 @@ public class Robot extends LoggedRobot {
 	private Cancoders mCancoders;
 
 	private MotorTest mMotorTest;
-	private AlgaeRollers mAlgaeRollers;
-	private AlgaeHolder mAlgaeHolder;
+	private AlgaeRoller mAlgaeRoller;
+	private AlgaeT mAlgaeT;
 	private CoralPivot mCoralPivot;
 	private CoralRoller mCoralRoller;
 
 	private Elevator mElevator;
+	private com.team1678.frc2024.subsystems.Climber mClimber;
+
 
 
 
@@ -147,11 +151,13 @@ public class Robot extends LoggedRobot {
 		mDrive = Drive.getInstance();
 
 		//mMotorTest = MotorTest.getInstance();
-		mAlgaeRollers = AlgaeRollers.getInstance();
-		mAlgaeHolder = AlgaeHolder.getInstance();
+		mAlgaeRoller = AlgaeRoller.getInstance();
+		mAlgaeT = AlgaeT.getInstance();
 		mCoralPivot = CoralPivot.getInstance();
 		mCoralRoller = CoralRoller.getInstance();
 		mElevator = Elevator.getInstance();
+		mClimber = Climber.getInstance();
+
 		
 		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
@@ -198,14 +204,16 @@ public class Robot extends LoggedRobot {
 			mSubsystemManager.setSubsystems(
 				mDrive, 
 				mSuperstructure,
-				mVisionDevices,
+				//mClimber,
+				//mVisionDevices
 				//mMotorTest,
-				//mAlgaeRollers,
+				//mAlgaeRoller,
 				//mAlgaeHolder,
 				mCoralPivot,
 				mElevator,
 				mCoralRoller
 				//mMotorTest
+				//mAlgaeT
 
 			);
 			// spotless:on
@@ -249,6 +257,7 @@ public class Robot extends LoggedRobot {
 		RobotState.getInstance().setIsInAuto(true);
 		mDisabledLooper.stop();
 		mEnabledLooper.start();
+		mAutoModeExecutor.setAutoMode(new simpleForward2());
 		mAutoModeExecutor.start();
 
 		//autoFactory = Choreo.createAutoFactory(mDrive,
@@ -283,7 +292,7 @@ public class Robot extends LoggedRobot {
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
 			//mCoralPivot.zeroSensors();
-			mCoralPivot.setWantHome(true);
+			//mCoralPivot.setWantHome(true);
 				
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
@@ -331,7 +340,7 @@ public class Robot extends LoggedRobot {
 			CrashTracker.logDisabledInit();
 			mEnabledLooper.stop();
 			mDisabledLooper.start();
-			mCoralPivot.setOpenLoop(0);
+			//mCoralPivot.setOpenLoop(0);
 			disable_enter_time = Timer.getFPGATimestamp();
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);

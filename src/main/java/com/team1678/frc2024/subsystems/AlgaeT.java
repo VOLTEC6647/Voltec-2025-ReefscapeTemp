@@ -15,6 +15,7 @@ import com.team1678.lib.requests.Request;
 import com.team1678.lib.util.Stopwatch;
 import com.team254.lib.util.Util;
 import com.team6647.frc2025.Constants;
+import com.team6647.frc2025.Constants.AlgaeTConstants;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.subsystems.Superstructure;
 import com.team6647.frc2025.subsystems.Superstructure.Levels;
@@ -26,12 +27,12 @@ public class AlgaeT extends ServoMotorSubsystem {
 	private static AlgaeT mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
-	public static final double kLevel1Angle = 100.0, kLevel2Angle = 100.0, kLevel3Angle = 100.0, kLevel4Angle = 0.0, kIntakingAngle = 170.0;
+	public static final double kIdleAngle = 0.0, kIntakingAngle = 0.0, kHoldingAngle = 0.0;
 
 	public static AlgaeT getInstance() {
 		if (mInstance == null) {
 			mInstance = new AlgaeT(
-				com.team6647.frc2025.Constants.ClimberConstants.kClimberServoConstants);//, CoralPivotConstants.kHoodEncoderConstants
+				AlgaeTConstants.kHoodServoConstants);//, CoralPivotConstants.kHoodEncoderConstants
 		}
 		return mInstance;
 	}

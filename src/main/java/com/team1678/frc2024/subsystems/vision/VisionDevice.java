@@ -35,7 +35,7 @@ public class VisionDevice extends Subsystem {
     private final VisionDeviceConstants mConstants;
     private PhotonCamera camera;
     private PhotonPoseEstimator photonEstimator;
-    private Matrix<N3, N1> curStdDevs = VecBuilder.fill(0.1, 0.1, 0.1); // Initialize with some default values
+    private Matrix<N3, N1> curStdDevs = VecBuilder.fill(4, 4, 8); // Initialize with some default values
     private boolean is_connected = false;
 
     public VisionDevice(VisionDeviceConstants constants) {
@@ -71,6 +71,9 @@ public class VisionDevice extends Subsystem {
     private void updateEstimationStdDevs(
             Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
 
+            SmartDashboard.putString("Vision " + mConstants.kTableName + "/result2", estimatedPose.toString());
+                
+
         if (estimatedPose.isEmpty()) {
             // No pose input. Default to high std devs, effectively ignoring the measurement.
             curStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
@@ -84,6 +87,8 @@ public class VisionDevice extends Subsystem {
 
         // Precalculation - see how many tags we found, and calculate an average-distance metric
         for (var tgt : targets) {
+            SmartDashboard.putBoolean("Vision " + mConstants.kTableName + "/test2", true);
+
             var tagPose = FieldLayout.kTagMap.getTagPose(tgt.getFiducialId());
             if (tagPose.isEmpty()) continue;
             numTags++;
@@ -117,12 +122,20 @@ public class VisionDevice extends Subsystem {
         updateConnectivity(); // Update connection status
 
         var result = camera.getLatestResult();
+        SmartDashboard.putString("Vision " + mConstants.kTableName + "/result", result.toString());
+
         if (!result.hasTargets()) {
           return;
         }
+        SmartDashboard.putString("Vision " + mConstants.kTableName + "/result3", result.toString());
 
-        Optional<EstimatedRobotPose> visionEst = photonEstimator.update(result);
-        updateEstimationStdDevs(visionEst, result.getTargets()); // Pass targets for std dev calculation
+
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+
+        for (var change : camera.getAllUnreadResults()) {
+            visionEst = photonEstimator.update(change);
+            updateEstimationStdDevs(visionEst, change.getTargets());
+        }
 
         if (visionEst.isPresent()) {
             EstimatedRobotPose estimatedPose = visionEst.get();
@@ -136,6 +149,13 @@ public class VisionDevice extends Subsystem {
              if (VisionDeviceManager.visionDisabled()) {
 				return;
 			}
+
+            SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/device/timestamp", timestamp);
+            SmartDashboard.putString("Vision " + mConstants.kTableName + "/device/robotPose", robotPose.getTranslation().toString());
+            SmartDashboard.putString("Vision " + mConstants.kTableName + "/device/kRobotToCamera", mConstants.kRobotToCamera.getTranslation().toString());
+            SmartDashboard.putNumber("Vision " + mConstants.kTableName + "/device/xyStdDev", xyStdDev);
+
+
 
             RobotState.getInstance().addVisionUpdate(
                     new VisionUpdate(

@@ -193,7 +193,7 @@ public class Constants {
 		static {
 			kHoodServoConstants.kName = "Climber";
 
-			kHoodServoConstants.kMainConstants.id = Ports.CORAL_PIVOT;
+			kHoodServoConstants.kMainConstants.id = Ports.CLIMBER;
 			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
 
 			kHoodServoConstants.kHomePosition = 0; // Degrees
@@ -209,15 +209,15 @@ public class Constants {
 			//kHoodServoConstants.kMinUnitsLimit = 15.0;
 			//kHoodServoConstants.kMaxUnitsLimit = 62.0;
 
-			kHoodServoConstants.kCruiseVelocity = 400.0; // degrees / s
-			kHoodServoConstants.kAcceleration = 20.0; // degrees / s^2
+			kHoodServoConstants.kCruiseVelocity = 600.0; // degrees / s
+			kHoodServoConstants.kAcceleration = 200.0; // degrees / s^2
 
-			kHoodServoConstants.kEnableSupplyCurrentLimit = true;
+			kHoodServoConstants.kEnableSupplyCurrentLimit = false ;
 			kHoodServoConstants.kSupplyCurrentLimit = 80;
 			kHoodServoConstants.kSupplyCurrentThreshold = 0;
 
-			kHoodServoConstants.kEnableStatorCurrentLimit = true;
-			kHoodServoConstants.kStatorCurrentLimit = 40;
+			kHoodServoConstants.kEnableStatorCurrentLimit = false;
+			kHoodServoConstants.kStatorCurrentLimit = 120;
 
 			kHoodServoConstants.kMaxForwardOutput = 12.0;
 			kHoodServoConstants.kMaxReverseOutput = -12.0;//12
@@ -245,8 +245,8 @@ public class Constants {
 		static {
 			kHoodServoConstants.kName = "AlgaeT";
 
-			kHoodServoConstants.kMainConstants.id = Ports.CORAL_PIVOT;
-			kHoodServoConstants.kMainConstants.counterClockwisePositive = false;
+			kHoodServoConstants.kMainConstants.id = Ports.ALGAE_T;
+			kHoodServoConstants.kMainConstants.counterClockwisePositive = true;
 
 			kHoodServoConstants.kHomePosition = 0; // Degrees
 			kHoodServoConstants.kTolerance = 1; // Degrees

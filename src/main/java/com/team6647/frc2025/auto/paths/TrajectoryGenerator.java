@@ -90,6 +90,9 @@ public class TrajectoryGenerator {
 		public Trajectory254<TimedState<Pose2dWithMotion>> enterCoral;
 		public Trajectory254<TimedState<Pose2dWithMotion>> centerLive;
 
+		public Trajectory254<TimedState<Pose2dWithMotion>> forward;
+
+
 
 		private boolean wants_mirrored;
 
@@ -248,6 +251,16 @@ public class TrajectoryGenerator {
 				waypoints.add(FieldLayout.getCoralTargetPos(Superstructure.getInstance().angles[Superstructure.getInstance().coralId]).coral2);
 			}
 			headings.add(Rotation2d.fromDegrees(0.0));
+			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
+		}
+		public Trajectory254<TimedState<Pose2dWithMotion>> getForward() {
+			List<Pose2d> waypoints = new ArrayList<>();
+			List<Rotation2d> headings = new ArrayList<>();
+
+			waypoints.add(new Pose2d(7.85860538482666,3.842921018600464,Rotation2d.fromDegrees(0)));
+			headings.add(Rotation2d.fromDegrees(0.0));
+			waypoints.add(new Pose2d(5.757699012756348,3.842921018600464,Rotation2d.fromDegrees(0)));
+			
 			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
 		}
 	}

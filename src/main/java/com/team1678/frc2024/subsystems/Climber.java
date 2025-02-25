@@ -26,7 +26,7 @@ public class Climber extends ServoMotorSubsystem {
 	private static Climber mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
-	public static final double kLevel1Angle = 100.0, kLevel2Angle = 100.0, kLevel3Angle = 100.0, kLevel4Angle = 0.0, kIntakingAngle = 170.0;
+	public static final double kPreparing = 97.0, kVertical = 0.0, kIdle = 0.0;
 
 	public static Climber getInstance() {
 		if (mInstance == null) {
@@ -48,6 +48,7 @@ public class Climber extends ServoMotorSubsystem {
 			return conf;
 		});
 		enableSoftLimits(false);
+		setSetpointMotionMagic(kIdle);
 	}
 
 	@Override

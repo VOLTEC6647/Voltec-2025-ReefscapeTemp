@@ -9,6 +9,8 @@ import org.littletonrobotics.junction.Logger;
 import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team1678.frc2024.controlboard.ControlBoard;
+import com.team1678.frc2024.subsystems.AlgaeT;
+import com.team1678.frc2024.subsystems.Climber;
 import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.Drive.DriveControlState;
@@ -24,12 +26,12 @@ import com.team6647.frc2025.FieldLayout.CoralTarget;
 import com.team6647.frc2025.auto.actions.AssistModeExecutor;
 import com.team6647.frc2025.auto.modes.configuredQuals.goCenter;
 import com.team6647.frc2025.auto.modes.configuredQuals.test1;
-import com.team6647.frc2025.subsystems.AlgaeHolder;
-import com.team6647.frc2025.subsystems.AlgaeRollers;
+
 import com.team6647.frc2025.subsystems.Elevator;
 import com.team6647.frc2025.subsystems.MotorTest;
 import com.team6647.frc2025.subsystems.Superstructure;
 import com.team6647.frc2025.subsystems.Superstructure.Levels;
+import com.team6647.frc2025.subsystems.algae_roller.AlgaeRoller;
 import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
 import edu.wpi.first.units.AngleUnit;
@@ -66,11 +68,13 @@ public class DriverControls {
 	
 	
 	private MotorTest mMotorTest = MotorTest.getInstance();
-	private AlgaeRollers mAlgaeRollers = AlgaeRollers.getInstance();
-	//private AlgaeHolder mAlgaeHolder = AlgaeHolder.getInstance();
+	private AlgaeRoller mAlgaeRollers = AlgaeRoller.getInstance();
+	private AlgaeT mAlgaeHolder = AlgaeT.getInstance();
 	private CoralRoller mCoralRoller = CoralRoller.getInstance();
 	private Elevator mElevator = Elevator.getInstance();
 	private CoralPivot mCoralPivot = CoralPivot.getInstance();
+	private Climber mClimber = Climber.getInstance();
+
 
 
 
@@ -251,6 +255,31 @@ public class DriverControls {
 		}
 		if(mControlBoard.operator.leftTrigger.wasReleased()){
 			mDrive.setControlState(DriveControlState.OPEN_LOOP);
+		}
+
+		if(mControlBoard.operator.leftTrigger.wasActivated()){
+			mAlgaeRollers.setState(AlgaeRoller.State.INTAKING);
+			new SequentialRequest(
+				mAlgaeHolder.setPositionRequest(AlgaeT.kIntakingAngle),
+				mAlgaeHolder.setPositionRequest(AlgaeT.kHoldingAngle),
+				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.INTAKING);})
+			).act();
+		}
+
+		if(mControlBoard.operator.rightTrigger.wasActivated()){
+			mAlgaeRollers.setState(AlgaeRoller.State.OUTAKING);
+			new SequentialRequest(
+				new WaitRequest(2),
+				mAlgaeHolder.setPositionRequest(AlgaeT.kIdleAngle),
+				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.IDLE);})
+			).act();
+		}
+
+		if(mControlBoard.operator.backButton.wasActivated()){
+			mClimber.setSetpointMotionMagic(Climber.kPreparing);
+		}
+		if(mControlBoard.operator.backButton.wasReleased()){
+			mClimber.setSetpointMotionMagic(Climber.kVertical);
 		}
 
 
