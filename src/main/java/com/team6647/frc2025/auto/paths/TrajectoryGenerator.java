@@ -1,5 +1,8 @@
 package com.team6647.frc2025.auto.paths;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.team1678.frc2024.Constants1678;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.lib.swerve.DriveMotionPlanner;
@@ -10,12 +13,9 @@ import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
 import com.team254.lib.trajectory.timing.TimingConstraint;
 import com.team6647.frc2025.FieldLayout;
-import com.team6647.frc2025.controlboard.DriverControls;
 import com.team6647.frc2025.subsystems.Superstructure;
 
 import edu.wpi.first.math.util.Units;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TrajectoryGenerator {
 
@@ -263,5 +263,40 @@ public class TrajectoryGenerator {
 			
 			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
 		}
-	}
+	
+
+		public Trajectory254<TimedState<Pose2dWithMotion>> goToSource1() {
+			List<Pose2d> waypoints = new ArrayList<>();
+			List<Rotation2d> headings = new ArrayList<>();
+
+			Pose2d bottomSource = new Pose2d(0.754292, 6.741, new Rotation2d(0.0, true));
+			Pose2d topSource = new Pose2d(1.717, 7.409, new Rotation2d(0.0, true));
+
+			if (bottomSource.distance(Drive.getInstance().getPose()) < topSource.distance(Drive.getInstance().getPose())) {
+                waypoints.add(new Pose2d(0.754292, 6.741, new Rotation2d(0.0, true)));
+			} else {
+				waypoints.add(new Pose2d(1.717, 7.409, new Rotation2d(0.0, true)));
+			}
+			headings.add(new Rotation2d(2.24, true));
+
+			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
+		}
+
+		public Trajectory254<TimedState<Pose2dWithMotion>> goToSource2() {
+			List<Pose2d> waypoints = new ArrayList<>();
+			List<Rotation2d> headings = new ArrayList<>();
+
+			Pose2d bottomSource = new Pose2d( 0.754292, 0.6854, new Rotation2d(0.0, true));
+			Pose2d topSource = new Pose2d(0.7355, 1.33475, new Rotation2d(0.0, true));
+
+			if (bottomSource.distance(Drive.getInstance().getPose()) < topSource.distance(Drive.getInstance().getPose())) {
+                waypoints.add(bottomSource);
+			} else {
+				waypoints.add(topSource);
+			}
+			headings.add(new Rotation2d(-2.2348, true));
+
+			return generate(waypoints, headings, List.of(), false, 1.1, 1.0);
+		}
+    }
 }
