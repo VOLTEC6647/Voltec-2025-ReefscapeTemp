@@ -242,6 +242,13 @@ public class Constants {
 
         public static double kHomePosition = 0;
 
+		public static double kCruiseVelocity1 = 800.0;
+		public static double kAcceleration1 = 400.0;
+			
+		public static double kCruiseVelocity2 = 800.0;
+		public static double kAcceleration2 = 400.0;
+
+
 		static {
 			kHoodServoConstants.kName = "AlgaeT";
 
@@ -250,8 +257,8 @@ public class Constants {
 
 			kHoodServoConstants.kHomePosition = 0; // Degrees
 			kHoodServoConstants.kTolerance = 1; // Degrees
-			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0 * 9*5*5*1.6) /* (7.16 / 1.0)*/; // Cancoder to unit distance
-			kHoodServoConstants.kKp = 3.0;
+			kHoodServoConstants.kRotationsPerUnitDistance = (1.0 / 360.0 * 5) /* (7.16 / 1.0)*/; // Cancoder to unit distance
+			kHoodServoConstants.kKp = 17.0;
 			kHoodServoConstants.kKi = 0;
 			kHoodServoConstants.kKd = 0.0;
 			kHoodServoConstants.kKg = 0;
@@ -261,15 +268,17 @@ public class Constants {
 			//kHoodServoConstants.kMinUnitsLimit = 15.0;
 			//kHoodServoConstants.kMaxUnitsLimit = 62.0;
 
-			kHoodServoConstants.kCruiseVelocity = 400.0; // degrees / s
-			kHoodServoConstants.kAcceleration = 20.0; // degrees / s^2
+			kHoodServoConstants.kCruiseVelocity = 800.0; // degrees / s
+			kHoodServoConstants.kAcceleration = 400.0; // degrees / s^2
+
+			
 
 			kHoodServoConstants.kEnableSupplyCurrentLimit = true;
-			kHoodServoConstants.kSupplyCurrentLimit = 80;
+			kHoodServoConstants.kSupplyCurrentLimit = 60;
 			kHoodServoConstants.kSupplyCurrentThreshold = 0;
 
 			kHoodServoConstants.kEnableStatorCurrentLimit = true;
-			kHoodServoConstants.kStatorCurrentLimit = 40;
+			kHoodServoConstants.kStatorCurrentLimit = 120;
 
 			kHoodServoConstants.kMaxForwardOutput = 12.0;
 			kHoodServoConstants.kMaxReverseOutput = -12.0;//12

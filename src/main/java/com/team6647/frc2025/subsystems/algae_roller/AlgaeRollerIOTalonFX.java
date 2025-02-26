@@ -12,7 +12,7 @@ public class AlgaeRollerIOTalonFX implements AlgaeRollerIO {
     private TalonFXConfiguration mConfig;
 
     public AlgaeRollerIOTalonFX() {
-        mRoller = new TalonFX(Ports.CORAL_ROLLER.getDeviceNumber(), Ports.ALGAE_ROLLER1.getBus());
+        mRoller = new TalonFX(Ports.ALGAE_ROLLER1.getDeviceNumber(), Ports.ALGAE_ROLLER1.getBus());
         mConfig = new TalonFXConfiguration();
 
         mRoller.setNeutralMode(NeutralModeValue.Brake);

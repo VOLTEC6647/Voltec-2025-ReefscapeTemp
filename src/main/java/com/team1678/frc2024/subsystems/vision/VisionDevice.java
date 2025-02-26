@@ -1,26 +1,20 @@
 package com.team1678.frc2024.subsystems.vision;
 
-import com.team1678.frc2024.Constants1678;
 import com.team1678.frc2024.RobotState;
-import com.team1678.frc2024.Constants1678.PoseEstimatorConstants;
 import com.team1678.frc2024.RobotState.VisionUpdate;
 import com.team1678.frc2024.subsystems.Subsystem;
 import com.team1678.lib.Util;
 import com.team1678.lib.logger.LogUtil;
 import com.team254.lib.geometry.Pose2d;
-import com.team254.lib.geometry.Translation2d;
 import com.team6647.frc2025.FieldLayout;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.List;
 import java.util.Optional;

@@ -18,6 +18,7 @@ import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
 import com.team1678.lib.requests.LambdaRequest;
 import com.team1678.lib.requests.ParallelRequest;
 import com.team1678.lib.requests.SequentialRequest;
+import com.team1678.lib.requests.WaitForPrereqRequest;
 import com.team1678.lib.requests.WaitRequest;
 import com.team1678.lib.util.NearestAngleFinder;
 import com.team254.lib.geometry.Rotation2d;
@@ -249,6 +250,7 @@ public class DriverControls {
 		if(mControlBoard.driver.aButton.wasReleased()){
 			mDrive.setControlState(DriveControlState.OPEN_LOOP);
 		}
+		/*
 		if(mControlBoard.operator.leftTrigger.wasActivated()){
 			Rotation2d coralRotation = FieldLayout.getCoralTargetPos(s.angles[s.coralId]).algae.getRotation();
 			mDrive.stabilizeHeading(coralRotation);
@@ -256,23 +258,39 @@ public class DriverControls {
 		if(mControlBoard.operator.leftTrigger.wasReleased()){
 			mDrive.setControlState(DriveControlState.OPEN_LOOP);
 		}
+		*/
 
 		if(mControlBoard.operator.leftTrigger.wasActivated()){
-			mAlgaeRollers.setState(AlgaeRoller.State.INTAKING);
-			new SequentialRequest(
+			s.request(
+				new SequentialRequest(
+				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.INTAKINGFAST);}),
 				mAlgaeHolder.setPositionRequest(AlgaeT.kIntakingAngle),
-				mAlgaeHolder.setPositionRequest(AlgaeT.kHoldingAngle),
+				new WaitRequest(2),
 				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.INTAKING);})
-			).act();
+			)
+			);
+			
 		}
 
 		if(mControlBoard.operator.rightTrigger.wasActivated()){
-			mAlgaeRollers.setState(AlgaeRoller.State.OUTAKING);
+			
+			s.request(
 			new SequentialRequest(
+				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.IDLE);}),
+
+				mAlgaeHolder.setPositionRequest(AlgaeT.kHoldingAngle),
+				new WaitRequest(0.9),
+				//new WaitForPrereqRequest(()->mControlBoard.operator.getRightTriggerAxis()<0.5),
+
+				new LambdaRequest(()->{mAlgaeHolder.setSetpointMotionMagic(AlgaeT.kIdleAngle);}),
+
 				new WaitRequest(2),
-				mAlgaeHolder.setPositionRequest(AlgaeT.kIdleAngle),
+				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.OUTAKING);}),
+
+				new WaitRequest(7),
+
 				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.IDLE);})
-			).act();
+			));
 		}
 
 		if(mControlBoard.operator.backButton.wasActivated()){

@@ -1,33 +1,26 @@
 package com.team1678.frc2024.subsystems;
 
-import java.io.ObjectInputFilter.Config;
 
-import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.team1678.frc2024.Constants1678.ClimberConstants;
 import com.team1678.frc2024.loops.ILooper;
 import com.team1678.frc2024.loops.Loop;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
-import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystemWithCancoder;
-import com.team1678.lib.requests.Request;
+
 import com.team1678.lib.util.Stopwatch;
-import com.team254.lib.util.Util;
-import com.team6647.frc2025.Constants;
+
 import com.team6647.frc2025.Constants.AlgaeTConstants;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
-import com.team6647.frc2025.subsystems.Superstructure;
-import com.team6647.frc2025.subsystems.Superstructure.Levels;
+
 import com.team6647.frc2025.Ports;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AlgaeT extends ServoMotorSubsystem {
 	private static AlgaeT mInstance;
 	private boolean mHoming = false;
 	private Stopwatch mHomingStart = new Stopwatch();
-	public static final double kIdleAngle = 0.0, kIntakingAngle = 0.0, kHoldingAngle = 0.0;
+	public static final double kIdleAngle = 0.0, kIntakingAngle = 65.0, kHoldingAngle = 25.0;
 
 	public static AlgaeT getInstance() {
 		if (mInstance == null) {
@@ -77,6 +70,10 @@ public class AlgaeT extends ServoMotorSubsystem {
 	@Override
 	public synchronized void outputTelemetry() {
 		super.outputTelemetry();
+	}
+
+	public void fast(){
+		
 	}
 
 	

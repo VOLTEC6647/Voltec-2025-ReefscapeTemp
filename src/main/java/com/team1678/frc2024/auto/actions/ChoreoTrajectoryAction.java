@@ -42,9 +42,9 @@ public class ChoreoTrajectoryAction implements Action {
 		autoTimer.reset();
 		if (mResetGyro) {
 			mDrive.resetOdometry(trajectory.get().getInitialPose(Robot.is_red_alliance).get());
-			System.out.println("Reset gyro to " + mDrive.getPose().getRotation().getDegrees());
+			System.out.println("Reset odometry to " + mDrive.getPose().getRotation().getDegrees());
 		}
-		
+		autoTimer.start();		
 	}
 
 	@Override
@@ -52,6 +52,7 @@ public class ChoreoTrajectoryAction implements Action {
 		Optional<SwerveSample> sample = trajectory.get().sampleAt(autoTimer.get(), Robot.is_red_alliance);
 		if (sample.isPresent()) {
 			mDrive.choreoController(sample.get());
+			Logger.recordOutput("serrrr",sample.get());
 		}else{
 			System.out.println("Sample not present");
 		}

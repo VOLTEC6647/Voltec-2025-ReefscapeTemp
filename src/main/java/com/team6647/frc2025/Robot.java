@@ -120,7 +120,7 @@ public class Robot extends LoggedRobot {
 	private final Looper mDisabledLooper = new Looper();
 
 	// auto instances
-	private AutoModeExecutor mAutoModeExecutor;
+	private AutoModeExecutor mAutoModeExecutor = new AutoModeExecutor();
 	//public static final AutoModeSelector mAutoModeSelector = new AutoModeSelector();
 	public static final AutoModeSelector mThreeNoteNoteSelector = new AutoModeSelector();
 	public static boolean is_red_alliance = false;
@@ -208,16 +208,16 @@ public class Robot extends LoggedRobot {
 			mSubsystemManager.setSubsystems(
 				mDrive, 
 				mSuperstructure,
-				//mClimber,
+				mClimber,
 				//mVisionDevices
 				//mMotorTest,
-				//mAlgaeRoller,
+				mAlgaeRoller,
 				//mAlgaeHolder,
 				mCoralPivot,
 				mElevator,
-				mCoralRoller
+				mCoralRoller,
 				//mMotorTest
-				//mAlgaeT
+				mAlgaeT
 
 			);
 			// spotless:on
@@ -301,7 +301,7 @@ public class Robot extends LoggedRobot {
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
 			//mCoralPivot.zeroSensors();
-			//mCoralPivot.setWantHome(true);
+			mCoralPivot.setWantHome(true);
 				
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
