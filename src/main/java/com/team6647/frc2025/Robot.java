@@ -297,14 +297,14 @@ public class Robot extends LoggedRobot {
 	public void teleopInit() {
 		try {
 			RobotState.getInstance().setIsInAuto(false);
-			mDrive.feedTeleopSetpoint(new ChassisSpeeds(0.0, 0.0, 0.0));
+			mDrive.feedTeleopSetpoint(new ChassisSpeeds(0.0,  0.0, 0.0));
 			VisionDeviceManager.setDisableVision(false);
 			mDisabledLooper.stop();
 			mEnabledLooper.start();
 
 			//mLimelight.setPipeline(Pipeline.TELEOP);
 			//mCoralPivot.zeroSensors();
-			mCoralPivot.setWantHome(true);
+			//mCoralPivot.setWantHome(true);
 				
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);
