@@ -54,7 +54,7 @@ public class ChoreoTrajectoryAction implements Action {
 		Optional<SwerveSample> sample = trajectory.get().sampleAt(autoTimer.get(), Robot.is_red_alliance);
 		if (sample.isPresent()) {
 			mDrive.choreoController(sample.get());
-			Logger.recordOutput("serrrr",sample.get());
+			//Logger.recordOutput("serrrr",sample.get()); crash
 		}else{
 			System.out.println("Sample not present");
 		}
