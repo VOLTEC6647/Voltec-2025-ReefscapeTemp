@@ -99,7 +99,7 @@ public class Constants1678 {
 		public static final double maxAutoSpeed = maxSpeed * 0.85; // Max out at 85% to ensure attainable speeds
 
 		/* Motor Inverts */
-		public static final boolean driveMotorInvert = false;
+		public static final boolean driveMotorInvert = true;
 		public static final boolean angleMotorInvert = true;
 
 		/* Angle Encoder Invert */

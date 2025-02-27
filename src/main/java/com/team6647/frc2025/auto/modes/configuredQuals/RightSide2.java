@@ -10,23 +10,26 @@ import com.team6647.frc2025.subsystems.Superstructure;
 import com.team6647.frc2025.subsystems.Superstructure.Levels;
 import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
-public class simpleForwardC extends AutoModeBase {
+public class RightSide2 extends AutoModeBase {
 	private Drive d = Drive.getInstance();
 	private Superstructure s = Superstructure.getInstance();
-	public simpleForwardC() {
+	public RightSide2() {
 		
 	}
 
 	// spotless:off
 	@Override
 	protected void routine() throws AutoModeEndedException {
+		//Coral1
 		runAction(new ChoreoTrajectoryAction("SimpleForward",true));
 		s.request(s.prepareLevel(Levels.LEVEL3));
-		runAction(new WaitAction(1.5));
 		CoralRoller.getInstance().setState(CoralRoller.getInstance().OUTAKING);
-		runAction(new WaitAction(1));
+		new WaitAction(1);
 		Elevator.getInstance().setWantHome(true);
-		CoralRoller.getInstance().setState(CoralRoller.State.IDLE);
+
+
+
+
 		System.out.println("Finished auto!");
 	}
 	// spotless:on

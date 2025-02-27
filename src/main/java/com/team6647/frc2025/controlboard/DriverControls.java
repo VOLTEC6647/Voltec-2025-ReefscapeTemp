@@ -98,10 +98,48 @@ public class DriverControls {
 			);
 		}
 
+		if(mControlBoard.operator.leftBumper.wasActivated()){
+			mSuperstructure.request(
+				new SequentialRequest(
+					mSuperstructure.prepareLevel(Levels.ALGAEING1),
+					new LambdaRequest(
+						()->{
+							mCoralRoller.setState(CoralRoller.State.OUTAKING3);
+						}
+					)
+				)
+			);
+		}
+
+		if(mControlBoard.operator.rightBumper.wasActivated()){
+			mSuperstructure.request(
+				new SequentialRequest(
+					mSuperstructure.prepareLevel(Levels.ALGAEING2),
+					new LambdaRequest(
+						()->{
+							mCoralRoller.setState(CoralRoller.State.OUTAKING3);
+						}
+					)
+				)
+			);
+		}
+
 		if(mControlBoard.operator.aButton.wasReleased()){
 			mSuperstructure.request(
 				mSuperstructure.softHome()
 			);
+		}
+		if(mControlBoard.operator.leftBumper.wasReleased()){
+			mSuperstructure.request(
+				mSuperstructure.softHome()
+			);
+			mCoralRoller.setState(CoralRoller.State.IDLE);
+		}
+		if(mControlBoard.operator.rightBumper.wasReleased()){
+			mSuperstructure.request(
+				mSuperstructure.softHome()
+			);
+			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
 		if(mControlBoard.operator.bButton.wasActivated()){
 			//mElevator.setWantHome(true);
@@ -279,7 +317,7 @@ public class DriverControls {
 				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.IDLE);}),
 
 				mAlgaeHolder.setPositionRequest(AlgaeT.kHoldingAngle),
-				new WaitRequest(0.9),
+				new WaitRequest(0.92),
 				//new WaitForPrereqRequest(()->mControlBoard.operator.getRightTriggerAxis()<0.5),
 
 				new LambdaRequest(()->{mAlgaeHolder.setSetpointMotionMagic(AlgaeT.kIdleAngle);}),

@@ -12,6 +12,7 @@ import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.auto.AutoModeSelector;
+import com.team6647.frc2025.auto.modes.configuredQuals.Left1;
 import com.team6647.frc2025.auto.modes.configuredQuals.simpleForward2;
 import com.team6647.frc2025.auto.modes.configuredQuals.simpleForwardC;
 import com.team6647.frc2025.auto.paths.TrajectoryGenerator;
@@ -160,16 +161,21 @@ public class Robot extends LoggedRobot {
 		mCoralPivot = CoralPivot.getInstance();
 		mCoralRoller = CoralRoller.getInstance();
 		mElevator = Elevator.getInstance();
-		mClimber = Climber.getInstance();
+		//mClimber = Climber.getInstance();
 
 		
-		autoChooser.setDefaultOption("Do Nothing", Commands.print("Do Nothing Auto!"));
+		autoChooser.setDefaultOption("Default", new Left1());
+		autoChooser.addOption("simpleForwardC", new simpleForwardC());
+		Pose2d startC = Pose2d.fromLegacy(Choreo.loadTrajectory("SimpleForward").get().getInitialPose(is_red_alliance).get());
+		mDrive.resetOdometry(startC);
+		mDrive.zeroGyro(startC.getRotation().getDegrees());
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
 		SmartDashboard.putData("Auto Mode", autoChooser);
-		//autoChooser.addOption("testt", mDrive.followChoreoPath("testt", true));
 
 		SmartDashboard.putData("Auto Chosen", autoChooser);
 	}
+
+		
 
 	@Override
 	public void robotInit() {
@@ -208,15 +214,10 @@ public class Robot extends LoggedRobot {
 			mSubsystemManager.setSubsystems(
 				mDrive, 
 				mSuperstructure,
-				mClimber,
-				//mVisionDevices
-				//mMotorTest,
 				mAlgaeRoller,
-				//mAlgaeHolder,
 				mCoralPivot,
 				mElevator,
 				mCoralRoller,
-				//mMotorTest
 				mAlgaeT
 
 			);
@@ -249,19 +250,19 @@ public class Robot extends LoggedRobot {
 		mSubsystemManager.outputLoopTimes();
 	}
 
-	private final SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+	private final SendableChooser<AutoModeBase> autoChooser = new SendableChooser<AutoModeBase>();
 
 	AutoFactory autoFactory;
 
 	@Override
 	public void autonomousInit() {
-		if (mVisionDevices.getMovingAverageRead() != null) {
-			mDrive.zeroGyro(mVisionDevices.getMovingAverageRead());
-		}
+		//if (mVisionDevices.getMovingAverageRead() != null) {
+		//	mDrive.zeroGyro(mVisionDevices.getMovingAverageRead());
+		//}
 		RobotState.getInstance().setIsInAuto(true);
 		mDisabledLooper.stop();
 		mEnabledLooper.start();
-		mAutoModeExecutor.setAutoMode(new simpleForwardC());
+		mAutoModeExecutor.setAutoMode(autoChooser.getSelected());//autoChooser.getSelected());
 		mAutoModeExecutor.start();
 
 		
@@ -288,7 +289,9 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void autonomousExit() {}
+	public void autonomousExit() {
+		mDrive.feedTeleopSetpoint(new ChassisSpeeds(0.0, 0.0, 0.0));
+	}
 
 	@Override
 	public void teleopInit() {
@@ -404,7 +407,7 @@ public class Robot extends LoggedRobot {
 			if (mControlBoard.driver.getBButton()) {
 				RobotState.getInstance().reset(Timer.getFPGATimestamp(), Pose2d.identity());
 			}
-			Logger.recordOutput("Vision Heading/Average", mVisionDevices.getMovingAverageRead());
+			//Logger.recordOutput("Vision Heading/Average", mVisionDevices.getMovingAverageRead());
 
 		} catch (Throwable t) {
 			CrashTracker.logThrowableCrash(t);

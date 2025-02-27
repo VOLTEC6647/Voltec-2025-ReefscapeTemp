@@ -584,8 +584,8 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 			mPeriodicIO.translational_error = mMotionPlanner.getTranslationalError();
 			mPeriodicIO.heading_error = mMotionPlanner.getHeadingError();
 			mPeriodicIO.path_setpoint = mMotionPlanner.getSetpoint();
-			Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
-			Logger.recordOutput("/Auto/HeadingError", mMotionPlanner.getHeadingError().toLegacy());
+			//Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
+			//Logger.recordOutput("/Auto/HeadingError", mMotionPlanner.getHeadingError().toLegacy());
 			//Logger.recordOutput("/Auto/PathSetpoint2", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
 
 		} else {

@@ -34,9 +34,12 @@ public class Elevator extends ServoMotorSubsystem {
 	}
 
 	public static final double kL1Height = 0.0;
-	public static final double kL2Height = 0;
+	public static final double kL2Height = 0.0;
 	public static final double kL3Height = 0.14;
 	public static final double kL4Height = 0.39;//0.31;
+
+	public static final double kAlgaeing1 = 0.0;
+	public static final double kAlgaeing2 = 0.10;
 
 	private boolean mHoming = false;
 	private boolean mNeedsToHome = false;

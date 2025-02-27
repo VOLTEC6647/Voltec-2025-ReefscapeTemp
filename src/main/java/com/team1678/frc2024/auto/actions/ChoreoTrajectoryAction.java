@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 
 import com.team1678.frc2024.subsystems.Drive;
+import com.team1678.lib.swerve.ChassisSpeeds;
 import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.trajectory.TimedView;
 import com.team254.lib.trajectory.Trajectory254;
@@ -42,6 +43,7 @@ public class ChoreoTrajectoryAction implements Action {
 		autoTimer.reset();
 		if (mResetGyro) {
 			mDrive.resetOdometry(trajectory.get().getInitialPose(Robot.is_red_alliance).get());
+			mDrive.zeroGyro(trajectory.get().getInitialPose(Robot.is_red_alliance).get().getRotation().getDegrees());
 			System.out.println("Reset odometry to " + mDrive.getPose().getRotation().getDegrees());
 		}
 		autoTimer.start();		
@@ -61,9 +63,11 @@ public class ChoreoTrajectoryAction implements Action {
 
 	@Override
 	public boolean isFinished() {
-		return trajectory.get().getTotalTime() < autoTimer.get();
+		return trajectory.get().getTotalTime()+1 < autoTimer.get();
 	}
 
 	@Override
-	public void done() {}
+	public void done() {
+		mDrive.feedTeleopSetpoint(new ChassisSpeeds());
+	}
 }

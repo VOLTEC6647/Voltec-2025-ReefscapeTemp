@@ -355,7 +355,11 @@ public class Superstructure extends Subsystem {
 		LEVEL1(Elevator.kL1Height, CoralPivot.kLevel1Angle),
 		LEVEL2(Elevator.kL2Height, CoralPivot.kLevel2Angle),
 		LEVEL3(Elevator.kL3Height, CoralPivot.kLevel3Angle),
-		LEVEL4(Elevator.kL4Height, CoralPivot.kLevel4Angle);
+		LEVEL4(Elevator.kL4Height, CoralPivot.kLevel4Angle),
+
+		ALGAEING1(Elevator.kAlgaeing1, CoralPivot.kAlgaeing1),
+		ALGAEING2(Elevator.kAlgaeing2, CoralPivot.kAlgaeing2);
+
 
 		public double elevatorHeight;
 		public double coralAngle;
