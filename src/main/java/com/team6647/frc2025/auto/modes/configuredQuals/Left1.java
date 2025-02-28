@@ -20,12 +20,12 @@ public class Left1 extends AutoModeBase {
 	// spotless:off
 	@Override
 	protected void routine() throws AutoModeEndedException {
-		runAction(new ChoreoTrajectoryAction("S2Left1",true));
 		s.request(s.prepareLevel(Levels.LEVEL3));
-		runAction(new WaitAction(1.5));
+		runAction(new ChoreoTrajectoryAction("S2Left1",true));
+		runAction(new WaitAction(0.5));
 		CoralRoller.getInstance().setState(CoralRoller.getInstance().OUTAKING);
 		runAction(new WaitAction(1));
-		Elevator.getInstance().setWantHome(true);
+		//Elevator.getInstance().setWantHome(true);
 		CoralRoller.getInstance().setState(CoralRoller.State.IDLE);
 
 

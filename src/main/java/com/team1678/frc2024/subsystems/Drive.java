@@ -201,6 +201,7 @@ public class Drive extends Subsystem {
   private final double kPathFollowTurnP;
   private PIDController choreoX, choreoY, choreoRotation;
 
+public int acceptingHeading = 0;
 
 public void choreoController(SwerveSample sample) {
 
@@ -208,7 +209,7 @@ public void choreoController(SwerveSample sample) {
 	var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
 	  sample.vx + choreoX.calculate(currentPose.getTranslation().x(), sample.x),
 	  sample.vy + choreoY.calculate(currentPose.getTranslation().y(), sample.y),
-	  sample.omega + choreoRotation.calculate(currentPose.getRotation().getRadians(), sample.heading),
+	  acceptingHeading*(sample.omega + choreoRotation.calculate(currentPose.getRotation().getRadians(), sample.heading)),
 	  currentPose.getRotation()
 	);
 	setVelocity((speeds));
@@ -422,19 +423,7 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 									mPeriodicIO.measured_velocity,
 									mPeriodicIO.predicted_velocity);
 
-					Logger.recordOutput("/Drive/predicted_velocity", mPeriodicIO.predicted_velocity.toLegacy());
-					Logger.recordOutput("/Drive/measured_velocity",mPeriodicIO.measured_velocity.toLegacy());
-
-					Logger.recordOutput("/Drive/measured_velocity", mPeriodicIO.measured_velocity.toLegacy());
-					Logger.recordOutput("/Drive/Control State", mControlState);
-					Logger.recordOutput("/Auto/RobotPose", getPose().toLegacy());
-					Logger.recordOutput("/Auto/RobotRotation", getPose().getRotation().getDegrees());
-					Logger.recordOutput("/Auto/PathSetpoint", mMotionPlanner.mSetpoint.state().getPose().toLegacy());
-
-					//Logger.recordOutput("/Auto/PathSetpoint", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
-					Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
-					Logger.recordOutput("/Drive/Override Heading", mOverrideHeading);
-					Logger.recordOutput("/Drive/Override Trajectory", mOverrideTrajectory);
+					
 				}
 			}
 
@@ -449,7 +438,7 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 	}
 
 	@Override
-	public void readPeriodicInputs() {
+	public synchronized void readPeriodicInputs() {
 		for (SwerveModule swerveModule : mModules) {
 			swerveModule.readPeriodicInputs();
 		}
@@ -467,11 +456,28 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 			mPeriodicIO.translation_vel.getTranslation().x(),
 			mPeriodicIO.translation_vel.getTranslation().y(),
 				twist_vel.dtheta);
+
+		Logger.recordOutput("/Drive/predicted_velocity", mPeriodicIO.predicted_velocity.toLegacy());
+					Logger.recordOutput("/Drive/measured_velocity",mPeriodicIO.measured_velocity.toLegacy());
+
+					Logger.recordOutput("/Drive/measured_velocity", mPeriodicIO.measured_velocity.toLegacy());
+					Logger.recordOutput("/Drive/Control State", mControlState);
+					Logger.recordOutput("/Auto/RobotPose", getPose().toLegacy());
+					Logger.recordOutput("/Auto/RobotRotation", getPose().getRotation().getDegrees());
+					Logger.recordOutput("/Auto/PathSetpoint", mMotionPlanner.mSetpoint.state().getPose().toLegacy());
+
+					//Logger.recordOutput("/Auto/PathSetpoint", mPeriodicIO.path_setpoint.state().getPose().toLegacy());
+					Logger.recordOutput("/Auto/TranslationError", mMotionPlanner.getTranslationalError().toLegacy());
+					Logger.recordOutput("/Drive/Override Heading", mOverrideHeading);
+					Logger.recordOutput("/Drive/Override Trajectory", mOverrideTrajectory);
+				Logger.recordOutput("/Auto/RobotPose", getLegacyPose());
+
+
+
 			
 	}
 
 	public synchronized void setTrajectory(TrajectoryIterator<TimedState<Pose2dWithMotion>> trajectory) {
-		Logger.recordOutput("/Auto/Trajectory", true);
 		if (mMotionPlanner != null) {
 			System.out.println("Motionplanner not Null");
 			mOverrideTrajectory = false;

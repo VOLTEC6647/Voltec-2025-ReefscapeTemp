@@ -124,7 +124,7 @@ public class AlgaeRoller extends Subsystem {
 	}
 
 	@Override
-	public void outputTelemetry() {
+	public synchronized void outputTelemetry() {
 		Logger.recordOutput("subsystems/AlgaeRoller/State", mState.toString());
 		Logger.processInputs("subsystems/AlgaeRoller/IO", inputs);
 	}

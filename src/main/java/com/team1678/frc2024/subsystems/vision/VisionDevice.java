@@ -180,7 +180,7 @@ public class VisionDevice extends Subsystem {
 
 
     @Override
-    public void outputTelemetry() {
+    public synchronized void outputTelemetry() {
        // Logger.recordOutput("Vision " + mConstants.kTableName + "/Last Update Timestamp Timestamp", mPeriodicIO.latest_timestamp); // No longer needed
         //Logger.recordOutput("Vision " + mConstants.kTableName + "/N Queued Updates", mPeriodicIO.frames.size()); // No longer needed
         SmartDashboard.putBoolean("Vision " + mConstants.kTableName + "/is Connnected", is_connected);

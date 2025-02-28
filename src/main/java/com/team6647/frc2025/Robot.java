@@ -12,9 +12,12 @@ import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.auto.AutoModeSelector;
+import com.team6647.frc2025.auto.modes.configuredQuals.LAlgae2;
 import com.team6647.frc2025.auto.modes.configuredQuals.Left1;
+import com.team6647.frc2025.auto.modes.configuredQuals.Left2;
 import com.team6647.frc2025.auto.modes.configuredQuals.simpleForward2;
 import com.team6647.frc2025.auto.modes.configuredQuals.simpleForwardC;
+import com.team6647.frc2025.auto.modes.configuredQuals.justForwardC;
 import com.team6647.frc2025.auto.paths.TrajectoryGenerator;
 import com.team1678.frc2024.controlboard.ControlBoard;
 import com.team6647.frc2025.controlboard.DriverControls;
@@ -164,8 +167,11 @@ public class Robot extends LoggedRobot {
 		//mClimber = Climber.getInstance();
 
 		
-		autoChooser.setDefaultOption("Default", new Left1());
-		autoChooser.addOption("simpleForwardC", new simpleForwardC());
+		autoChooser.setDefaultOption("Just Forward", new justForwardC());
+		autoChooser.addOption("SimpleForwardC", new simpleForwardC());
+		autoChooser.addOption("Left1", new Left1());
+		autoChooser.addOption("Left2", new Left2());
+		autoChooser.addOption("LAlgae2", new LAlgae2());
 		Pose2d startC = Pose2d.fromLegacy(Choreo.loadTrajectory("SimpleForward").get().getInitialPose(is_red_alliance).get());
 		mDrive.resetOdometry(startC);
 		mDrive.zeroGyro(startC.getRotation().getDegrees());

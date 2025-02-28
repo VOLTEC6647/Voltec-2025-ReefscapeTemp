@@ -40,6 +40,7 @@ public class ChoreoTrajectoryAction implements Action {
 
 	@Override
 	public void start() {
+		mDrive.acceptingHeading = 0;
 		autoTimer.reset();
 		if (mResetGyro) {
 			mDrive.resetOdometry(trajectory.get().getInitialPose(Robot.is_red_alliance).get());
@@ -58,12 +59,15 @@ public class ChoreoTrajectoryAction implements Action {
 		}else{
 			System.out.println("Sample not present");
 		}
+		if(trajectory.get().getTotalTime() < autoTimer.get()){
+			mDrive.acceptingHeading = 0;
+		}
 		System.out.println("Trajectory set");
 	}
 
 	@Override
 	public boolean isFinished() {
-		return trajectory.get().getTotalTime()+1 < autoTimer.get();
+		return trajectory.get().getTotalTime()+3 < autoTimer.get();
 	}
 
 	@Override

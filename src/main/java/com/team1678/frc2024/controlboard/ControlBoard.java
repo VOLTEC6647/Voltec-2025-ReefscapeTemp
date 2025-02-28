@@ -78,7 +78,7 @@ public class ControlBoard {
 	}
 
 	public double getSwerveRotation() {
-		double rotAxis = driver.getRightX() * 0.80;
+		double rotAxis = -driver.getRightX() * 0.80;
 		rotAxis*=globalMultiplyer;
 		rotAxis = Constants1678.SwerveConstants.invertRAxis ? rotAxis : -rotAxis;
 

@@ -129,7 +129,7 @@ public class CoralRoller extends Subsystem {
 	}
 
 	@Override
-	public void outputTelemetry() {
+	public synchronized void outputTelemetry() {
 		Logger.recordOutput("subsystems/CoralRoller/State", mState.toString());
 		Logger.processInputs("subsystems/CoralRoller/IO", inputs);
 	}

@@ -124,7 +124,7 @@ public class FieldLayout {
 	}
 
 	static{
-		Logger.recordOutput("/Coral/Center", kCoralCenter.toLegacy());
+		//Logger.recordOutput("/Coral/Center", kCoralCenter.toLegacy()); LEGACY
 	}
 
 	public static CoralSet getCoralTargetPos(CoralTarget coralTarget) {

@@ -202,22 +202,23 @@ public class DriverControls {
 		if(angle>360){
 			angle = angle-360;
 		}
-		Logger.recordOutput("/Coral/angle", angle);
+		////Logger.recordOutput("/Coral/angle", angle);
+		
 		//angle = angle.plus(Angle.ofBaseUnits(90, Degree));
 		if(Math.abs(mControlBoard.operator.getRightX())+Math.abs(mControlBoard.operator.getRightY())>0.5){
 			for (int i = 0; i < s.angles.length; i++) {
 				if (Math.abs(s.angles[i].angle-angle) < 30) {
 					s.go6(mClimberJog);
-					Logger.recordOutput("/Coral/Position", CoralTarget.values()[i].name());
+					////Logger.recordOutput("/Coral/Position", CoralTarget.values()[i].name());
 					s.coralId = i;
-					Logger.recordOutput("/Coral/id", s.coralId);
+					////Logger.recordOutput("/Coral/id", s.coralId);
 					stopAssist();
 					if(angle-s.angles[i].angle>0){
 						s.subCoralId = 1;
 					}else{
 						s.subCoralId = 0;
 					}
-					Logger.recordOutput("/Coral/subId", s.subCoralId);
+					////Logger.recordOutput("/Coral/subId", s.subCoralId);
 					s.showAngle();
 					break;
 				}

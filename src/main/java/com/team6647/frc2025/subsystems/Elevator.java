@@ -111,7 +111,7 @@ public class Elevator extends ServoMotorSubsystem {
 	}
 
 	@Override
-	public void outputTelemetry() {
+	public synchronized void outputTelemetry() {
 		Logger.recordOutput(mConstants.kName + "/Homing", mHoming);
 		Logger.recordOutput(mConstants.kName + "/Within Homing Window", atHomingLocation());
 		Logger.recordOutput(mConstants.kName + "/Setpoint", getSetpoint());

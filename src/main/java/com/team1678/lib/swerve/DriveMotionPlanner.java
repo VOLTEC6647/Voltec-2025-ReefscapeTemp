@@ -52,7 +52,7 @@ public class DriveMotionPlanner implements CSVWritable {
 	public void setFollowerType(FollowerType type) {
 		System.out.println("Follower type "+type.name());
 		mFollowerType = type;
-		Logger.recordOutput("/Auto/FollowerType", mFollowerType.name());
+		//Logger.recordOutput("/Auto/FollowerType", mFollowerType.name());
 	}
 
 	private double defaultCook = 0.5;
@@ -474,7 +474,6 @@ public class DriveMotionPlanner implements CSVWritable {
 				// RobotState.getInstance().setDisplaySetpointPose(Pose2d.fromTranslation(RobotState.getInstance().getFieldToOdom(timestamp)).transformBy(sample_point.state().state().getPose()));
 				
 				mSetpoint = sample_point.state();
-				Logger.recordOutput("/Auto/RobotPose", current_state.toLegacy());
 				//Logger.recordOutput("/Auto/PathSetpoint", mSetpoint.state().getPose().toLegacy());
 				mOutput = updatePurePursuit(current_state, 0.0);
 			}
