@@ -209,7 +209,7 @@ public void choreoController(SwerveSample sample) {
 	var speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
 	  sample.vx + choreoX.calculate(currentPose.getTranslation().x(), sample.x),
 	  sample.vy + choreoY.calculate(currentPose.getTranslation().y(), sample.y),
-	  acceptingHeading*(sample.omega + choreoRotation.calculate(currentPose.getRotation().getRadians(), sample.heading)),
+	  acceptingHeading*(sample.omega + -choreoRotation.calculate(currentPose.getRotation().getRadians(), sample.heading)),
 	  currentPose.getRotation()
 	);
 	setVelocity((speeds));

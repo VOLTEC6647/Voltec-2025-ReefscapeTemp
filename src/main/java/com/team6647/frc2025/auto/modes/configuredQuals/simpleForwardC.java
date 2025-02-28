@@ -10,6 +10,8 @@ import com.team6647.frc2025.subsystems.Superstructure;
 import com.team6647.frc2025.subsystems.Superstructure.Levels;
 import com.team6647.frc2025.subsystems.coral_roller.CoralRoller;
 
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 public class simpleForwardC extends AutoModeBase {
 	private Drive d = Drive.getInstance();
 	private Superstructure s = Superstructure.getInstance();
@@ -20,6 +22,7 @@ public class simpleForwardC extends AutoModeBase {
 	// spotless:off
 	@Override
 	protected void routine() throws AutoModeEndedException {
+		runAction(new WaitAction(3));
 		s.request(s.prepareLevel(Levels.LEVEL3));
 		runAction(new ChoreoTrajectoryAction("SimpleForward",true));
 		runAction(new WaitAction(1.5));
@@ -27,6 +30,7 @@ public class simpleForwardC extends AutoModeBase {
 		runAction(new WaitAction(1));
 		Elevator.getInstance().setWantHome(true);
 		CoralRoller.getInstance().setState(CoralRoller.State.IDLE);
+		runAction(new ChoreoTrajectoryAction("HalfReverse",true));
 		System.out.println("Finished auto!");
 	}
 	// spotless:on
