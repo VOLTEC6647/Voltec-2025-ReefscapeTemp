@@ -157,6 +157,9 @@ public class DriverControls {
 		if (mControlBoard.driver.xButton.wasActivated()) {
 			mCoralRoller.setState(mCoralRoller.OUTAKING);
 		}
+		if (mControlBoard.driver.bButton.wasActivated()) {
+			mCoralPivot.setSetpointMotionMagic(CoralPivot.kLevel4Angle+15);
+		}
 		if (mControlBoard.driver.xButton.wasReleased()) {
 			mCoralRoller.setState(CoralRoller.State.IDLE);
 		}
