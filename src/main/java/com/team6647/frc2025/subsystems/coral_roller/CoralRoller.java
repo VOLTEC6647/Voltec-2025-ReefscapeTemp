@@ -36,7 +36,7 @@ public class CoralRoller extends Subsystem {
 		OUTAKING4(1.5),
 		OUTAKING3(1.3),
 		OUTAKING2(1.3),
-		OUTAKING1(0.5);
+		OUTAKING1(3);
 
 
 		public double roller_demand;

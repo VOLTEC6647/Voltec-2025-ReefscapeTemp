@@ -12,6 +12,7 @@ import com.team1678.frc2024.auto.AutoModeBase;
 import com.team1678.frc2024.auto.AutoModeExecutor;
 import com.team6647.frc2025.Constants.CoralPivotConstants;
 import com.team6647.frc2025.auto.AutoModeSelector;
+import com.team6647.frc2025.auto.modes.configuredQuals.L1Attempt;
 import com.team6647.frc2025.auto.modes.configuredQuals.LAlgae2;
 import com.team6647.frc2025.auto.modes.configuredQuals.Left1;
 import com.team6647.frc2025.auto.modes.configuredQuals.Left2;
@@ -169,6 +170,7 @@ public class Robot extends LoggedRobot {
 		
 		autoChooser.setDefaultOption("Just Forward", new justForwardC());
 		autoChooser.addOption("SimpleForwardC", new simpleForwardC());
+		autoChooser.addOption("L1Attempt", new L1Attempt());
 		autoChooser.addOption("Left1", new Left1());
 		autoChooser.addOption("Left2", new Left2());
 		autoChooser.addOption("LAlgae2", new LAlgae2());
