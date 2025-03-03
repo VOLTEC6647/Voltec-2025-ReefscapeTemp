@@ -39,6 +39,7 @@ import com.team254.lib.trajectory.timing.TimedState;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class Drive extends Subsystem {
@@ -110,39 +112,39 @@ public class Drive extends Subsystem {
 
 		/* 
 		kPathFollowDriveP = 5;
-        kPathFollowTurnP = 3;
+		kPathFollowTurnP = 3;
 
 		choreoX = new PIDController(kPathFollowDriveP, 0, 0);
-        choreoY = new PIDController(kPathFollowDriveP, 0, 0);
-        choreoRotation = new PIDController(kPathFollowTurnP, 0, 0);
+		choreoY = new PIDController(kPathFollowDriveP, 0, 0);
+		choreoRotation = new PIDController(kPathFollowTurnP, 0, 0);
 		*/
 
 
 	/*
-    // Configure AutoBuilder last
-    AutoBuilder.configure(
+	// Configure AutoBuilder last
+	AutoBuilder.configure(
 			this::getLegacyPose, // Robot pose supplier
-            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> setVelocity(ChassisSpeeds.fromLegacy(speeds)), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),
-            config, // The robot configuration
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+			this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+			this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+			(speeds, feedforwards) -> setVelocity(ChassisSpeeds.fromLegacy(speeds)), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+			new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+					new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+					new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+			),
+			config, // The robot configuration
+			() -> {
+			  // Boolean supplier that controls when the path will be mirrored for the red alliance
+			  // This will flip the path being followed to the red side of the field.
+			  // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
-              return false;
-            },
-            this // Reference to this subsystem to set requirements
-    );
+			  var alliance = DriverStation.getAlliance();
+			  if (alliance.isPresent()) {
+				return alliance.get() == DriverStation.Alliance.Red;
+			  }
+			  return false;
+			},
+			this // Reference to this subsystem to set requirements
+	);
 	}
 	*/
 
@@ -151,7 +153,7 @@ public class Drive extends Subsystem {
 	/* 
 
 	private final double kPathFollowDriveP;
-    private final double kPathFollowTurnP;
+	private final double kPathFollowTurnP;
 	private PIDController choreoX, choreoY, choreoRotation;
 	*/
 	
@@ -159,41 +161,41 @@ public class Drive extends Subsystem {
 
 	/*
 	// This is a helper method that creates a command that makes the robot follow a Choreo path
-    public AutoFactory choreoFactory(){
-        return Choreo.createAutoFactory(
-            this,
-            this::getLegacyPose,
-            choreoRotation,
-            this::feedTeleopSetpointFromLegacy,
-            Robot::isRed
-        );
-    }
+	public AutoFactory choreoFactory(){
+		return Choreo.createAutoFactory(
+			this,
+			this::getLegacyPose,
+			choreoRotation,
+			this::feedTeleopSetpointFromLegacy,
+			Robot::isRed
+		);
+	}
 	
 	private Command choreoSwerveCommand(ChoreoTrajectory trajectory) {//AutoTrajectory
-        return Choreo.choreoSwerveCommand(
-            trajectory,
-            this::getLegacyPose,
-            choreoX,
-            choreoY,
-            choreoRotation,
-            this::feedTeleopSetpointFromLegacy,
-            Robot::isRed
-        );
-    }
+		return Choreo.choreoSwerveCommand(
+			trajectory,
+			this::getLegacyPose,
+			choreoX,
+			choreoY,
+			choreoRotation,
+			this::feedTeleopSetpointFromLegacy,
+			Robot::isRed
+		);
+	}
 	public void choreoController(Pose2d curPose, SwerveSample sample) {
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-        new ChassisSpeeds(
-            xController.calculate(curPose.getX(), sample.x) + sample.vx,
-            yController.calculate(curPose.getY(), sample.y) + sample.vy,
-            thetaController.calculate(curPose.getRotation().getRadians(), sample.heading) + sample.omega
-        ), curPose.getRotation());
+	ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+		new ChassisSpeeds(
+			xController.calculate(curPose.getX(), sample.x) + sample.vx,
+			yController.calculate(curPose.getY(), sample.y) + sample.vy,
+			thetaController.calculate(curPose.getRotation().getRadians(), sample.heading) + sample.omega
+		), curPose.getRotation());
   this.driveRobotRelative(speeds);
   */
 	kPathFollowDriveP = 5;
 	kPathFollowTurnP = 3;
 	choreoX = new PIDController(kPathFollowDriveP, 0, 0);
-    choreoY = new PIDController(kPathFollowDriveP, 0, 0);
-    choreoRotation = new PIDController(kPathFollowTurnP, 0, 0);
+	choreoY = new PIDController(kPathFollowDriveP, 0, 0);
+	choreoRotation = new PIDController(kPathFollowTurnP, 0, 0);
 
 }
 
@@ -225,47 +227,47 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 
 /* 
 	private Command choreoRotationCommand(ChoreoTrajectory trajectory, Function<Double, Double> rotationOverride) {
-        return CommandsUtil.choreoCommandWithRotation(
-            trajectory,
-            this::getLegacyPose,
-            choreoX,
-            choreoY,
-            choreoRotation,
-            rotationOverride,
-            this::feedTeleopSetpointFromLegacy,
-            Robot::isRed
-        );
-    }
+		return CommandsUtil.choreoCommandWithRotation(
+			trajectory,
+			this::getLegacyPose,
+			choreoX,
+			choreoY,
+			choreoRotation,
+			rotationOverride,
+			this::feedTeleopSetpointFromLegacy,
+			Robot::isRed
+		);
+	}
 
 	
 	public Command followChoreoPath(ChoreoTrajectory trajectory, boolean resetPosition, Function<Double, Double> rotationOverride) {
-        List<Command> commands = new ArrayList<>();
+		List<Command> commands = new ArrayList<>();
 
 
-        commands.add(rotationOverride != null ? choreoRotationCommand(trajectory, rotationOverride) : choreoSwerveCommand(trajectory));
-        return CommandsUtil.sequence(commands);
-    }
+		commands.add(rotationOverride != null ? choreoRotationCommand(trajectory, rotationOverride) : choreoSwerveCommand(trajectory));
+		return CommandsUtil.sequence(commands);
+	}
 		
 
 	/**
-     * Returns a command that makes the robot follow a Choreo path using the ChoreoLib library.
-     * @param pathName The name of a path located in the "deploy/choreo" directory
-     * @param resetPosition If the robot's position should be reset to the starting position of the path
-     * @return A command that makes the robot follow the path
-     */
-    //public Command followChoreoPath(String pathName, boolean resetPosition) {
-    //    return followChoreoPath(pathName, resetPosition, null);
-    //}
+	 * Returns a command that makes the robot follow a Choreo path using the ChoreoLib library.
+	 * @param pathName The name of a path located in the "deploy/choreo" directory
+	 * @param resetPosition If the robot's position should be reset to the starting position of the path
+	 * @return A command that makes the robot follow the path
+	 */
+	//public Command followChoreoPath(String pathName, boolean resetPosition) {
+	//    return followChoreoPath(pathName, resetPosition, null);
+	//}
 
 	/**
-     * Returns a command that makes the robot follow a Choreo path using the ChoreoLib library.
-     * @param pathName The name of a path located in the "deploy/choreo" directory
-     * @param resetPosition If the robot's position should be reset to the starting position of the path
-     * @return A command that makes the robot follow the path
-     */
-    //public Command followChoreoPath(String pathName, boolean resetPosition, Function<Double, Double> rotationOverride) {
-    //    return followChoreoPath(Choreo.getTrajectory(pathName), resetPosition, rotationOverride);
-    //}
+	 * Returns a command that makes the robot follow a Choreo path using the ChoreoLib library.
+	 * @param pathName The name of a path located in the "deploy/choreo" directory
+	 * @param resetPosition If the robot's position should be reset to the starting position of the path
+	 * @return A command that makes the robot follow the path
+	 */
+	//public Command followChoreoPath(String pathName, boolean resetPosition, Function<Double, Double> rotationOverride) {
+	//    return followChoreoPath(Choreo.getTrajectory(pathName), resetPosition, rotationOverride);
+	//}
 
 	public void setKinematicLimits(KinematicLimits newLimits) {
 		this.mKinematicLimits = newLimits;
@@ -709,6 +711,10 @@ public edu.wpi.first.math.kinematics.ChassisSpeeds getRobotRelativeSpeeds() {
 	public void zeroGyro(double reset_deg) {
 		mPigeon.setYaw(reset_deg);
 		enableFieldToOdom = null;
+	}
+
+	public Double getPigeonRate() {
+		return mPigeon.getAV().getValueAsDouble();
 	}
 
 	/**

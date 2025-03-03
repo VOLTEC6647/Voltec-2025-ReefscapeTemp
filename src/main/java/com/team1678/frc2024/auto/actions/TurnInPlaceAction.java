@@ -1,11 +1,11 @@
 package com.team1678.frc2024.auto.actions;
 
-import com.team1678.frc2024.Robot1678;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.lib.swerve.ChassisSpeeds;
 import com.team1678.lib.util.Stopwatch;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.util.TimeDelayedBoolean;
+import com.team6647.frc2025.Robot;
 
 public class TurnInPlaceAction implements Action {
 
@@ -28,7 +28,7 @@ public class TurnInPlaceAction implements Action {
 
 	@Override
 	public void update() {
-		Drive.getInstance().stabilizeHeading(Robot1678.is_red_alliance ? target.mirrorAboutX() : target);
+		Drive.getInstance().stabilizeHeading(Robot.is_red_alliance ? target.mirrorAboutX() : target);
 		Drive.getInstance().feedTeleopSetpoint(new ChassisSpeeds());
 	}
 

@@ -30,8 +30,6 @@ import com.team1678.frc2024.subsystems.Cancoders;
 import com.team1678.frc2024.subsystems.Climber;
 import com.team1678.frc2024.subsystems.CoralPivot;
 import com.team1678.frc2024.subsystems.Drive;
-import com.team1678.frc2024.subsystems.limelight.Limelight;
-import com.team1678.frc2024.subsystems.limelight.Limelight.Pipeline;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
 import com.team1678.lib.Util;
 import com.team1678.lib.logger.LogUtil;
@@ -145,9 +143,9 @@ public class Robot extends LoggedRobot {
 		} else {
 			serial = "";
 			//setUseTiming(false); // Run as fast as possible
-			String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-			Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-			Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+			//String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+			//Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+			//Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
 		}
 		Logger.start();
 		Constants1678.isComp = serial.startsWith(Constants1678.kCompSerial);
@@ -167,16 +165,20 @@ public class Robot extends LoggedRobot {
 		mElevator = Elevator.getInstance();
 		//mClimber = Climber.getInstance();
 
-		
+
 		autoChooser.setDefaultOption("Just Forward", new justForwardC());
 		autoChooser.addOption("SimpleForwardC", new simpleForwardC());
 		autoChooser.addOption("L1Attempt", new L1Attempt());
 		autoChooser.addOption("Left1", new Left1());
 		autoChooser.addOption("Left2", new Left2());
 		autoChooser.addOption("LAlgae2", new LAlgae2());
-		Pose2d startC = Pose2d.fromLegacy(Choreo.loadTrajectory("SimpleForward").get().getInitialPose(is_red_alliance).get());
-		mDrive.resetOdometry(startC);
-		mDrive.zeroGyro(startC.getRotation().getDegrees());
+		
+		if(isReal()){
+			Pose2d startC = Pose2d.fromLegacy(Choreo.loadTrajectory("SimpleForward").get().getInitialPose(is_red_alliance).get());
+			mDrive.resetOdometry(startC);
+			mDrive.zeroGyro(startC.getRotation().getDegrees());
+		}
+		
 		//autoChooser.addOption("Center 6", new AmpRaceAuto(drivetrain, vision, shooter, shooterPivot, intake, intakePivot, false, 5, 4, 3, 2));
 		SmartDashboard.putData("Auto Mode", autoChooser);
 

@@ -106,4 +106,8 @@ public class Pigeon {
 	public StatusSignal<AngularVelocity> getRateStatusSignal() {
 		return mGyro.getAngularVelocityZDevice();
 	}
+
+	public StatusSignal<AngularVelocity> getAV() {
+		return mGyro.getAngularVelocityZWorld();
+	}
 }

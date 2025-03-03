@@ -54,26 +54,10 @@ public class FieldLayout {
 		//	throw new RuntimeException(e);
 		//}
 	}
-
-	// center notes labeled 1-5, with 1 being closest to the fms table
-	public static Translation2d kCenterNote5 = new Translation2d(kFieldLength / 2.0, 0.752856);
-	public static Translation2d kCenterNote4 = new Translation2d(kFieldLength / 2.0, 2.429256);
-	public static Translation2d kCenterNote3 = new Translation2d(kFieldLength / 2.0, 4.105656);
-	public static Translation2d kCenterNote2 = new Translation2d(kFieldLength / 2.0, 5.782056);
-	public static Translation2d kCenterNote1 = new Translation2d(kFieldLength / 2.0, 7.458456);
-
-	public static Translation2d[] kCenterNotes =
-			new Translation2d[] {kCenterNote1, kCenterNote2, kCenterNote3, kCenterNote4, kCenterNote5};
-
-	public static Translation2d kAmpCenter =
-			new Translation2d(Units.inchesToMeters(72.455), Units.inchesToMeters(322.996));
-
-	/** Center of the speaker opening (blue alliance) */
-	//public static Pose2d kSpeakerCenter = new Pose2d(0.2, kFieldWidth - Units.inchesToMeters(104.0), new Rotation2d());
-
+	
 	public static Pose2d kCoralCenter;
 	static{
-		if(DriverStation.getAlliance().get() == Alliance.Red){
+		if(Robot.isReal()&&DriverStation.getAlliance().get() == Alliance.Red){
 			kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());
 		}else{
 			kCoralCenter = new Pose2d((kTagMap.getTagPose(19).get().getX()+kTagMap.getTagPose(20).get().getX())/2,kTagMap.getTagPose(18).get().getY(),new Rotation2d());

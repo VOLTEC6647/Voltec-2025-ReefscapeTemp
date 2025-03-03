@@ -6,7 +6,9 @@ import com.team1678.frc2024.subsystems.Subsystem;
 import com.team1678.lib.Util;
 import com.team1678.lib.logger.LogUtil;
 import com.team254.lib.geometry.Pose2d;
+import com.team254.lib.geometry.Translation2d;
 import com.team6647.frc2025.FieldLayout;
+import com.team6647.frc2025.Robot;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
@@ -140,7 +142,7 @@ public class VisionDevice extends Subsystem {
             // Adjust standard deviations as needed
             double xyStdDev = curStdDevs.get(0, 0); // Use calculated std dev
 
-             if (VisionDeviceManager.visionDisabled()) {
+            if (VisionDeviceManager.visionDisabled()) {
 				return;
 			}
 
@@ -155,14 +157,14 @@ public class VisionDevice extends Subsystem {
                     new VisionUpdate(
                             timestamp,
                             robotPose.getTranslation(),
-                            mConstants.kRobotToCamera.getTranslation(), // Use the correct camera offset
+                            new Translation2d(),//mConstants.kRobotToCamera.getTranslation(), // Use the correct camera offset
                             xyStdDev
                     )
             );
 
             // Calculate and log vision heading
             double rotation_degrees = robotPose.getRotation().getDegrees() + 180.0; // Same logic as before
-             if (!com.team1678.frc2024.Robot1678.is_red_alliance) { // Replace with your alliance check.
+             if (!Robot.is_red_alliance) { // Replace with your alliance check.
                 rotation_degrees = Util.boundAngleNeg180to180Degrees(rotation_degrees);
             } else {
                 rotation_degrees = Util.boundAngle0to360Degrees(rotation_degrees);

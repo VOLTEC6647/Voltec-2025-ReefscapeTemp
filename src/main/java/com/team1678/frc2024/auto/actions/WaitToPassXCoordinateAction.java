@@ -1,8 +1,8 @@
 package com.team1678.frc2024.auto.actions;
 
-import com.team1678.frc2024.Robot1678;
 import com.team1678.frc2024.subsystems.Drive;
 import com.team6647.frc2025.FieldLayout;
+import com.team6647.frc2025.Robot;
 
 public class WaitToPassXCoordinateAction implements Action {
 	double startingXCoordinate;
@@ -10,7 +10,7 @@ public class WaitToPassXCoordinateAction implements Action {
 	Drive drive;
 
 	public WaitToPassXCoordinateAction(double x) {
-		if (Robot1678.is_red_alliance) {
+		if (Robot.is_red_alliance) {
 			targetXCoordinate = FieldLayout.kFieldLength - x;
 		} else {
 			targetXCoordinate = x;

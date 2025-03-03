@@ -307,8 +307,11 @@ public class DriverControls {
 				new SequentialRequest(
 				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.INTAKINGFAST);}),
 				mAlgaeHolder.setPositionRequest(AlgaeT.kIntakingAngle),
-				new WaitRequest(2),
-				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.INTAKING);})
+				new WaitRequest(1),
+				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.INTAKING);}),
+				new WaitForPrereqRequest(()->!mControlBoard.operator.leftTrigger.isBeingPressed()),
+				new LambdaRequest(()->{mAlgaeRollers.setState(AlgaeRoller.State.IDLE);})
+
 			)
 			);
 			
