@@ -11,7 +11,7 @@ import com.team254.lib.trajectory.TimedView;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.TrajectoryIterator;
 import com.team254.lib.trajectory.timing.TimedState;
-import com.team6647.frc2025.Robot;
+import com.team6647.Robot;
 
 import choreo.Choreo;
 import choreo.trajectory.SwerveSample;

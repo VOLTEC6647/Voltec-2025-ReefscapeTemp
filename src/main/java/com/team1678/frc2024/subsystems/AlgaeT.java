@@ -9,11 +9,9 @@ import com.team1678.frc2024.loops.Loop;
 import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystem;
 
 import com.team1678.lib.util.Stopwatch;
-
-import com.team6647.frc2025.Constants.AlgaeTConstants;
-import com.team6647.frc2025.Constants.CoralPivotConstants;
-
-import com.team6647.frc2025.Ports;
+import com.team6647.Ports;
+import com.team6647.Constants.AlgaeTConstants;
+import com.team6647.Constants.CoralPivotConstants;
 
 
 public class AlgaeT extends ServoMotorSubsystem {

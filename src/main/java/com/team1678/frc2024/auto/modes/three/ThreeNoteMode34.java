@@ -17,7 +17,7 @@ import com.team254.lib.geometry.Pose2dWithMotion;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
-import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.subsystems.Superstructure;
 
 import java.util.List;
 

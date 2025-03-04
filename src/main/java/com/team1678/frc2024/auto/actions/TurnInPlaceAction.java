@@ -5,7 +5,7 @@ import com.team1678.lib.swerve.ChassisSpeeds;
 import com.team1678.lib.util.Stopwatch;
 import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.util.TimeDelayedBoolean;
-import com.team6647.frc2025.Robot;
+import com.team6647.Robot;
 
 public class TurnInPlaceAction implements Action {
 

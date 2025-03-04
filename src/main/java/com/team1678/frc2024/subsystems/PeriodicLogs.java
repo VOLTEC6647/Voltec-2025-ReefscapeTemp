@@ -3,7 +3,7 @@ package com.team1678.frc2024.subsystems;
 import org.littletonrobotics.junction.AutoLog;
 
 import com.team1678.frc2024.controlboard.ControlBoard;
-import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.subsystems.Superstructure;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

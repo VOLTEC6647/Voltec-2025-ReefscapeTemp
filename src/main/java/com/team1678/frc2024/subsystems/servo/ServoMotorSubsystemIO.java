@@ -2,7 +2,7 @@ package com.team1678.frc2024.subsystems.servo;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import com.team6647.frc2025.subsystems.coral_roller.CoralRollerIO.CoralRollerIOInputs;
+import com.team6647.subsystems.coral_roller.CoralRollerIO.CoralRollerIOInputs;
 
 public interface ServoMotorSubsystemIO {
     @AutoLog

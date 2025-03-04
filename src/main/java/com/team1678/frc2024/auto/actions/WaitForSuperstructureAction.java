@@ -1,7 +1,7 @@
 package com.team1678.frc2024.auto.actions;
 
 import com.team1678.lib.util.Stopwatch;
-import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.subsystems.Superstructure;
 
 public class WaitForSuperstructureAction implements Action {
 	private Superstructure superstructure;
