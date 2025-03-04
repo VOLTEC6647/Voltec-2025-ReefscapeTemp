@@ -7,8 +7,8 @@ import com.team1678.lib.Util;
 import com.team1678.lib.logger.LogUtil;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Translation2d;
-import com.team6647.frc2025.FieldLayout;
-import com.team6647.frc2025.Robot;
+import com.team6647.FieldLayout;
+import com.team6647.Robot;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;

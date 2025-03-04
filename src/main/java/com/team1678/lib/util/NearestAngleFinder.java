@@ -1,6 +1,6 @@
 package com.team1678.lib.util;
 
-import com.team6647.frc2025.FieldLayout.CoralTarget;
+import com.team6647.FieldLayout.CoralTarget;
 
 public class NearestAngleFinder {
     public static double findNearestAngle(CoralTarget[] angles, double target) {

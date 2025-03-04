@@ -2,7 +2,7 @@ package com.team1678.frc2024.controlboard;
 
 import com.team1678.frc2024.subsystems.Drive;
 import com.team1678.frc2024.subsystems.vision.VisionDeviceManager;
-import com.team6647.frc2025.subsystems.Superstructure;
+import com.team6647.subsystems.Superstructure;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

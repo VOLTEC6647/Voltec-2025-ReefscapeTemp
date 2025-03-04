@@ -7,7 +7,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.team1678.frc2024.Constants1678;
 import com.team1678.frc2024.Ports1678;
 import com.team254.lib.geometry.Rotation2d;
-import com.team6647.frc2025.Constants.DriveConstants;
+import com.team6647.Constants.DriveConstants;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;

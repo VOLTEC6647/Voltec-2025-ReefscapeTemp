@@ -17,7 +17,7 @@ import com.team1678.lib.Conversions;
 import com.team1678.lib.Util;
 import com.team254.lib.drivers.Phoenix6Util;
 import com.team254.lib.geometry.Rotation2d;
-import com.team6647.frc2025.Constants.DriveConstants;
+import com.team6647.Constants.DriveConstants;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

@@ -14,11 +14,11 @@ import com.team1678.frc2024.subsystems.servo.ServoMotorSubsystemWithCancoder;
 import com.team1678.lib.requests.Request;
 import com.team1678.lib.util.Stopwatch;
 import com.team254.lib.util.Util;
-import com.team6647.frc2025.Constants;
-import com.team6647.frc2025.Constants.CoralPivotConstants;
-import com.team6647.frc2025.subsystems.Superstructure;
-import com.team6647.frc2025.subsystems.Superstructure.Levels;
-import com.team6647.frc2025.Ports;
+import com.team6647.Constants;
+import com.team6647.Ports;
+import com.team6647.Constants.CoralPivotConstants;
+import com.team6647.subsystems.Superstructure;
+import com.team6647.subsystems.Superstructure.Levels;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -31,7 +31,7 @@ public class Climber extends ServoMotorSubsystem {
 	public static Climber getInstance() {
 		if (mInstance == null) {
 			mInstance = new Climber(
-				com.team6647.frc2025.Constants.ClimberConstants.kHoodServoConstants);//, CoralPivotConstants.kHoodEncoderConstants
+				com.team6647.Constants.ClimberConstants.kHoodServoConstants);//, CoralPivotConstants.kHoodEncoderConstants
 		}
 		return mInstance;
 	}

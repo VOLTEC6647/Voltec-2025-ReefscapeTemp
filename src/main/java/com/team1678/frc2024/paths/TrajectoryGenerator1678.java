@@ -9,7 +9,7 @@ import com.team254.lib.geometry.Rotation2d;
 import com.team254.lib.trajectory.Trajectory254;
 import com.team254.lib.trajectory.timing.TimedState;
 import com.team254.lib.trajectory.timing.TimingConstraint;
-import com.team6647.frc2025.FieldLayout;
+import com.team6647.FieldLayout;
 
 import edu.wpi.first.math.util.Units;
 import java.util.ArrayList;
